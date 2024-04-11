@@ -1,0 +1,267 @@
+.App {
+  text-align: center;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+}
+
+.custom-home-page {
+  font-family: 'Helvetica Neue', sans-serif;
+  color: #333;
+  background-color: #7c69e6;
+  /* Removed padding to allow the background color to extend fully */
+  width: 100%;
+  min-height: 100vh; /* Ensures at least full viewport height */
+  box-sizing: border-box; /* Ensures padding and border are included in width/height */
+}
+
+
+.hero {
+  background-color: #7c69e600;
+  padding: 40px;
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  border-radius: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+
+.hero::after {
+  content: '';
+  position: absolute;
+  width: 80px; /* Size of the circle */
+  height: 80px; /* Size of the circle */
+  background-color: #ffffff30;
+  border-radius: 50%;
+  top: 10%; /* Starting position */
+  left: 10%; /* Starting position */
+  animation: grow 1s ease-out forwards; /* This circle grows last */
+  animation-delay: 2s;
+  opacity: 0;
+  z-index: 0;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 150px; /* Size of the circle */
+  height: 150px; /* Size of the circle */
+  background-color: #ffffff30;
+  border-radius: 50%;
+  top: 15%; /* Starting position */
+  left: 18%; /* Starting position */
+  animation: grow 1s ease-out forwards; /* This circle grows second */
+  animation-delay: 1s;
+  opacity: 0;
+  z-index: 0;
+}
+.hero .circle {
+  content: '';
+  position: absolute;
+  width: 40px; /* Size of the circle */
+  height: 40px; /* Size of the circle */
+  background-color: #ffffff30;
+  border-radius: 50%;
+  top: 20%;
+  left: 5%; /* Starting position */
+  animation: grow 1s ease-out forwards;
+  opacity: 0;
+  z-index: 0;
+}
+
+
+@keyframes grow {
+  0% {
+    transform: scale(0); /* Starts from no size */
+    opacity: 0; /* Completely transparent */
+  }
+  100% {
+    transform: scale(1); /* Grows to the defined size */
+    opacity: 1; /* Fully opaque */
+  }
+}
+
+
+
+
+
+.cool-move {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  z-index: 1;
+}
+
+.cool-move h1 {
+  background-color: #130647;
+  color: white;
+  padding: 20px 40px;
+  border-radius: 15px;
+  text-align: center;
+  margin: 20px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cool-move p {
+  color: white;
+  font-size: 18px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.cool-move input[type="file"] {
+  border: 1px solid #ccc;
+  background-color: white;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cool-move button {
+  background-color: #130647;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.cool-move button:hover {
+  background-color: #0a568c;
+  transform: scale(1.05);
+}
+
+.cool-move img {
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.border {
+  border: 3px solid #130647;
+  border-radius: 4px;
+}
+
+.response-container {
+  color: #333;
+  background-color: #f2f2f2;
+  padding: 15px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.menu-icon {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  font-size: 24px;
+  z-index: 1000;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #130647;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  padding: 60px 20px 20px 20px;
+  z-index: 999;
+}
+
+.menu a {
+  color: white;
+  padding: 10px;
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+.menu a:hover {
+  color: #f0f0f0;
+}
+
+.opener-filter {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.title-logo-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #130647;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 0 0 15px 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+}
+
+.logo,
+.cool-move h1 {
+  margin: 0 10px;
+}
+
+.logo {
+  width: 50px;
+  height: auto;
+}
+.response-container {
+  position: relative;
+  /* Keep the rest of your styles unchanged */
+}
