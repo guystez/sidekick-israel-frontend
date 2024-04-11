@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import logofire from '/Users/user/Desktop/Front-end projects/sidekik_israel_frontend/sidekik_israel/src/logofire.png';
+import Login from './Auth0/Login';
+import { useAuth0 } from "@auth0/auth0-react";
+
+// import logofire from '/Users/user/Desktop/Front-end projects/sidekik_israel_frontend/sidekik_israel/src/logofire.png';
 
 function HomePage() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [responseFromServer, setResponseFromServer] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
+  const { isAuthenticated,user } = useAuth0();
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -22,6 +26,35 @@ function HomePage() {
     }, (err) => {
       console.error('Could not copy text: ', err);
     });
+  };
+  
+  const getUserEmailFromLocalStorage = () => {
+    const userEmail = localStorage.getItem("userEmail");
+    if (!userEmail) {
+      console.error("User email not found in local storage");
+      // Handle case where user email is not found in local storage
+    }
+    return userEmail;
+  };
+  
+  const sendTextLiked = () => {
+    if (isAuthenticated) {
+      const userEmail = user.email; // Get email from user object
+      localStorage.getItem()
+      console.log("User email:", userEmail);
+      axios.post("http://127.0.0.1:8000/date/text-liked", { email: userEmail ,text:responseFromServer})
+        .then(response => {
+          console.log("Email sent successfully:", response.data);
+          // You can add further logic here if needed
+        })
+        .catch(error => {
+          console.error("Error sending email:", error);
+          // Handle error accordingly
+        });
+    } else {
+      console.error("User is not authenticated");
+      // Handle case where user is not authenticated
+    }
   };
   
 
@@ -62,9 +95,11 @@ function HomePage() {
                 <a href="/openers">Openers</a>
               </div>
             )}
-            <img src={logofire} alt="Logo" className="logo" />
+            {/* <img src={logofire} alt="Logo" className="logo" /> */}
             <h1>sidekick.AI</h1>
           </div>
+          <div ><Login/> </div>
+
           <p>העלה תצלום מסך!</p>
           <input type="file" accept="image/*" onChange={handleImageChange} />
           {selectedImage && (
@@ -93,6 +128,22 @@ function HomePage() {
 >
   העתק
 </button>
+<button 
+  onClick={sendTextLiked} 
+  style={{
+    position: 'absolute',
+    top: '5px',
+    left: '5px',
+    cursor: 'pointer',
+    padding: '4px 4px', // Reduced padding
+    fontSize: '10px', // Smaller font size
+    lineHeight: '1', // Adjust line height to fit the font size
+    backgroundColor: 'lightgray', // Optional: add a background color for better visibility
+    border: '1px solid darkgray', // Optional: add a border for clarity
+    borderRadius: '5px', // Optional: round the corners for a softer look
+  }}
+>  אהבתי
+</button>
   </div>
 )}
 
@@ -103,3 +154,5 @@ function HomePage() {
 }
 
 export default HomePage;
+
+
