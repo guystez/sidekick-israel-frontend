@@ -13,7 +13,7 @@ function OpenersLiked() {
       if (isAuthenticated) {
         try {
           const userEmail = user.email;
-          const response = await axios.get('http://127.0.0.1:8000/date-openers-liked', {
+          const response = await axios.get('https://web-production-dd6e3.up.railway.app/date-openers-liked', {
             params: {
               email: userEmail
             }
@@ -36,9 +36,7 @@ function OpenersLiked() {
       <div className="circle"></div>
       <div className="cool-move">
         <div className="title-logo-container">
-          <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
-            ☰
-          </div>
+         
          
           <h1>sidekick.AI</h1>
         </div>

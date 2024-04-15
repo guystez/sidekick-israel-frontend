@@ -33,7 +33,7 @@ function HomePage() {
     if (isAuthenticated) {
       const userEmail = user.email;
       console.log("User email:", userEmail);
-      axios.post("http://127.0.0.1:8000/date-text-liked", { email: userEmail ,text:responseFromServer})
+      axios.post("https://web-production-dd6e3.up.railway.app/date-text-liked", { email: userEmail ,text:responseFromServer})
         .then(response => {
           console.log("Email sent successfully:", response.data);
         })
@@ -54,7 +54,7 @@ function HomePage() {
       const makeRequest = async () => {
         try {
           console.log('Sending image to the server...');
-          const response = await axios.post('http://127.0.0.1:8000/date', formData, {
+          const response = await axios.post('https://web-production-dd6e3.up.railway.app/date', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
@@ -92,7 +92,7 @@ function HomePage() {
       console.log("responseFromGPT:", responseFromGPT);
       
       const makeRequest = () => {
-        axios.post("http://127.0.0.1:8000/date-gemini", { request: responseFromGPT })
+        axios.post("https://web-production-dd6e3.up.railway.app/date-gemini", { request: responseFromGPT })
           .then(response => {
             console.log("Text sent successfully:", response.data);
             setGeneratedResponse(response.data); // Store generated response in state

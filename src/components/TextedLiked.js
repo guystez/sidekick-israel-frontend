@@ -6,14 +6,13 @@ import { Link } from 'react-router-dom';
 function TextLiked() {
   const [textLiked, setTextLiked] = useState([]);
   const { isAuthenticated, user } = useAuth0();
-  const [menuOpen, setMenuOpen] = useState(false); // State to control menu visibility
 
   useEffect(() => {
     const fetchLikedText = async () => {
       if (isAuthenticated) {
         try {
           const userEmail = user.email;
-          const response = await axios.get('http://127.0.0.1:8000/date-text-liked', {
+          const response = await axios.get('https://web-production-dd6e3.up.railway.app/date-text-liked', {
             params: {
               email: userEmail
             }
