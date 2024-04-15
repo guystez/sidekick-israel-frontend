@@ -1,56 +1,91 @@
-import React, { useState } from 'react';
-
-const openers = {
-  חוף: ["האם הצלת קצת צדפים עבורנו?", "בואו נגש לחופשה יחד"],
-  אירוע: ["זו החתונה שלנו בעתיד?", "שמלת חתונה יפה"],
-  מסיבה: ["זו המסיבה שלנו בעתיד?", "שמלת מסיבה נהדרת"],
-  חתונה: ["זו החתונה שלנו בעתיד?", "שמלת חתונה מרהיבה"],
-  טיול: ["זה הטיול שלנו בעתיד?", "נופים מדהימים"],
-  יומולדת: ["זה יומולדתך או שאתה פשוט שמח לראות אותי?", "עוגת יומולדת מהממת"],
-  בגדים: ["הבגד הזה נראה מדהים עליך", "איזו מעצבת את?"],
-  חיות: ["אם זה לא ילך בינינו אני עדיין אצא עם הכלב שלך", "החתול שלך נראה כמו מלך"],
-  חופשות: ["איזה מקום בחו\"ל הכי השפיע עליך?", "נראה שאתה צריך חופשה"],
-  אוכל: ["מה המנה האהובה עליך?", "נראה שאת מבינה באוכל"],
-  אלכוהול: ["איזה סוג שתיה אתה הכי אוהב?", "נראה שאת מבינה ביין"]
-};
+import axios from 'axios';
+import { useAuth0 } from "@auth0/auth0-react";
+import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 function Openers() {
-  const [openerType, setOpenerType] = useState(Object.keys(openers)[0]);
+  const [openers, setOpeners] = useState([]);
+  const [openerType, setOpenerType] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { isAuthenticated, user } = useAuth0();
   const [menuOpen, setMenuOpen] = useState(false); // State to control menu visibility
+  const [categories, setCategories] = useState([]); // State to store category names
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.post("http://127.0.0.1:8000/date-get-categories"); // Fetch category names
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const fetchOpenersByCategory = async (categoryName) => {
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/date-get-categories-by-name", { category_name: categoryName });
+      setOpeners(response.data);
+      console.log(response.data);
+      if (response.data.length > 0) {
+        setOpenerType(response.data[0].text);
+      }
+    } catch (error) {
+      console.error("Error fetching openers by category:", error);
+    }
+  };
 
   const handleNextOpener = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % openers[openerType].length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % openers.length || 0);
   };
 
   const handleCopyOpener = () => {
-    navigator.clipboard.writeText(openers[openerType][currentIndex])
+    navigator.clipboard.writeText(openers[currentIndex] || "")
       .then(() => alert("הועתק!"))
       .catch((err) => console.error('לא ניתן להעתיק: ', err));
   };
 
+  const sendTextLiked = () => {
+    if (isAuthenticated) {
+      const userEmail = user.email; // Get email from user object
+      console.log("User email:", userEmail);
+      axios.post("http://127.0.0.1:8000/date-openers-liked", { email: userEmail ,opener:(openers[currentIndex])})
+        .then(response => {
+          console.log("Email sent successfully:", response.data);
+          // You can add further logic here if needed
+        })
+        .catch(error => {
+          console.error("Error sending email:", error);
+          // Handle error accordingly
+        });
+    } else {
+      console.error("User is not authenticated");
+      // Handle case where user is not authenticated
+    }
+  };
+
   return (
     <div className="custom-home-page">
-      <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>☰</div>
-      {menuOpen && (
-        <div className="menu">
-          <a href="/">דף הבית</a> {/* Adjust the href as needed for navigation */}
-        </div>
-      )}
+      
+      
       <div className="hero">
         <div className="cool-move">
           <h1>משפטי פתיחה</h1>
           <div className="opener-filter">
-          {Object.keys(openers).map((type) => (
-            <button key={type} onClick={() => { setOpenerType(type); setCurrentIndex(0); }}>
-              {type}
-            </button>
-          ))}
+            {/* Display category buttons */}
+            {categories.map((category) => (
+              <button key={category} onClick={() => fetchOpenersByCategory(category)}>
+                {category}
+              </button>
+            ))}
           </div>
           <div className="response-container">
-            <p>{openers[openerType][currentIndex]}</p>
+            <p>{openers[currentIndex]}</p>
             <button onClick={handleNextOpener}>פתח הבא</button>
             <button onClick={handleCopyOpener}>העתק</button>
+            <button onClick={sendTextLiked}>אהבתי</button>
           </div>
         </div>
       </div>
