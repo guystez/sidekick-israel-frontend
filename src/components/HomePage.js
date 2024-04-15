@@ -33,7 +33,7 @@ function HomePage() {
     if (isAuthenticated) {
       const userEmail = user.email;
       console.log("User email:", userEmail);
-      axios.post("https://web-production-dd6e3.up.railway.app/date-text-liked", { email: userEmail ,text:responseFromServer})
+      axios.post("https://web-production-dd6e3.up.railway.app/date/text-liked", { email: userEmail ,text:responseFromServer})
         .then(response => {
           console.log("Email sent successfully:", response.data);
         })
@@ -54,7 +54,7 @@ function HomePage() {
       const makeRequest = async () => {
         try {
           console.log('Sending image to the server...');
-          const response = await axios.post('https://web-production-dd6e3.up.railway.app/date', formData, {
+          const response = await axios.post('https://web-production-dd6e3.up.railway.app/date/', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
@@ -92,7 +92,7 @@ function HomePage() {
       console.log("responseFromGPT:", responseFromGPT);
       
       const makeRequest = () => {
-        axios.post("https://web-production-dd6e3.up.railway.app/date-gemini", { request: responseFromGPT })
+        axios.post("https://web-production-dd6e3.up.railway.app/date/gemini", { request: responseFromGPT })
           .then(response => {
             console.log("Text sent successfully:", response.data);
             setGeneratedResponse(response.data); // Store generated response in state
@@ -168,11 +168,23 @@ function HomePage() {
            {responseFromGPT && (
             <button onClick={handleGenerateResponse} className="generate-button">Generate Response</button>
           )}
-          {generatedResponse && ( // Conditionally render generated response
-            <div className="response-container">
-              {generatedResponse}
-            </div>
-          )}
+          {generatedResponse && (
+  <div className="response-container">
+    {generatedResponse}
+    <button 
+      onClick={copyToClipboard} 
+      style={{ position: 'absolute', top: '5px', right: '5px', cursor: 'pointer', padding: '4px 4px', fontSize: '10px', lineHeight: '1', backgroundColor: 'lightgray', border: '1px solid darkgray', borderRadius: '5px' }}
+    >
+      העתק
+    </button>
+    <button 
+      onClick={sendTextLiked} 
+      style={{ position: 'absolute', top: '5px', left: '5px', cursor: 'pointer', padding: '4px 4px', fontSize: '10px', lineHeight: '1', backgroundColor: 'lightgray', border: '1px solid darkgray', borderRadius: '5px' }}
+    >  
+      אהבתי
+    </button>
+  </div>
+)}
         </div>
       </div>
     </div>

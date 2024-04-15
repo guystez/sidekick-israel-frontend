@@ -12,7 +12,7 @@ function TextLiked() {
       if (isAuthenticated) {
         try {
           const userEmail = user.email;
-          const response = await axios.get('https://web-production-dd6e3.up.railway.app/date-text-liked', {
+          const response = await axios.get('https://web-production-dd6e3.up.railway.app/date/text-liked', {
             params: {
               email: userEmail
             }

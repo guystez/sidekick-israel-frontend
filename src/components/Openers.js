@@ -13,7 +13,7 @@ function Openers() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.post("https://web-production-dd6e3.up.railway.app/date-get-categories"); // Fetch category names
+        const response = await axios.post("https://web-production-dd6e3.up.railway.app/date/get-categories"); // Fetch category names
         setCategories(response.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -25,7 +25,7 @@ function Openers() {
 
   const fetchOpenersByCategory = async (categoryName) => {
     try {
-      const response = await axios.post("https://web-production-dd6e3.up.railway.app/date-get-categories-by-name", { category_name: categoryName });
+      const response = await axios.post("https://web-production-dd6e3.up.railway.app/date/get-categories-by-name", { category_name: categoryName });
       setOpeners(response.data);
       console.log(response.data);
       if (response.data.length > 0) {
@@ -50,7 +50,7 @@ function Openers() {
     if (isAuthenticated) {
       const userEmail = user.email; // Get email from user object
       console.log("User email:", userEmail);
-      axios.post("https://web-production-dd6e3.up.railway.app/date-openers-liked", { email: userEmail ,opener:(openers[currentIndex])})
+      axios.post("https://web-production-dd6e3.up.railway.app/date/openers-liked", { email: userEmail ,opener:(openers[currentIndex])})
         .then(response => {
           console.log("Email sent successfully:", response.data);
           // You can add further logic here if needed

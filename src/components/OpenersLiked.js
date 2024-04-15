@@ -13,7 +13,7 @@ function OpenersLiked() {
       if (isAuthenticated) {
         try {
           const userEmail = user.email;
-          const response = await axios.get('https://web-production-dd6e3.up.railway.app/date-openers-liked', {
+          const response = await axios.get('https://web-production-dd6e3.up.railway.app/date/openers-liked', {
             params: {
               email: userEmail
             }
