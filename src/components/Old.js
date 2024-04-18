@@ -7,8 +7,6 @@ import LoadingButtonsTransition from './Loader';
 import ActionAlerts from './Alert';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import DialogModal from './DialogLogin'; // Import the DialogModal component
-
 function HomePage() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
@@ -16,11 +14,10 @@ function HomePage() {
   const [responseFromGPT, setResponseFromGPT] = useState('');
   const [generatedResponse, setGeneratedResponse] = useState('');
   const [responseReceived, setResponseReceived] = useState(false);
-  const { isAuthenticated, user ,isLoading} = useAuth0();
+  const { isAuthenticated, user } = useAuth0();
   const [loading, setLoading] = useState(false);
   const [showUploadAlert, setShowUploadAlert] = useState(false); // State variable to control the visibility of the upload alert
   const [buttonVisible, setButtonVisible] = useState(true); // New state variable to track button visibility
-  const [showAuthDialog, setShowAuthDialog] = useState(false); // State variable to manage whether the auth dialog is open
   const navigate = useNavigate();
 
 
@@ -43,7 +40,7 @@ function HomePage() {
   const sendTextLiked = () => {
     if (isAuthenticated) {
         const userEmail = user.email;
-        axios.post("https://web-production-dd6e3.up.railway.app/date/text-liked", { email: userEmail, text: responseFromServer })
+        axios.post("http://127.0.0.1:8000/date/text-liked", { email: userEmail, text: responseFromServer })
             .then(response => {
                 console.log("Email sent successfully:", response.data);
                 alert("Text Liked!"); // Show alert when text is liked
@@ -59,62 +56,49 @@ function HomePage() {
 };
 
 
-const makeRequest = async (formData) => {
-  try {
-    const response = await axios.post('https://web-production-dd6e3.up.railway.app/date/', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+  const handleSendImage = async () => {
+    if (!imageFile) {
+      console.log("No image file selected, showing upload alert...");
 
-    if (response.status === 200) {
-      setResponseFromServer(JSON.stringify(response.data.final_answer));
-      setResponseFromGPT(JSON.stringify(response.data.answer1));
-      setResponseFromGPT(JSON.stringify(response.data.request_left));
-      console.log(response.data.request_left);
-      setResponseReceived(true);
-      setLoading(false);
-      setButtonVisible(true); // Set the button visible after the response is received
+      setShowUploadAlert(true); // Show the upload alert if no image is selected
+      setTimeout(() => {
+        setShowUploadAlert(false);
+      }, 3000);
+      return; // Exit function if no image is selected
     } else {
-      console.log('Retrying request...');
-      makeRequest(formData);
+      setLoading(true)
+      const formData = new FormData();
+      formData.append('image', imageFile);
+
+      const makeRequest = async () => {
+        try {
+          const response = await axios.post('http://127.0.0.1:8000/date/', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+
+          setResponseFromServer(JSON.stringify(response.data.final_answer));
+          setResponseFromGPT(JSON.stringify(response.data.answer1));
+          setResponseReceived(true);
+          setLoading(false)
+          setButtonVisible(true); // Set the button visible after the response is received
+          if (response.status === 200) {
+            // Do something with the successful response
+          } else {
+            console.log('Retrying request...');
+            makeRequest();
+          }
+        } catch (error) {
+          console.error('Error sending image to server:', error);
+          console.log('Retrying request...');
+          makeRequest();
+        }
+      };
+
+      makeRequest();
     }
-  } catch (error) {
-    console.error('Error sending image to server:', error);
-    if (error.response && error.response.status === 404) {
-      // Handle the case when no requests are left
-      alert('No requests left');
-    } else {
-      // Handle other errors
-      console.log('Retrying request...');
-      makeRequest(formData);
-    }
-  }
-};
-
-const handleSendImage = async () => {
-  if (!isAuthenticated) {
-    console.log('not Authenticated');
-    setShowAuthDialog(true); // Open the auth dialog if user is not authenticated
-    return;
-  }
-  if (!imageFile) {
-    console.log("No image file selected, showing upload alert...");
-    setShowUploadAlert(true); // Show the upload alert if no image is selected
-    setTimeout(() => {
-      setShowUploadAlert(false);
-    }, 3000);
-    return; // Exit function if no image is selected
-  } else {
-    setLoading(true);
-    const formData = new FormData();
-    formData.append('image', imageFile);
-    formData.append('email', user.email); // Append the user's email to the form data
-
-    makeRequest(formData);
-  }
-}
-
+  };
 
 
   useEffect(() => {
@@ -125,7 +109,7 @@ const handleSendImage = async () => {
   const handleGenerateResponse = () => {
     if (isAuthenticated) {
       const makeRequest = () => {
-        axios.post("https://web-production-dd6e3.up.railway.app/date/gemini", { request: responseFromGPT })
+        axios.post("http://127.0.0.1:8000/date/gemini", { request: responseFromGPT })
           .then(response => {
             setGeneratedResponse(response.data);
             if (response.status === 200) {
@@ -157,12 +141,19 @@ const handleSendImage = async () => {
     }
   }, [responseFromServer, generatedResponse]);
 
+  const navigateToLogin = () => {
+    let timeoutId = setTimeout(() => {
+      if (!isAuthenticated) {
+        navigate("/login");
+      }
+    }, 10);
+
+    return () => clearTimeout(timeoutId); // Clear the timeout if the component unmounts before 2 seconds
+  };
+
   useEffect(() => {
-    // Check if user object is available and not loading
-    if (user && !isLoading) {
-      console.log("User:"); // Log the user object
-    }
-  }, [user, isLoading]);
+    navigateToLogin();
+  }, []);
 
   return (
     <div className="custom-home-page">
@@ -224,12 +215,6 @@ const handleSendImage = async () => {
               יצירת תגובה
             </button>
           )}
-         {showAuthDialog && (
-        <DialogModal
-          handleConfirm={() => setShowAuthDialog(false)}
-          handleCancel={() => setShowAuthDialog(false)}
-        />
-      )}
         </div>
       </div>
     </div>

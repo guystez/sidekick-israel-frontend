@@ -54,7 +54,7 @@ html, body {
   background-color: #7c69e600;
   padding: 40px;
   min-height: 100vh;
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -63,6 +63,7 @@ html, body {
   border-radius: 0;
   position: relative;
   overflow: hidden;
+  margin-top: 40px;
 }
 
 
@@ -250,7 +251,7 @@ html, body {
   padding: 10px 20px;
   border-radius: 0 0 15px 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1001;
+  z-index: 3;
 }
 
 .logo,
@@ -265,4 +266,214 @@ html, body {
 .response-container {
   position: relative;
   /* Keep the rest of your styles unchanged */
+}
+
+
+
+
+
+
+
+
+
+
+.custom-home-page-login{
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.hero-login {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+font-weight: 700;
+height:auto;
+/* background-image: url('https://source.unsplash.com/1600x900/?nature'); */
+background-size: cover;
+background-position: center;
+color: #615d5d;
+text-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.527);
+}
+
+.hero-login h1 {
+font-size: 550%;
+margin-bottom: 20px;
+z-index: 2000;
+}
+
+.hero-login p {
+font-size: 24px;
+margin-bottom: 40px; 
+}
+
+.hero-login button {
+/* background-color: #5839e40e; */
+color: #333;
+font-size: 18px;
+padding: 12px 24px;
+border-radius: 4px;
+border: none;
+cursor: pointer;
+transition: all 0.5s ease-in-out;
+}
+
+.hero-login button:hover {
+background-color: #333;
+color: #fff;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.login-move {
+  position: absolute;
+  top: 40%;
+  right: 50%;
+  transform: translateY(-20%);
+  opacity: 1;
+  animation: fadeIn 2s ease-in-out forwards;
+}
+
+.login-move.show {
+  left: 50%;
+  transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.login-move h1 {
+  color: #584e4e;
+  font-size: 6rem;
+  font-weight: bold;
+  margin: 0;
+  margin-top: -10%;
+  opacity: 0;
+  animation: slideIn 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.1s forwards;
+}
+
+.login-move.show h1 {
+  opacity: 0;
+}
+
+.login-move p {
+  font-size: 2rem;
+  margin: 0;
+  opacity:0;
+  position: absolute;
+  left: 120%;
+  top: 0%;
+  transform: translateY(-50%);
+  animation: slideIn 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) 1.5s forwards;
+}
+
+.login-move.show p {
+  left: calc(50% + 50px);
+  opacity: 0;
+}
+
+.login-move.p1 {
+  font-size: 2rem;
+  margin: 0;
+  opacity: 1;
+  position: absolute;
+  left: 120%;
+  top: 60%;
+  transform: translateY(-50%);
+  animation: slideIn 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) 2.0s forwards;
+}
+
+.login-move.show.p1 {
+  left: calc(50% + 100px);
+  opacity: 0;
+}
+
+.login-move .subtitle {
+  font-size: 2rem;
+  margin: 0;
+  opacity: 0;
+  position: absolute;
+  /* Adjust other styling properties as needed */
+}
+
+
+.sub-login {
+  display: flex;
+  margin-bottom:0px;
+  flex-direction: row; 
+  align-items: center;
+  justify-content: center;
+  margin-top:200px;
+  width: 100%;
+}
+.sub-login .btn-login{
+  animation: buttonLeft 2s 0.1s forwards,buttonBelow .5s 2.1s forwards;
+  opacity:0;
+  display: block;
+}
+.sub-login .btn-signup{
+  animation: buttonRight 2s 0.1s forwards,buttonUp .5s 2.1s forwards;
+  opacity:0;
+  display: block;
+}
+@keyframes buttonLeft{
+0% {
+    transform: translateX(-1000%) ;
+    opacity: 0;
+}
+100% {
+    transform: translateX(0);
+    opacity: 1;
+}
+}
+@keyframes buttonBelow{
+0% {
+    transform: translatey(0%) ;
+}
+100% {
+    transform: translatey(50%);
+}
+}
+@keyframes buttonRight{
+0% {
+    transform: translateX(1000%);
+    opacity: 0;
+}
+100% {
+    transform: translateX(0);
+    opacity: 1;
+}
+}
+@keyframes buttonUp{
+0% {
+    transform: translatey(0%) ;
+}
+100% {
+    transform: translatey(-50%);
+}
+}
+.sub-login button {
+  /* background-color: #5839e40e; */
+  color: #333;
+  font-size: 18px;
+  margin-bottom:0px;
+  padding: 12px 24px;
+  border-radius: 4px;
+  border: none;
+  /* margin-top: 50%; */
+  cursor: pointer;
+/*  transition: all 0.5s ease-in-out;*/
+}
+
+.sub-login button:hover {
+  background-color: #333;
+  color: #fff;
 }
