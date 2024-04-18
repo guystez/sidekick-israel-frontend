@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useAuth0 } from "@auth0/auth0-react";
-import { Link, Navigate } from 'react-router-dom';
+import {  Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import DialogModal from './DialogLogin'; // Import the DialogModal component
 
@@ -26,9 +26,6 @@ function Openers() {
     fetchCategories();
   }, []);
 
-  const handleCloseAuthDialog = () => {
-    setShowAuthDialog(false); // Close the authentication dialog
-  };
   const fetchOpenersByCategory = async (categoryName) => {
     // Check if user is authenticated before fetching openers
     if (!isAuthenticated) {

@@ -26,10 +26,10 @@ const root = createRoot(document.getElementById('root'));
 
 root.render(
 <Auth0Provider
-    // domain={process.env.REACT_APP_AUTO_0_DOMAIN_LOCAL}
-    // clientId={process.env.REACT_APP_AUTO_0_CLIENTID_LOCAL}
-    domain={process.env.REACT_APP_AUTO_0_DOMAIN_PRODUCTION}
-    clientId={process.env.REACT_APP_AUTO_0_CLIENTID_PRODUCTION}
+    domain={process.env.REACT_APP_AUTO_0_DOMAIN_LOCAL}
+    clientId={process.env.REACT_APP_AUTO_0_CLIENTID_LOCAL}
+    // domain={process.env.REACT_APP_AUTO_0_DOMAIN_PRODUCTION}
+    // clientId={process.env.REACT_APP_AUTO_0_CLIENTID_PRODUCTION}
     authorizationParams={{
       redirect_uri: window.location.origin
     }}

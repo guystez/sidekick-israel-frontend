@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Routes, Route, NavLink, Router } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import Openers from './components/Openers';
 import OpenersLiked from './components/OpenersLiked';
