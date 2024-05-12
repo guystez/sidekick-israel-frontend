@@ -28,7 +28,7 @@ function Settings() {
 
         const userEmail = user.email; // Access the user's email from the user object
 
-        axios.post('https://web-production-dd6e3.up.railway.app/date/is-hebrew', { termsAccepted:true, selectedSide, email: userEmail })
+        axios.post('https://web-production-dd6e3.up.railway.app/date/check-hebrew', { termsAccepted:true, selectedSide, email: userEmail })
             .then(response => {
                 console.log(response.data, 'success');
                 navigate("/");
