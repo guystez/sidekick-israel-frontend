@@ -206,7 +206,7 @@ function HomePage() {
     const checkUserAnswer = async () => {
       if (isAuthenticated && user) { // Check if user is authenticated and user object is not undefined
         try {
-          const response = await axios.get('https://web-production-dd6e3.up.railway.app/date/is-hebrew', {
+          const response = await axios.get('https://web-production-dd6e3.up.railway.app/date/check-hebrew', {
             params: {
               email: user.email, // Access user.email only if user is not undefined
             },
