@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth0 } from "@auth0/auth0-react";
 import DialogModal from './DialogLogin'; // Import the DialogModal component
+import { Link } from 'react-router-dom';
+import brokenHeart from '../brokenheart.png';
 
 function TextLiked() {
   const [textLiked, setTextLiked] = useState([]);
@@ -29,7 +31,6 @@ function TextLiked() {
     fetchLikedText();
   }, [isAuthenticated, user]);
 
-
   const deleteLikedText = (textToDelete) => {
     const userEmail = user.email;
   
@@ -55,8 +56,14 @@ function TextLiked() {
   
   if (!isAuthenticated) {
     setShowAuthDialog(true); // Open the auth dialog if user is not authenticated
-    return;
+    return (
+      <DialogModal
+        handleConfirm={() => setShowAuthDialog(false)}
+        handleCancel={() => setShowAuthDialog(false)}
+      />
+    );
   }
+  
   return (
     <div className="custom-home-page">
       <div className="hero">
@@ -64,7 +71,7 @@ function TextLiked() {
         <div className="cool-move">
           <h1>Text Liked</h1>
           <ul>
-            {Array.isArray(textLiked) ? (
+            {Array.isArray(textLiked) && textLiked.length > 0 ? (
               textLiked.map((textliked, index) => (
                 <li key={index}>
                   {textliked}
@@ -72,16 +79,20 @@ function TextLiked() {
                 </li>
               ))
             ) : (
-              <li>{textLiked}</li>
+              <>
+              <img src={brokenHeart} style={{boxShadow:'none'}} alt="brokenHeart" />
+                <br></br>
+              <div>No texts liked. Please <Link to="/">add</Link> a text.</div>
+            
+              </>
             )}
           </ul>
           {showAuthDialog && (
-        <DialogModal
-          // setOpenDialog={setShowAuthDialog}
-          handleConfirm={() => setShowAuthDialog(false)}
-          handleCancel={() => setShowAuthDialog(false)}
-        />
-      )}
+            <DialogModal
+              handleConfirm={() => setShowAuthDialog(false)}
+              handleCancel={() => setShowAuthDialog(false)}
+            />
+          )}
         </div>
       </div>
     </div>

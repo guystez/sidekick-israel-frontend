@@ -31,7 +31,7 @@ root.render(
     domain={process.env.REACT_APP_AUTO_0_DOMAIN_PRODUCTION}
     clientId={process.env.REACT_APP_AUTO_0_CLIENTID_PRODUCTION}
     authorizationParams={{
-      redirect_uri: window.location.origin
+      redirect_uri: window.location.origin+"/Main"
     }}
   >
     <App />

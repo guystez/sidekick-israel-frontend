@@ -44,7 +44,7 @@ const CustomizedSlider = ({ onChange }) => {
           defaultValue={50}
           getAriaValueText={valuetext}
           step={null}
-          valueLabelDisplay="auto"
+          // valueLabelDisplay="auto"
           marks={marks}
           onChange={handleChange}
           sx={{

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth0 } from "@auth0/auth0-react";
 import DialogModal from './DialogLogin'; // Import the DialogModal component
+import { Link } from 'react-router-dom';
+import brokenHeart from '../brokenheart.png';
 
 function OpenersLiked() {
   const [likedOpeners, setLikedOpeners] = useState([]);
@@ -61,7 +63,7 @@ function OpenersLiked() {
             />
           )}
           <ul>
-            {Array.isArray(likedOpeners) ? (
+            {Array.isArray(likedOpeners) && likedOpeners.length > 0 ? (
               likedOpeners.map((opener, index) => (
                 <li key={index}>
                   {opener}
@@ -69,7 +71,14 @@ function OpenersLiked() {
                 </li>
               ))
             ) : (
-              <li>{likedOpeners}</li>
+              <>
+                  <img src={brokenHeart} style={{boxShadow:'none'}} alt="brokenHeart" />
+                <br></br>
+                <div>
+                No openers liked. Please <Link to="/openers">add</Link> an opener.</div>
+              
+               </>
+              
             )}
           </ul>
         </div>

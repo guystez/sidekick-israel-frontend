@@ -61,7 +61,7 @@ html, body {
   align-items: center;
   margin: 0;
   border-radius: 0;
-  position: relative;
+  /* position: relative; */
   overflow: hidden;
   margin-top: 40px;
 }
@@ -185,6 +185,7 @@ html, body {
 }
 
 .response-container {
+  position: relative;
   color: #333;
   background-color: #f2f2f2;
   padding: 15px;
@@ -263,10 +264,7 @@ html, body {
   width: 50px;
   height: auto;
 }
-.response-container {
-  position: relative;
-  /* Keep the rest of your styles unchanged */
-}
+
 
 
 
@@ -476,4 +474,115 @@ color: #fff;
 .sub-login button:hover {
   background-color: #333;
   color: #fff;
+}
+
+
+.copy-button {
+  position: absolute !important;
+  top: 5px !important;
+  right: 5px !important;
+  cursor: pointer !important;
+  padding: 4px  !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+  background-color: lightgray !important;
+  border: 1px solid darkgray !important;
+  border-radius: 5px !important;
+}
+
+
+.like-button {
+  color: red !important;
+  position: absolute !important;
+  top: 5px !important;
+  left: 5px !important;
+  cursor: pointer !important;
+  padding: 4px 4px !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+  background-color: lightgray !important;
+  border: 1px solid darkgray !important;
+  border-radius: 5px !important;
+  margin-bottom: 10px; /* Add margin-bottom to create space below the button */
+}
+
+
+
+/* #btn {
+  position: absolute;
+  left: -100%;
+  top: -100%;
+  opacity: 0;
+  z-index: -1;
+} */
+
+#btn {
+  /* position: absolute; */
+  /* left: 5px !important;
+  top: 5px!important;
+  z-index: -1; */
+  opacity: 0;
+  
+}
+
+.btn-love {
+  position: absolute !important;
+  /* z-index: -1; */
+  left: 5px !important;
+  right: 0 !important;
+  top: 5px !important;
+  bottom: 0;
+  margin: auto;
+  padding: 4px 4px !important;
+  /* height: 100%;
+  width: 100%; */
+  line-height: 1 !important;
+
+  cursor: pointer;
+}
+.btn-love:after {
+  content: "";
+  position: absolute;
+  left: -10%;
+  bottom: 30%; 
+  margin: 0 auto;
+  background: url(https://abs.twimg.com/a/1446862637/img/t1/web_heart_animation.png) 0 0 no-repeat;
+  background-size: 2900%;
+  
+  height: 100px;
+  width: 100px;
+  padding: vw; /* Adjust padding based on viewport width */
+  /* margin-bottom: 4vw; */
+}
+
+/* Media query for iPad */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  .btn-love:after {
+    left: 5%; /* Adjust the left position for iPad */
+    bottom: 10%; /* Adjust the bottom position for iPad */
+    transform: translateX(-50%); /* Center the button horizontally */
+  }
+}
+
+#btn:checked + .btn-love:after {
+  -webkit-animation: heart-burst steps(28) 0.8s 1 both;
+          animation: heart-burst steps(28) 0.8s 1 both;
+}
+
+@-webkit-keyframes heart-burst {
+  0% {
+    background-position: left;
+  }
+  100% {
+    background-position: right;
+  }
+}
+
+@keyframes heart-burst {
+  0% {
+    background-position: left;
+  }
+  100% {
+    background-position: right;
+  }
 }

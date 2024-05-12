@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -6,78 +6,68 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import { DialogTitle } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useNavigate } from "react-router-dom"; // Import the useNavigate hook
+import { useNavigate } from "react-router-dom";
 import Radio from '@mui/material/Radio';
 
-export default function DialogModal() {
-  const [open, setOpen] = React.useState(true);
+export default function DialogModal({ handleConfirm, handleCancel }) {
+  const [open, setOpen] = useState(true); // Initialize open state
   const { loginWithRedirect } = useAuth0();
-  const navigate = useNavigate(); // Initialize the navigate function
-  const [selectedValue, setSelectedValue] = React.useState('null');
+  const navigate = useNavigate();
+  const [selectedValue, setSelectedValue] = useState('null');
+
+
+  const handleLogin = () => {
+    loginWithRedirect({
+      returnTo: 'http://localhost:3000/Main', // Specify the desired return URL
+    });
+  };
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
-    if (selectedValue ) {
-      // If yes, set a flag in the local storage indicating acceptance of terms
+    if (selectedValue) {
       localStorage.setItem('termsAccepted', true);
-      const chekc=localStorage.getItem('termsAccepted', true);
-      console.log(chekc,'@@@');
+      const check = localStorage.getItem('termsAccepted');
+
     }
-    };
+  };
+
   const handleClose = () => {
-    setOpen(false);
-    // setOpenDialog(false); // Close the dialog
-    // handleCancel(); // Call the cancel handler (optional)
+    setOpen(false); // Close the dialog
     navigate("/"); // Navigate to the home page
-
+    handleCancel(); // Call the handleCancel function passed as a prop
   };
 
-  const handleConfirm = () => {
-    window.open('/terms', '_blank');
+  const handleOpen = () => {
+    setOpen(true); // Set open state to true
   };
+
   return (
     <>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Welcome</DialogTitle>
         <DialogContent>
-        <div>
-      <Radio
-        checked={selectedValue === 'a'}
-        onChange={handleChange}
-        value="a"
-        name="radio-buttons"
-        inputProps={{ 'aria-label': 'A' }}
-      />
-      Please read and accept the <a href='/terms' target='_blank'>terms.</a>
-            </div>
+
+
           <DialogContentText>
             <div className="sub-login">
               <div className="btn-login">
                 <button
                   className='log-button button0 button2'
-                  onClick={() => {
-                    loginWithRedirect();
-                  }}
-                >
-                  Login
+                  onClick={handleLogin}>Log In
                 </button>
               </div>
               <div className="btn-signup">
                 <button
                   className='log-button button0 button2'
-                  onClick={() => {
-                    loginWithRedirect();
-                  }}
-                >
+                  onClick={handleLogin}>
                   Signup
                 </button>
               </div>
-       
             </div>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleConfirm}>terms</Button>
+          {/* <Button onClick={handleConfirm}>Terms</Button> */}
           <Button onClick={handleClose}>Cancel</Button>
         </DialogActions>
       </Dialog>

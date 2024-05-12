@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import CircularProgress from '@mui/material/CircularProgress';
 
-export default function LoadingButtonsTransition({ onClick, loading }) {
+export default function LoadingButtonsTransition({ onClick, loading,buttonLabel }) {
   const handleClick = () => {
     if (!loading) {
       // Call the onClick function passed from props only if not loading
@@ -18,7 +18,7 @@ export default function LoadingButtonsTransition({ onClick, loading }) {
       onClick={handleClick} // Call handleClick when the button is clicked
       startIcon={loading ? <CircularProgress size={20} /> : <SendIcon />}
     >
-      {loading ? 'נשלח...' : 'שלח'}
+      {loading ? 'נשלח...' : buttonLabel}
     </Button>
   );
 }
