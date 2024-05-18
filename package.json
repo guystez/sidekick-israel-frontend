@@ -16,12 +16,16 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.2",
     "dotenv": "^16.4.5",
+    "emoji-picker-react": "^4.9.2",
     "framer-motion": "^11.1.8",
     "install": "^0.13.0",
     "npm": "^10.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-emoji-render": "^2.0.1",
     "react-helmet": "^6.1.0",
+    "react-pdf": "^8.0.2",
+    "react-pdf-scroll": "^1.0.0",
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
     "styled-components": "^6.1.8",
@@ -50,5 +54,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "file-loader": "^6.2.0"
   }
 }

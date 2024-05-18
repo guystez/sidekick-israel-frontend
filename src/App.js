@@ -7,7 +7,7 @@ import TextLiked from './components/TextedLiked';
 import Navbar from './components/NavBar';
 import React, { useState } from 'react';
 import Forum from './components/Forum';
-import DialogModal from './components/DialogLogin';
+import DialogModal from './components/Dialogs/DialogLogin';
 import Terms from './components/Terms';
 import Settings from './components/Settings';
 import FirstTimePage from './components/FirstTimePage';
@@ -19,19 +19,20 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const themeColor = '#FFFF00';
   return (
-    
-    
-    <BrowserRouter>
-    
-      <div className="App">
-        
-      <Helmet>
-                <meta name="theme-color" content={themeColor} />
-                <title>Chatmates</title>
 
-            </Helmet>
+
+    <BrowserRouter>
+
+      <div className="App">
+
+        <Helmet>
+          <meta name="theme-color" content={themeColor} />
+          <title>Chatmates</title>
+
+        </Helmet>
         <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
         <Routes>
+          <Route path='/' element={<MainPage />} />
           <Route path='/login' element={<DialogModal />} />
           <Route path='/forum' element={<Forum />} />
           <Route path='/openers' element={<Openers />} />
@@ -40,14 +41,13 @@ function App() {
           <Route path='/terms' element={<Terms />} />
           <Route path='/settings' element={<Settings />} />
           <Route path='/FirstTimePage' element={<FirstTimePage />} />
-          <Route path='/' element={<MainPage />} />
-        <Route path='/Main' element={<HomePage />} />
-        <Route path="/auth0_callback" element={<Auth0Callback />} />
+          <Route path='/Main' element={<HomePage />} />
+          <Route path="/auth0_callback" element={<Auth0Callback />} />
 
         </Routes>
       </div>
     </BrowserRouter>
-    
+
   );
 }
 

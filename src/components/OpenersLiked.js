@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth0 } from "@auth0/auth0-react";
-import DialogModal from './DialogLogin'; // Import the DialogModal component
+import DialogModal from './Dialogs/DialogLogin'; // Import the DialogModal component
 import { Link } from 'react-router-dom';
 import brokenHeart from '../brokenheart.png';
 

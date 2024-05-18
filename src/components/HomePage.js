@@ -6,12 +6,15 @@ import LoadingButtonsTransition from './Loader';
 import ActionAlerts from './Alert';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import DialogModal from './DialogLogin'; // Import the DialogModal component
+import DialogModal from './Dialogs/DialogLogin'; // Import the DialogModal component
 import DiscreteSliderValues from './Slider';
 import Profile from './Auth0/Profile';
 import { useNavigate } from "react-router-dom";
 import { LikeButton } from "./LikeButton";
-import PopUpDialog from './PopUpDialog';
+import PopUpDialog from './Dialogs/PopUpDialog';
+import DialogFeedBack from './Dialogs/DialogFeedBack';
+import { Button } from '@mui/material';
+import ButtonSizes from './Button';
 
 function HomePage() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -26,6 +29,7 @@ function HomePage() {
   const [buttonVisible, setButtonVisible] = useState(true); // New state variable to track button visibility
   const [showAuthDialog, setShowAuthDialog] = useState(false); // State variable to manage whether the auth dialog is open
   const [sliderValue, setSliderValue] = useState(50); // State to store slider value
+  const [countGenerateResponse, setCountGenerateResponse] = useState(2); // State to store slider value
   const [requestLeft, setRequestLeft] = useState('')
   const [isEnglishPhone, setIsEnglishPhone] = useState(false); // State variable to track phone language preference
   const [userAnswer, setUserAnswer] = useState(null); // State variable to track user's answer
@@ -33,6 +37,8 @@ function HomePage() {
   const navigate = useNavigate();
   const [mockLike, setMockLike] = useState(false);
   const [showPopup, setShowPopup] = useState(false); // State variable to control popup dialog visibility
+  const [feedBackPopup, setFeedBackPopup] = useState(false); // State variable to control popup dialog visibility
+  const [noRequestsAlertShown, setNoRequestsAlertShown] = useState(false);
 
   const handleImageChange = (e) => {
     if (!isAuthenticated) {
@@ -93,7 +99,7 @@ function HomePage() {
       alert("User is not authenticated!"); // Show alert if user is not authenticated
     }
   };
-  
+
 
 
   //Send the main request
@@ -112,7 +118,8 @@ function HomePage() {
         setResponseFromGPT(JSON.stringify(response.data.answer1));
         setResponseReceived(true);
         setLoading(false);
-        setButtonVisible(false); // Set the button visible after the response is received
+        setButtonVisible(false);
+        setCountGenerateResponse(2);
       } else {
         console.log('Retrying request...');
         makeRequest(formData);
@@ -123,7 +130,7 @@ function HomePage() {
         // Handle the case when no requests are left
         alert('No requests left');
         setLoading(false);
-
+        setNoRequestsAlertShown(true);
       } else if (error.response && error.response.status === 404 && error.response.data.error === 'Upload screenshot without KeyBoard') {
         // Handle the case when specific characters are detected
         alert('Remove the keyboard from the image');
@@ -138,7 +145,9 @@ function HomePage() {
     }
   };
 
-
+  const handleFeedbackClick = () => {
+    setFeedBackPopup(true); // Set state to show the feedback dialog
+  };
 
 
   const handleSendImage = async () => {
@@ -180,7 +189,9 @@ function HomePage() {
             if (response.status === 200) {
               setLoading(false);
               setMockLike(false);
+              setCountGenerateResponse(prevCount => prevCount - 1); // Decrease countGenerateResponse by 1
 
+              console.log(countGenerateResponse, "@@@@@@@@@@@@@@@@@@@@@@@@");
 
             } else {
               console.log("Retrying request...");
@@ -222,9 +233,15 @@ function HomePage() {
             // If the response is None, redirect to FirstTimePage component without using history
             navigate('/FirstTimePage'); // Use navigate to navigate
           }
-          if (response.data.check_gifts==false){
-            
-            setShowPopup(true);          }
+          if (response.data.check_feedback == '') {
+            setFeedBackPopup(true)
+          }
+          if (response.data.check_gifts == false) {
+
+            setShowPopup(true);
+            setRequestLeft(2)
+
+          }
         } catch (error) {
           if (error.response && error.response.status === 404 && error.response.data.error === 'User does not mark the question') {
             // Handle the case where the server returns a 404 error with the specified message
@@ -243,7 +260,9 @@ function HomePage() {
     checkUserAnswer();
   }, [isAuthenticated, user]); // Include isAuthenticated and user in the dependency array
 
-
+  const handleClose = () => {
+    setShowAuthDialog(false);
+  };
 
   useEffect(() => {
     if (responseFromServer || generatedResponse) {
@@ -264,7 +283,11 @@ function HomePage() {
 
 
   useEffect(() => {
-    // Reset the dialog state to closed when the user logs in
+    if (window.location.href.includes("verify")) {
+      // Show alert for verification required
+      alert("Please verify/check your email address and login again.");
+      setShowAuthDialog(true);
+    }
     if (isAuthenticated) {
       setShowAuthDialog(false);
     }
@@ -283,21 +306,25 @@ function HomePage() {
       <div className="hero">
         <div className="circle"></div>
         <div className="cool-move">
+
           {(!isAuthenticated || !termsAccepted) && (
+
             <div className="journey-message">
               <button onClick={() => setShowAuthDialog(true)}>Let's start our journey.</button>
             </div>
           )}
 
-          {isAuthenticated && termsAccepted && (
+          {isAuthenticated && termsAccepted && requestLeft !== 0 && (
             <>
+              {/* {feedBackPopup && <DialogFeedBack handleCancel={() => setShowAuthDialog(false)} />} */}
+              {feedBackPopup && <DialogFeedBack handleCancel={() => setFeedBackPopup(false)} />}
+
               <Profile />
               <p>You have more {requestLeft} request left</p>
 
               <div>
-      {/* Your component JSX */}
-      {showPopup && <PopUpDialog  handleCancel={() => setShowAuthDialog(false)}/>} {/* Render the popup dialog if showPopup is true */}
-    </div>
+                {showPopup && <PopUpDialog handleCancel={() => setShowAuthDialog(false)} />} {/* Render the popup dialog if showPopup is true */}
+              </div>
               {buttonVisible && (
                 <LoadingButtonsTransition
                   onClick={handleSendImage}
@@ -305,9 +332,17 @@ function HomePage() {
                   buttonLabel='שלח'
                 />
               )}
+
+
+
             </>
           )}
-
+          {/* Conditionally render the button if requestLeft is 0 */}
+          {(requestLeft === 0 || noRequestsAlertShown) && (
+            <Button variant="contained" color="primary" onClick={() => alert('Please buy more requests')}>
+              Please buy more requests
+            </Button>
+          )}
           {isAuthenticated && termsAccepted && (
             <>
               <UploadFile onChange={handleImageChange} />
@@ -325,44 +360,53 @@ function HomePage() {
 
           <ActionAlerts showAlert={showUploadAlert} />
           {(generatedResponse || responseFromServer) && (
-            
+
             <div className="response-container">
-              
+
               <div style={{ marginTop: "30px" }}>
                 <button className='copy-button'
                   onClick={copyToClipboard}
                 >
                   <ContentCopyIcon />
                 </button>
-                </div>
+              </div>
 
-               
-                  <div onClick={sendTextLiked}>
-                  <LikeButton  isLiked={mockLike} handleLike={() => setMockLike(!mockLike)} />
-                  </div>
+
+              <div onClick={sendTextLiked}>
+                <LikeButton isLiked={mockLike} handleLike={() => setMockLike(!mockLike)} />
+              </div>
 
 
               {generatedResponse || responseFromServer}{" "}
               {/* Display generatedResponse if available, otherwise display responseFromServer */}
-              </div>
-            
+            </div>
+
           )}
 
-          {responseReceived && (
+          {responseReceived && countGenerateResponse !== 0 && (
             <div>
-              
               <DiscreteSliderValues onChange={handleSliderChange} />
               <LoadingButtonsTransition
                 onClick={handleGenerateResponse}
-                // className="generate-button"
                 loading={loading}
                 buttonLabel='תגובה חדשה' // Pass button label as prop
-
               />
-              
-
+              <p>{countGenerateResponse} Left</p>
             </div>
-            
+          )}
+
+          {responseReceived && countGenerateResponse === 0 && (
+            <div>
+            <p>
+              Please send again
+              
+              </p>
+              <LoadingButtonsTransition
+                  onClick={handleSendImage}
+                  loading={loading}
+                  buttonLabel='שלח'
+                />
+              </div>
           )}
           {showAuthDialog && (
             <DialogModal
@@ -371,7 +415,12 @@ function HomePage() {
             />
           )}
         </div>
+        {responseReceived && <ButtonSizes handleClose={() => setShowAuthDialog(false)} />}
+        {/* <ButtonSizes   /> */}
+
+
       </div>
+
     </div>
   );
 }

@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from 'react';
-import DialogModal from './DialogLogin'; // Import the DialogModal component
+import DialogModal from './Dialogs/DialogLogin'; // Import the DialogModal component
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { LikeButton } from './LikeButton';
+import SimpleAlert from './AlertMui';
 
 function Openers() {
   const [openers, setOpeners] = useState([]);
@@ -16,6 +17,7 @@ function Openers() {
   const [showAuthDialog, setShowAuthDialog] = useState(false); // State variable to manage whether the auth dialog is open
   const [mockLike, setMockLike] = useState(false);
   const [showContainer, setShowContainer] = useState(false); // State to track if any category is opened
+  const [alertMessage, setAlertMessage] = useState(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -44,6 +46,7 @@ function Openers() {
       if (response.data.length > 0) {
         setOpenerType(response.data[0].text);
         setMockLike(false);
+        setAlertMessage(null);
       }
     } catch (error) {
       console.error("Error fetching openers by category:", error);
@@ -53,6 +56,7 @@ function Openers() {
   const handleNextOpener = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % openers.length || 0);
     setMockLike(false);
+    setAlertMessage(null);
   };              
 
 
@@ -63,26 +67,25 @@ function Openers() {
   };
 
   const sendTextLiked = () => {
-    
-    if (!liked && isAuthenticated) { // Check if the opener has not been liked and user is authenticated
-      const userEmail = user.email; // Get email from user object
-      
+    if (!liked && isAuthenticated) {
+      const userEmail = user.email;
+
       axios.post("https://web-production-dd6e3.up.railway.app/date/openers-liked", { email: userEmail, opener: openers[currentIndex] })
         .then(response => {
           console.log("Email sent successfully:");
-          alert("Like Successful");
+          setAlertMessage("Like Successful");
+         
         })
         .catch(error => {
           if (error.response && error.response.status === 303) {
             console.error("Request failed with status code 303");
-            alert("You already like that"); // Show alert for error with status code 303
+            setAlertMessage("You already like that"); // Set message for error with status code 303
           } else {
             console.error("Error sending email:", error);
-            alert("Error sending email!"); // Show alert if there's an error
+            setAlertMessage("Error sending email!"); // Set general error message
           }
-    });
+        });
     } else if (!isAuthenticated) {
-  
       console.error("User is not authenticated");
       // Handle case where user is not authenticated
     }
@@ -92,6 +95,7 @@ function Openers() {
     <div className="custom-home-page">
       <div className="hero">
         <div className="cool-move">
+
           <h1>משפטי פתיחה</h1>
           <div className="opener-filter">
             {/* Display category buttons */}
@@ -104,6 +108,7 @@ function Openers() {
               </button>
             ))}
           </div>
+          {alertMessage && <SimpleAlert message={alertMessage}  />}
 
           {/* Conditionally render response container based on showContainer state */}
           {showContainer && (

@@ -6,7 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import { DialogTitle } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import PresentImage from '../Present.png';
+import PresentImage from '../../Present.png';
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -56,7 +56,7 @@ export default function PopUpDialog({ handleConfirm, handleCancel }) {
                     
                     <DialogContentText>
                     <h1>You have 2 free Requests</h1>
-                    <img src={PresentImage} style={{width:'100%'}} alt="Gift" />
+                    <img src={PresentImage} style={{width:'60%',marginLeft:"20%"}} alt="Gift" />
                         <div className="sub-login">
                             <div className="btn-signup">
                                 <button onClick={handleClose} className='log-button button0 button2'>

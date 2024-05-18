@@ -18,10 +18,14 @@ export default function DialogModal({ handleConfirm, handleCancel }) {
 
   const handleLogin = () => {
     loginWithRedirect({
-      returnTo: 'http://localhost:3000/Main', // Specify the desired return URL
+      returnTo: window.location.origin, // Specify the desired return URL
+      // Add a callback to handle the login redirect
+      onRedirectCallback: (appState) => {
+        // Check the current URL for specific words like "verify"
+        
+      }
     });
   };
-
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
     if (selectedValue) {

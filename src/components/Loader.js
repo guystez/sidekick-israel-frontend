@@ -18,7 +18,7 @@ export default function LoadingButtonsTransition({ onClick, loading,buttonLabel 
       onClick={handleClick} // Call handleClick when the button is clicked
       startIcon={loading ? <CircularProgress size={20} /> : <SendIcon />}
     >
-      {loading ? 'נשלח...' : buttonLabel}
+      {loading ? '...עובדים על זה' : buttonLabel}
     </Button>
   );
 }

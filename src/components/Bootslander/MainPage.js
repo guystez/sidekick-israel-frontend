@@ -12,7 +12,7 @@ import "./assets/vendor/swiper/swiper-bundle.min.css";
 import "./assets/css/style.css";
 import "./assets/img/messages-dream-gold.png";
 import messageImage from './assets/img/messages-dream-gold.png';
-import Spicy from './assets/img/spicy-meter.png';
+import Spicy from './assets/img/new-comment.png';
 // JavaScript imports
 // import 'react-app-polyfill/ie11';
 // import 'react-app-polyfill/stable';
@@ -34,41 +34,22 @@ import Spicy from './assets/img/spicy-meter.png';
 function MainPage() {
   return (
     <>
+    
       <meta content="" name="description" />
       <meta content="" name="keywords" />
 
       {/* <script src="assets/vendor/php-email-form/validate.js"></script>
       <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
       <script src="assets/vendor/aos/aos.js"></script>
-      <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
       <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
       <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
       <script src="assets/js/main.js"></script> */}
+      {/* <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> */}
 
       <link rel="icon" href="assets/img/favicon.png" />
       <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
 
-      <header id="header" className="fixed-top d-flex align-items-center header-transparent">
-        <div className="container d-flex align-items-center justify-content-between">
-          <div className="logo">
-
-            {/* <h1><a href="index.html"><span>ChatMates.AI</span></a></h1> */}
-            <a href="index.html"></a>
-            <img src="assets/img/logo.png" alt="" className="img-fluid" />
-          </div>
-          <nav id="navbar" className="navbar">
-            <ul>
-              <li><Link to="/"  style={{ color: 'rgb(129, 239, 156)' }} >אפליקציה</Link></li>
-              <li><a className="nav-link scrollto" href="#hero">בית</a></li>
-              <li><a className="nav-link scrollto" href="#about">עלינו</a></li>
-              <li><a className="nav-link scrollto" href="#features">מה חדש</a></li>
-              <li><a className="nav-link scrollto" href="#pricing">מחירים</a></li>
-              <li><a className="nav-link scrollto" href="#contact">צור קשר</a></li>
-            </ul>
-            {/* <i className="bi bi-list mobile-nav-toggle"></i> */}
-          </nav>
-        </div>
-      </header>
+      {/*  */}
       
 
       <section id="hero">
@@ -107,7 +88,7 @@ function MainPage() {
 
       </section>
 
-      <main id="main">
+      <main id="main" style={{direction:"rtl"}}>
 
         <section id="about" className="about">
           <div className="container-fluid">
@@ -124,7 +105,7 @@ function MainPage() {
                 <div className="icon-box" data-aos="zoom-in" data-aos-delay="100">
                   <div className="icon"><i className="bx bx-fingerprint"></i></div>
                   <h4 className="title"><a href="">מענה מיידי לפי צילום מסך</a></h4>
-                  <p className="description">העלה צילום מסך של השיחה וקבל תגובה מתאימה מה אייאיי שלנו במהירות ושנינות - לעולם לא תתקע בלי מה להגיד</p>
+                  <p className="description">העלה צילום מסך של השיחה וקבל תגובה מתאימה מה AI שלנו במהירות ושנינות - לעולם לא תתקע בלי מה להגיד</p>
                 </div>
 
                 <div className="icon-box" data-aos="zoom-in" data-aos-delay="200">
@@ -136,13 +117,13 @@ function MainPage() {
                 <div className="icon-box" data-aos="zoom-in" data-aos-delay="300">
                   <div className="icon"><i className="bx bx-atom"></i></div>
                   <h4 className="title"><a href="">מחסן קסמים</a></h4>
-                  <p className="description">תוכל לשמור את כל המשפטים שאהבת מהאייאיי והם יהיו זמינים לך בכל רגע נתון בפרופיל האישי שלך לשימוש חוזר</p>
+                  <p className="description">תוכל לשמור את כל המשפטים שאהבת מהAI והם יהיו זמינים לך בכל רגע נתון בפרופיל האישי שלך לשימוש חוזר</p>
                 </div>
 
                 <div className="icon-box" data-aos="zoom-in" data-aos-delay="300">
                   <div className="icon"><i className="bx bx-atom"></i></div>
                   <h4 className="title"><a href="">שינויים ללא הגבלה</a></h4>
-                  <p className="description">תוכל לשנות את התגובה של האייאיי כמה פעמים שרק תרצה עד שתמצא תגובה שמספיק טובה לך על בסיס השיחה בצילום המסך שהעלת</p>
+                  <p className="description">תוכל לשנות את התגובה של הAI כמה פעמים שרק תרצה עד שתמצא תגובה שמספיק טובה לך על בסיס השיחה בצילום המסך שהעלת</p>
                 </div>
 
               </div>
@@ -194,7 +175,7 @@ function MainPage() {
                 <div className="count-box">
                   <i className="bi bi-headset"></i>
                   <span data-purecounter-start="0" data-purecounter-end="7463" data-purecounter-duration="1" className="purecounter"></span>
-                  <p>משפטי אייאיי שנשמרו</p>
+                  <p>משפטי AI שנשמרו</p>
                 </div>
               </div>
 
@@ -220,11 +201,10 @@ function MainPage() {
               <div className="col-md-8 pt-4" data-aos="fade-up">
                 <h3>עם כלים חכמים וטכנולוגיה מתקדמת, אין יותר מה לדאוג – ההודעה הבאה שלך יכולה להיות הפתח לקשר שחלמת עליו</h3>
                 <p className="fst-italic">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                  magna aliqua.
+                  
                 </p>
                 <ul>
-                  <li><i className="bi bi-check"></i> היחידים בעולם שמספקים שירותי אייאיי לדייטינג בעברית </li>
+                  <li><i className="bi bi-check"></i> היחידים בעולם שמספקים שירותי AI לדייטינג בעברית </li>
                   <li><i className="bi bi-check"></i> תגובה חכמה על בסיס כל השיחה שלך</li>
                   <li><i className="bi bi-check"></i> שנים של נסיון בעולם הדייטינג וההיכירויות</li>
                   <li><i className="bi bi-check"></i> הרשמה ללא עלות עם 3 נסיונות מתנה</li>
@@ -251,7 +231,7 @@ function MainPage() {
                   <h4><sup>₪</sup>2<span> / 3 שימושים</span></h4>
                   <ul>
                     <li>העלאת 3 צילומי מסך</li>
-                    <li>קבלת תשובות באייאיי</li>
+                    <li>קבלת תשובות בAI</li>
                     <li>משפטי פתיחה ללא הגבלה</li>
                     <li>תשובה חוזרת לאותה שיחה ללא הגבלה</li>
                     <li>שימוש על כל פלטפורמות ההיכרויות</li>
@@ -268,7 +248,7 @@ function MainPage() {
                   <h4><sup>₪</sup>4.5<span> / 10 שימושים</span></h4>
                   <ul>
                     <li>העלאת 10 צילומי מסך</li>
-                    <li>קבלת תשובות באייאיי</li>
+                    <li>קבלת תשובות בAI</li>
                     <li>משפטי פתיחה ללא הגבלה</li>
                     <li>תשובה חוזרת לאותה שיחה ללא הגבלה</li>
                     <li>שימוש על כל פלטפורמות ההיכרויות</li>
@@ -299,10 +279,10 @@ function MainPage() {
                   </div>
                 </li>
                 <li data-aos="fade-up" data-aos-delay="100">
-                  <i className="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-2" className="collapsed">למה הכוונה שימוש באייאיי ללא הגבלה? <i className="bx bx-chevron-down icon-show"></i><i className="bx bx-chevron-up icon-close"></i></a>
+                  <i className="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-2" className="collapsed">למה הכוונה שימוש בAI ללא הגבלה? <i className="bx bx-chevron-down icon-show"></i><i className="bx bx-chevron-up icon-close"></i></a>
                   <div id="faq-list-2" className="collapse" data-bs-parent=".faq-list">
                     <p>
-                      העלאת תצלום מסך חדש ושליחתו למערכת, נחשבת בתור שימוש. אבל אם תלחץ על תגובה חדשה לאותה תמונה, תוכל לקבל תגובות חדשות מהמערכת אייאיי שלנו ללא הגבלה.
+                      העלאת תצלום מסך חדש ושליחתו למערכת, נחשבת בתור שימוש. אבל אם תלחץ על תגובה חדשה לאותה תמונה, תוכל לקבל תגובות חדשות מהמערכת AI שלנו ללא הגבלה.
                     </p>
                   </div>
                 </li>
@@ -323,10 +303,9 @@ function MainPage() {
                   </div>
                 </li>
                 <li data-aos="fade-up" data-aos-delay="400">
-                  <i className="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-5" className="collapsed">Tortor vitae purus faucibus ornare. Varius vel pharetra vel turpis nunc eget lorem dolor? <i className="bx bx-chevron-down icon-show"></i><i className="bx bx-chevron-up icon-close"></i></a>
+                  <i className="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-5" className="collapsed"> <i className="bx bx-chevron-down icon-show"></i><i className="bx bx-chevron-up icon-close"></i></a>
                   <div id="faq-list-5" className="collapse" data-bs-parent=".faq-list">
                     <p>
-                      Laoreet sit amet cursus sit amet dictum sit amet justo. Mauris vitae ultricies leo integer malesuada nunc vel. Tincidunt eget nullam non nisi est sit amet. Turpis nunc eget lorem dolor sed. Ut venenatis tellus in metus vulputate eu scelerisque.
                     </p>
                   </div>
                 </li>
@@ -396,11 +375,9 @@ function MainPage() {
             <div className="row">
               <div className="col-lg-4 col-md-6">
                 <div className="footer-info">
-                  <h3>Bootslander</h3>
-                  <p className="pb-3"><em>Qui repudiandae et eum dolores alias sed ea. Qui suscipit veniam excepturi quod.</em></p>
+                  
+                  
                   <p>
-                    A108 Adam Street <br />
-                    NY 535022, USA<br /><br />
                     <strong>Phone:</strong> +1 5589 55488 55<br />
                     <strong>Email:</strong> info@example.com<br />
                   </p>
