@@ -7,7 +7,6 @@ import DialogContentText from "@mui/material/DialogContentText";
 import { DialogTitle } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
-import Radio from '@mui/material/Radio';
 
 export default function DialogModal({ handleConfirm, handleCancel }) {
   const [open, setOpen] = useState(true); // Initialize open state
@@ -37,7 +36,7 @@ export default function DialogModal({ handleConfirm, handleCancel }) {
 
   const handleClose = () => {
     setOpen(false); // Close the dialog
-    navigate("/"); // Navigate to the home page
+    // navigate("/"); // Navigate to the home page
     handleCancel(); // Call the handleCancel function passed as a prop
   };
 

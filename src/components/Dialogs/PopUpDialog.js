@@ -48,20 +48,20 @@ export default function PopUpDialog({ handleConfirm, handleCancel }) {
     return (
         <>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Welcome</DialogTitle>
+                <DialogTitle>ברוך הבא!</DialogTitle>
                 <DialogContent>
 
                     
 
                     
                     <DialogContentText>
-                    <h1>You have 2 free Requests</h1>
+                    <h1>קיבלת 5 ניסיונות מתנה מאיתנו</h1>
                     <img src={PresentImage} style={{width:'60%',marginLeft:"20%"}} alt="Gift" />
                         <div className="sub-login">
                             <div className="btn-signup">
                                 <button onClick={handleClose} className='log-button button0 button2'>
 
-                                    Claim
+                                    קבל
                                 </button>
                             </div>
                         </div>
@@ -69,7 +69,7 @@ export default function PopUpDialog({ handleConfirm, handleCancel }) {
                 </DialogContent>
                 <DialogActions>
                     {/* <Button onClick={handleConfirm}>Terms</Button> */}
-                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleClose}>סגור</Button>
                 </DialogActions>
             </Dialog>
         </>

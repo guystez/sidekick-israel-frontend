@@ -50,10 +50,10 @@ function FirstTimePage() {
         
         <div className="custom-home-page">
             <div className="hero">
-                <div className="cool-move">
-                    <h1>Welcome😍</h1>
+                <div className="cool-move" >
+                    <h1> 😍ברוכים הבאים</h1>
 
-                    <div>
+                    <div style={{direction:'rtl'}}>
                         <Radio
                             checked={selectedValue === 'a'}
                             onChange={handleChange}
@@ -61,7 +61,7 @@ function FirstTimePage() {
                             name="radio-buttons"
                             inputProps={{ 'aria-label': 'A' }}
                         />
-                        Please read and accept the <a href='/terms' target='_blank'>terms.</a>
+                        אנא אשר את  <a href='/terms' target='_blank'>התנאים.</a>
                     </div>
                     <SwitchMui handleSwitchChange={handleSwitchChange}></SwitchMui>
 
@@ -72,12 +72,12 @@ function FirstTimePage() {
                         </div>
                         <div className="btn-login">
                             <button
-                                className='log-button button0 button2'
+                                style={{padding:'10px 20px'}}
                                 onClick={() => {
                                     sendToServer();
                                 }}
                             >
-                                Send
+                                שלח
                             </button>
 
                         </div>

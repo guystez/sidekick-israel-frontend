@@ -114,13 +114,13 @@ function Openers() {
           {showContainer && (
             <div className="response-container">
               <div style={{ marginTop: "30px" }}>
-                <p style={{ color: 'black', fontStyle: 'oblique', }}>{openers[currentIndex]}</p>
+                <p style={{ color: 'black', fontStyle: 'oblique',direction:"rtl" }}>{openers[currentIndex]}</p>
 
                 <button className="copy-button" onClick={handleCopyOpener}>
                   <ContentCopyIcon />
                 </button>
 
-                <div onClick={sendTextLiked}>
+                <div style={{border:'none',borderRadius:'none'}} onClick={sendTextLiked}>
                   <LikeButton isLiked={mockLike} handleLike={() => setMockLike(!mockLike)} />
                 </div>
               </div>

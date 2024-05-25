@@ -54,8 +54,8 @@ function OpenersLiked() {
     <div className="custom-home-page">
       <div className="hero">
         <div className="circle"></div>
-        <div className="cool-move">
-          <h1>Openers Liked</h1>
+        <div className="cool-move" style={{direction:'rtl'}}>
+          <h1>משפטי פתיחה</h1>
           {showAuthDialog && (
             <DialogModal
               handleConfirm={() => setShowAuthDialog(false)}
@@ -65,9 +65,9 @@ function OpenersLiked() {
           <ul>
             {Array.isArray(likedOpeners) && likedOpeners.length > 0 ? (
               likedOpeners.map((opener, index) => (
-                <li key={index}>
+                <li key={index} style={{padding:'10px'}}>
                   {opener}
-                  <button onClick={() => deleteLikedOpener(opener)}>Delete</button>
+                  <button style={{marginRight:'10px'}} onClick={() => deleteLikedOpener(opener)}>מחק</button>
                 </li>
               ))
             ) : (
@@ -75,7 +75,7 @@ function OpenersLiked() {
                   <img src={brokenHeart} style={{boxShadow:'none'}} alt="brokenHeart" />
                 <br></br>
                 <div>
-                No openers liked. Please <Link to="/openers">add</Link> an opener.</div>
+                אין לך עדיין משפטי פתיחה  <Link to="/openers">תוסיף</Link> משפטי פתיחה.</div>
               
                </>
               

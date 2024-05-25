@@ -1,27 +1,9 @@
 import React, { useState } from 'react';
-import terms1 from '../terms-of-services-01.jpg';
-import terms2 from '../terms-of-services-02.jpg';
-import terms3 from '../terms-of-services-03.jpg';
-import terms4 from '../terms-of-services-04.jpg';
-import terms5 from '../terms-of-services-05.jpg';
-import terms6 from '../terms-of-services-06.jpg';
-import terms7 from '../terms-of-services-07.jpg';
-import terms8 from '../terms-of-services-08.jpg';
-import terms9 from '../terms-of-services-09.jpg';
-import terms10 from '../terms-of-services-10.jpg';
-import terms11 from '../terms-of-services-11.jpg';
-import terms12 from '../terms-of-services-12.jpg';
-import terms13 from '../terms-of-services-13.jpg';
-import { styled } from '@mui/material/styles';
-import pdfFile from './terms-of-services.pdf';
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import { Document, Page } from 'react-pdf';
+
 
 function Terms() {
 
-  const [numPages, setNumPages] = useState(13);
-  const [pageNumber, setPageNumber] = useState(1);
+  
   return (
     <>
 

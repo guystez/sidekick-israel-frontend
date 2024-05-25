@@ -3,7 +3,7 @@ import "./LikeButton.css"
 
 export const LikeButton = ({ isLiked, handleLike }) => {
   return (
-    <div className={`like-btn-container ${isLiked ? "liked" : ""}`}>
+    <div style={{border:'none',borderRadius:'none'}} className={`like-btn-container ${isLiked ? "liked" : ""}`}>
       <AnimatePresence>
         <motion.button
           whileTap="tap"
@@ -11,7 +11,7 @@ export const LikeButton = ({ isLiked, handleLike }) => {
           type="button"
           className="like-btn"
         >
-          {isLiked && (
+          {/* {isLiked && (
             <svg
               className="svg-icon-answer-like-circle"
               width="26"
@@ -41,7 +41,7 @@ export const LikeButton = ({ isLiked, handleLike }) => {
                 fill="inherit"
               />
             </svg>
-          )}
+          )} */}
           <motion.svg
             width="26"
             height="26"

@@ -5,7 +5,9 @@
     transition: all 0.1s ease-out;
     align-items: center; 
     justify-content: center; 
-    border-radius: 10px; 
+    /* border-radius: 10px;  */
+    border:'none';
+    border-radius: none; 
     font-weight: 600;
     display: flex;
     flex-wrap: wrap;
@@ -77,6 +79,6 @@
   }
   
   .like-btn-container .like-btn {
-    fill: rgba(255, 255, 255, 0.7);
+    fill: rgba(26, 24, 24, 0.7);
   }
   

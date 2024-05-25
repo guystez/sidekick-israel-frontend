@@ -41,7 +41,8 @@ html, body {
 .custom-home-page {
   font-family: 'Helvetica Neue', sans-serif;
   color: #333;
-  background-color: #7c69e6;
+  /* background-color: #7c69e6; */
+  background-color: #d6b2b2;
   padding: 20px; /* Add padding for content spacing */
   box-sizing: border-box; /* Ensures padding and border are included in width/height */
   width: 100%;
@@ -51,9 +52,9 @@ html, body {
 }
 
 .hero {
-  background-color: #7c69e600;
+  /* background-color: #7c69e600; */
   padding: 40px;
-  min-height: 100vh;
+  min-height: 91.5vh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -159,9 +160,9 @@ html, body {
 }
 
 .cool-move button {
-  background-color: #130647;
-  color: white;
-  padding: 10px 20px;
+  /* background-color: #130647; */
+  /* color: white; */
+  /* padding: 10px 20px; */
   border: none;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -169,10 +170,10 @@ html, body {
   transition: background-color 0.3s, transform 0.3s;
 }
 
-.cool-move button:hover {
+/* .cool-move button:hover {
   background-color: #0a568c;
   transform: scale(1.05);
-}
+} */
 
 .cool-move img {
   border-radius: 4px;
@@ -180,18 +181,23 @@ html, body {
 }
 
 .border {
-  border: 3px solid #130647;
-  border-radius: 4px;
+  border: 2px dashed #ccc;
+  border-radius: 10px ;
+  padding: 10px; /* Further reduced space around the image */
+
 }
 
 .response-container {
   position: relative;
   color: #333;
-  background-color: #f2f2f2;
+  background: #f5f5f5;
   padding: 15px;
-  border-radius: 4px;
+  border-radius: 10px;
   border: 1px solid #ccc;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
+  align-items: center;
 }
 
 .menu-icon {
@@ -488,6 +494,7 @@ color: #fff;
   background-color: lightgray !important;
   border: 1px solid darkgray !important;
   border-radius: 5px !important;
+  color:white !important;
 }
 
 
@@ -586,5 +593,3 @@ color: #fff;
     background-position: right;
   }
 }
-
-

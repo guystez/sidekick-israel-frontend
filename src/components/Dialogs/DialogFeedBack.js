@@ -46,7 +46,8 @@ export default function DialogFeedBack({ handleConfirm, handleCancel }) {
             try {
                 // Send request to Django backend to send email
                 await axios.post('https://web-production-dd6e3.up.railway.app/date/email-feedback', {
-                    feedback: feedbackText
+                    feedback: feedbackText,
+                    email: user.email 
                 });
                 console.log("Email sent successfully.");
             } catch (error) {

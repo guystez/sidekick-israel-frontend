@@ -15,6 +15,8 @@ import PopUpDialog from './Dialogs/PopUpDialog';
 import DialogFeedBack from './Dialogs/DialogFeedBack';
 import { Button } from '@mui/material';
 import ButtonSizes from './Button';
+import coin from '../coin.png';
+
 
 function HomePage() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -40,27 +42,104 @@ function HomePage() {
   const [feedBackPopup, setFeedBackPopup] = useState(false); // State variable to control popup dialog visibility
   const [noRequestsAlertShown, setNoRequestsAlertShown] = useState(false);
 
+
+  // const uploadImageToImgBB = async (file) => {
+  //   const formData = new FormData();
+  //   formData.append('image', file);
+  
+  //   try {
+  //     const response = await axios.post('https://api.imgbb.com/1/upload', formData, {
+  //       params: {
+  //         key: '9786959664c9a1cc31ee44550cc27850', // Replace with your ImgBB API key
+  //       },
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //     });
+  
+  //     if (response.status === 200) {
+  //       console.log('Uploaded image:', response.data.data.image); // Log the image object
+
+  //       return response.data.data.url; // Return the temporary image URL
+  //     } else {
+  //       throw new Error('Error uploading image to ImgBB');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error uploading image to ImgBB:', error);
+  //     throw error;
+  //   }
+  // };
+
+
+
+
+
+
+  // const handleSendImage = async () => {
+  //   if (!isAuthenticated) {
+  //     console.log('User is not authenticated. Opening auth dialog...');
+  //     setShowAuthDialog(true);
+  //     return;
+  //   }
+  
+  //   if (!imageFile) {
+  //     console.log('No image file selected, showing upload alert...');
+  //     setShowUploadAlert(true);
+  //     setTimeout(() => {
+  //       setShowUploadAlert(false);
+  //     }, 3000);
+  //     return;
+  //   }
+  
+  //   setLoading(true);
+  
+  //   try {
+  //     const imageUrl = await uploadImageToImgBB(imageFile);
+  //     const formData = new FormData();
+  //     formData.append('image_url', imageUrl);
+  //     formData.append('email', user.email);
+  
+  //     makeRequest(formData);
+  //   } catch (error) {
+  //     console.error('Error uploading image:', error);
+  //     setLoading(false);
+  //   }
+  // };
+
+
+
+
+
+
+
+
   const handleImageChange = (e) => {
     if (!isAuthenticated) {
       console.log('User is not authenticated. Opening auth dialog...');
       setShowAuthDialog(true); // Open the auth dialog if user is not authenticated
       return;
     }
-
+  
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setSelectedImage(URL.createObjectURL(file));
       setImageFile(file);
       setButtonVisible(true); // Set the button visible after the response is received
       setResponseReceived(false);
+      setGeneratedResponse(''); // Reset generatedResponse
+      setResponseFromServer(''); // Reset responseFromServer
+      
+      console.log('Image changed');
 
+      
     }
   };
+  
 
   const copyToClipboard = () => {
     const textToCopy = generatedResponse || responseFromServer; // Use generatedResponse first, then fallback to responseFromServer
     navigator.clipboard.writeText(textToCopy).then(() => {
-      alert('Response copied to clipboard!');
+      alert('הועתק!');
     }, (err) => {
       console.error('Could not copy text: ', err);
     });
@@ -74,11 +153,11 @@ function HomePage() {
         .then(response => {
           if (response.status === 200) {
             console.log("Email sent successfully:", response.data);
-            alert("Text Liked!"); // Show alert when text is liked
+            // alert("Text Liked!"); // Show alert when text is liked
           } else {
             if (response.status === 409) {
               console.log("Text already liked by the user:", response.data);
-              alert("Text already liked by the user!"); // Show alert if text is already liked by the user
+              alert("כבר אהבת את זה"); // Show alert if text is already liked by the user
             } else {
               console.log("Unexpected response status:", response.status);
               alert("Unexpected response status: " + response.status); // Show alert for unexpected response status
@@ -88,62 +167,89 @@ function HomePage() {
         .catch(error => {
           if (error.response && error.response.status === 303) {
             console.error("Request failed with status code 303");
-            alert("You already like that"); // Show alert for error with status code 303
+            alert("כבר אהבת את זה"); // Show alert for error with status code 303
           } else {
             console.error("Error sending email:", error);
-            alert("Error sending email!"); // Show alert if there's an error
+            alert("בעיה בשליחת אימייל"); // Show alert if there's an error
           }
         });
     } else {
       console.error("User is not authenticated");
-      alert("User is not authenticated!"); // Show alert if user is not authenticated
+      alert("לא מחובר!"); // Show alert if user is not authenticated
     }
   };
 
 
 
-  //Send the main request
-  const makeRequest = async (formData) => {
-
-    try {
-      const response = await axios.post('https://web-production-dd6e3.up.railway.app/date/', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      setGeneratedResponse('')
-      if (response.status === 200) {
-        setResponseFromServer((response.data.final_answer));
-        setRequestLeft(response.data.request_left)
+// Define the main function to make the request
+const makeRequest = async (formData, retryCount = 0) => {
+  try {
+    // Send the main request with the IP address in the headers
+    const response = await axios.post('https://web-production-dd6e3.up.railway.app/date/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    
+    // Resetting the generated response
+    setGeneratedResponse('');
+    
+    // Check if the request was successful
+    if (response.status === 200) {
+      // If the final_answer is undefined, retry the request
+      if (response.data.final_answer === undefined) {
+        if (retryCount < 5) {
+          console.log('final_answer is undefined, retrying request...');
+          makeRequest(formData, retryCount + 1);
+        } else {
+          console.log('Request failed after 5 retries');
+          // Handle failure scenario
+        }
+      } else {
+        // Set state with the received response data
+        setResponseFromServer(response.data.final_answer);
+        console.log(response.data.final_answer, '@@@@@@@@@');
+        setRequestLeft(response.data.request_left);
         setResponseFromGPT(JSON.stringify(response.data.answer1));
+        console.log(response.data.answer1,'!!!!!');
         setResponseReceived(true);
         setLoading(false);
         setButtonVisible(false);
         setCountGenerateResponse(2);
-      } else {
-        console.log('Retrying request...');
-        makeRequest(formData);
       }
-    } catch (error) {
-      console.error('Error sending image to server:', error);
-      if (error.response && error.response.status === 404 && error.response.data.error === 'No requests left') {
-        // Handle the case when no requests are left
-        alert('No requests left');
-        setLoading(false);
-        setNoRequestsAlertShown(true);
-      } else if (error.response && error.response.status === 404 && error.response.data.error === 'Upload screenshot without KeyBoard') {
-        // Handle the case when specific characters are detected
-        alert('Remove the keyboard from the image');
-        setLoading(false);
-
-      } else {
-        // Handle other errors
+    } else {
+      // If the response status is not 200, retry the request
+      if (retryCount < 5) {
         console.log('Retrying request...');
-        makeRequest(formData);
-
+        makeRequest(formData, retryCount + 1);
+      } else {
+        console.log('Request failed after 5 retries');
+        // Handle failure scenario
       }
     }
-  };
+  } catch (error) {
+    console.error('Error sending image to server:', error);
+
+    // Handling different error cases
+    if (error.response && error.response.status === 404 && error.response.data.error === 'No requests left') {
+      alert('לא נשארו עוד טוקנים');
+      setLoading(false);
+      setNoRequestsAlertShown(true);
+    } else if (error.response && error.response.status === 404 && error.response.data.error === 'Upload screenshot without KeyBoard') {
+      alert('העלה תמונה ללא מקלדת');
+      setLoading(false);
+    } else {
+      if (retryCount < 5) {
+        console.log('Retrying request...');
+        makeRequest(formData, retryCount + 1);
+      } else {
+        console.log('Request failed after 5 retries');
+        // Handle failure scenario
+      }
+    }
+  }
+};
+
 
   const handleFeedbackClick = () => {
     setFeedBackPopup(true); // Set state to show the feedback dialog
@@ -153,7 +259,7 @@ function HomePage() {
   const handleSendImage = async () => {
     if (!isAuthenticated) {
       console.log('User is not authenticated. Opening auth dialog...');
-      setShowAuthDialog(true); // Always open the auth dialog if user is not authenticated
+      setShowAuthDialog(true); // Always open the auth dialog if the user is not authenticated
       return;
     }
     if (!imageFile) {
@@ -164,17 +270,28 @@ function HomePage() {
       }, 3000);
       return;
     } else {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append('image', imageFile);
-      formData.append('email', user.email);
-
-      makeRequest(formData);
+      // Check image width
+      const image = new Image();
+      image.src = URL.createObjectURL(imageFile);
+      image.onload = () => {
+        if (image.width < 500) {
+          alert('נא לעלות תמונה בגודל רגיל');
+        } else {
+          setLoading(true);
+          const formData = new FormData();
+          formData.append('image', imageFile);
+          formData.append('email', user.email);
+          
+          makeRequest(formData);
+          
+        }
+      };
     }
   };
 
   useEffect(() => {
     console.log("Selected image changed:", selectedImage);
+
     setShowUploadAlert(false); // Hide the upload alert when the component re-renders
   }, [selectedImage]); // Triggered whenever selectedImage changes
 
@@ -182,7 +299,7 @@ function HomePage() {
     if (isAuthenticated) {
       setLoading(true);
       const makeRequest = () => {
-        axios.post("https://web-production-dd6e3.up.railway.app/date/gemini", { request: responseFromGPT, mode: { sliderValue } })
+        axios.post("https://web-production-dd6e3.up.railway.app/date/generate", { request: responseFromGPT, mode: { sliderValue } })
           .then(response => {
 
             setGeneratedResponse(response.data);
@@ -239,7 +356,7 @@ function HomePage() {
           if (response.data.check_gifts == false) {
 
             setShowPopup(true);
-            setRequestLeft(2)
+            setRequestLeft(5)
 
           }
         } catch (error) {
@@ -310,7 +427,7 @@ function HomePage() {
           {(!isAuthenticated || !termsAccepted) && (
 
             <div className="journey-message">
-              <button onClick={() => setShowAuthDialog(true)}>Let's start our journey.</button>
+              <button style={{padding:'10px'}} onClick={() => setShowAuthDialog(true)}>בוא נתחיל</button>
             </div>
           )}
 
@@ -319,19 +436,19 @@ function HomePage() {
               {/* {feedBackPopup && <DialogFeedBack handleCancel={() => setShowAuthDialog(false)} />} */}
               {feedBackPopup && <DialogFeedBack handleCancel={() => setFeedBackPopup(false)} />}
 
-              <Profile />
-              <p>You have more {requestLeft} request left</p>
+              {/* <Profile /> */}
+              <p style={{direction:"rtl"}}>{requestLeft} <img src={coin} style={{width:'20px'}}/> נשארו</p>
 
               <div>
                 {showPopup && <PopUpDialog handleCancel={() => setShowAuthDialog(false)} />} {/* Render the popup dialog if showPopup is true */}
               </div>
-              {buttonVisible && (
+              {/* {buttonVisible && selectedImage &&(
                 <LoadingButtonsTransition
                   onClick={handleSendImage}
                   loading={loading}
                   buttonLabel='שלח'
                 />
-              )}
+              )} */}
 
 
 
@@ -340,23 +457,33 @@ function HomePage() {
           {/* Conditionally render the button if requestLeft is 0 */}
           {(requestLeft === 0 || noRequestsAlertShown) && (
             <Button variant="contained" color="primary" onClick={() => alert('Please buy more requests')}>
-              Please buy more requests
+              נגמרו כל הבקשות אנא קנו עוד
             </Button>
           )}
           {isAuthenticated && termsAccepted && (
-            <>
-              <UploadFile onChange={handleImageChange} />
-              {selectedImage && (
-                <div className="border">
-                  <img
-                    src={selectedImage}
-                    alt="Uploaded"
-                    style={{ maxWidth: "300px", maxHeight: "450px", cursor: "pointer" }}
-                  />
-                </div>
-              )}
-            </>
+           <>
+           <UploadFile onChange={handleImageChange} />
+           {selectedImage ? (
+             <div style={{ border: "2px dashed #ccc", padding: "10px", borderRadius: "10px" }}>
+               <img
+                 src={selectedImage}
+                 alt="Uploaded"
+                 style={{ maxWidth: "300px", maxHeight: "350px" }}
+               />
+             </div>
+           ) : (
+            <div style={{ border: "2px dashed #ccc", padding: "10px", borderRadius: "10px" }}>
+            אין עדיין תמונה</div>
+           )}
+         </>
           )}
+           {buttonVisible && selectedImage &&(
+                <LoadingButtonsTransition
+                  onClick={handleSendImage}
+                  loading={loading}
+                  buttonLabel='שלח'
+                />
+              )}
 
           <ActionAlerts showAlert={showUploadAlert} />
           {(generatedResponse || responseFromServer) && (
@@ -372,12 +499,13 @@ function HomePage() {
               </div>
 
 
-              <div onClick={sendTextLiked}>
+              <div  onClick={sendTextLiked}>
                 <LikeButton isLiked={mockLike} handleLike={() => setMockLike(!mockLike)} />
               </div>
 
-
+              <div style={{direction:"rtl"}}>
               {generatedResponse || responseFromServer}{" "}
+              </div>
               {/* Display generatedResponse if available, otherwise display responseFromServer */}
             </div>
 
@@ -391,15 +519,14 @@ function HomePage() {
                 loading={loading}
                 buttonLabel='תגובה חדשה' // Pass button label as prop
               />
-              <p>{countGenerateResponse} Left</p>
+              <p>נשארו {countGenerateResponse}  החלפות</p>
             </div>
           )}
 
           {responseReceived && countGenerateResponse === 0 && (
             <div>
             <p>
-              Please send again
-              
+              נגמרו הבקשות אנא שלח שוב              
               </p>
               <LoadingButtonsTransition
                   onClick={handleSendImage}
@@ -415,8 +542,7 @@ function HomePage() {
             />
           )}
         </div>
-        {responseReceived && <ButtonSizes handleClose={() => setShowAuthDialog(false)} />}
-        {/* <ButtonSizes   /> */}
+        {/* {responseReceived && <ButtonSizes handleClose={() => setShowAuthDialog(false)} />} */}
 
 
       </div>
