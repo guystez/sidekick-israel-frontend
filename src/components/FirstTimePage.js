@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import Radio from '@mui/material/Radio';
 import axios from 'axios'; // Import Axios
 import { useAuth0 } from "@auth0/auth0-react";
-import SwitchMui from "./SwitchMui";
 import { useNavigate } from "react-router-dom";
+import ChatSelector from "./ChatSelector";
 
 function FirstTimePage() {
     const [selectedValue, setSelectedValue] = useState('null');
     const { isAuthenticated, user } = useAuth0();
     const [termsAccepted, setTermsAccepted] = useState(false);
-    const [selectedSide, setSelectedSide] = useState(true);
+    const [selectedSide, setSelectedSide] = useState('left'); // Manage selectedSide here
+
     const navigate = useNavigate();
 
     const handleChange = (event) => {
@@ -20,11 +21,12 @@ function FirstTimePage() {
         }
     };
 
-    const handleSwitchChange = (event) => {
-        const newValue = event.target.checked;
-        setSelectedSide(newValue);
-        console.log("Switch value:", newValue ? 'ימין' : 'שמאל');
-    };
+    const handleChatSelection = (side) => {
+        setSelectedSide(side);
+        console.log(`Selected side from ChatSelector: ${side}`);
+      };
+
+
 
     const sendToServer = () => {
         if (!isAuthenticated) {
@@ -47,12 +49,16 @@ function FirstTimePage() {
     };
 
     return (
-        
+
         <div className="custom-home-page">
             <div className="hero">
                 <div className="cool-move" >
                     <h1> 😍ברוכים הבאים</h1>
 
+
+                    {/* <SwitchMui handleSwitchChange={handleSwitchChange}></SwitchMui> */}
+                    אנא בחר את הצד שבו ההודעות שלך בדרך כלל מופיעות, לחץ על ההודעות בצד המתאים בתמונה:
+          <ChatSelector selectedSide={selectedSide} onSelectSide={handleChatSelection} />
                     <div style={{direction:'rtl'}}>
                         <Radio
                             checked={selectedValue === 'a'}
@@ -63,24 +69,22 @@ function FirstTimePage() {
                         />
                         אנא אשר את  <a href='/terms' target='_blank'>התנאים.</a>
                     </div>
-                    <SwitchMui handleSwitchChange={handleSwitchChange}></SwitchMui>
-
                     {termsAccepted && (
                         <>
-                        <div>
-                            
-                        </div>
-                        <div className="btn-login">
-                            <button
-                                style={{padding:'10px 20px'}}
-                                onClick={() => {
-                                    sendToServer();
-                                }}
-                            >
-                                שלח
-                            </button>
+                            <div>
 
-                        </div>
+                            </div>
+                            <div className="btn-login">
+                                <button
+                                    style={{ padding: '10px 20px' }}
+                                    onClick={() => {
+                                        sendToServer();
+                                    }}
+                                >
+                                    שלח
+                                </button>
+
+                            </div>
                         </>
                     )}
                 </div>

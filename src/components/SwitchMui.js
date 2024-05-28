@@ -58,9 +58,9 @@ function SwitchMui({ handleSwitchChange }) {
   };
 
   return (
-    <FormGroup>
-      בחר צד טלפון
-      <Stack direction="row" spacing={1} alignItems="center">
+    <FormGroup >
+      אנא בחר את הצד של ההודעות שלך 
+      <Stack direction="row" spacing={1} alignItems="center" style={{justifyContent:"center"}}>
         <Typography>שמאל</Typography>
         <AntSwitch
           checked={checked}

@@ -28,37 +28,38 @@ const NavBar = ({ menuOpen, setMenuOpen }) => {
       </div>
       {menuOpen && (
         <div className="menu">
-          <Link to="/" onClick={handleLinkClick}>
+          {/* <Link to="/" onClick={handleLinkClick}>
             דף הבית
-          </Link>
+          </Link> */}
           <Link to="/Main" onClick={handleLinkClick}>
             אפליקציה
           </Link>
           {isAuthenticated && ( // Render navigation links only if user is authenticated
             <>
-
-              <Link to="/openersliked" onClick={handleLinkClick}>
-                Openers Liked
-              </Link>
               <Link to="/openers" onClick={handleLinkClick}>
-                Openers
+                משפטי פתיחה
               </Link>
-              <Link to="/textliked" onClick={handleLinkClick}>
+              <Link to="/openersliked" onClick={handleLinkClick}>
+                מועדפים
+              </Link>
+
+              {/* <Link to="/textliked" onClick={handleLinkClick}>
                 Text Liked
-              </Link>
+              </Link> */}
               <Link to="/forum" onClick={handleLinkClick}>
-                Forum
+                פורום
               </Link>
               <Link to="/settings" onClick={handleLinkClick}>
-                Settings
+                הגדרות
               </Link>
+
               <LogoutButton />
             </>
           )}
         </div>
       )}
       <h1 onClick={() => { handleNavigate(); handleLinkClick(); }} style={{ cursor: 'pointer' }}>ChatMates.AI</h1>
-      
+
     </div>
   );
 };

@@ -20,7 +20,7 @@ export default function DialogModal({ handleConfirm, handleCancel }) {
       returnTo: window.location.origin, // Specify the desired return URL
       // Add a callback to handle the login redirect
       onRedirectCallback: (appState) => {
-        // Check the current URL for specific words like "verify"
+      localStorage.setItem('isLoggedIn', 'true');
         
       }
     });
@@ -51,7 +51,7 @@ export default function DialogModal({ handleConfirm, handleCancel }) {
         <DialogContent>
 
 
-          <DialogContentText>
+          <DialogContentText style={{padding:'25px'}}>
             <div className="sub-login">
               <div className="btn-login">
                 <button

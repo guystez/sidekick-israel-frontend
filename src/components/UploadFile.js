@@ -23,7 +23,7 @@ export default function UploadFile({ onChange }) {
   };
 
   return (
-    <Button
+    <Button style={{marginTop:'10px',marginBottom:'10px'}}
       component="label"
       role={undefined}
       variant="contained"

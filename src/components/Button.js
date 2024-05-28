@@ -16,12 +16,12 @@ export default function ButtonSizes() {
     };
 
     return (
-        <Box sx={{ '& button': { m: 1 }, position:"absolute", bottom: 0, left: 0 }}>
+        <Box sx={{ '& button': { m: 1 }, bottom: 0, left: 0 }}>
             <div>
                 <Button variant="contained" size="small" onClick={handleButtonClick}>
                     FeedBack
                 </Button>
-                {/* <DialogFeedBack open={showAuthDialog} handleClose={handleClose} /> */}
+                <DialogFeedBack open={showAuthDialog} onClose={() => setShowAuthDialog(false)} handleCancel={handleClose} />
             </div>
         </Box>
     );

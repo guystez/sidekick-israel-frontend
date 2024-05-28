@@ -8,13 +8,14 @@ const LogoutButton = () => {
 
   const handleLogout = () => {
     logout({ returnTo: window.location.origin+"/" });
+    localStorage.removeItem('isLoggedIn');
     navigate("/");
 
   };
 
   return (
     <button onClick={handleLogout}>
-      Log Out
+      התנתק
     </button>
   );
 };

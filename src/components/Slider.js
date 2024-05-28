@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import { styled } from "@mui/material/styles"; // Import styled from @mui/material/styles
+import { styled } from "@mui/material/styles";
 
 // Define a styled component for the thumb
 const CustomThumbIcon = styled("span")({
@@ -37,40 +37,66 @@ const CustomizedSlider = ({ onChange }) => {
   };
 
   return (
-    <Box>
-      <Box sx={{ width: 300 }}>
-        <Slider
-          aria-label="Restricted values"
-          defaultValue={50}
-          getAriaValueText={valuetext}
-          step={null}
-          // valueLabelDisplay="auto"
-          marks={marks}
-          onChange={handleChange}
-          sx={{
-            color: "red",
-            "& .MuiSlider-thumb": {
-              width: 28,
-              height: 28,
-              backgroundColor: "transparent",
-              backgroundImage: `url(${require("../spicy2.jpeg")})`, // Set the background image
-              backgroundPosition: "-5px center", // Adjust the position of the background image to the left
-              "&:focus, &:hover, &$active": {
-                boxShadow: "none",
-              },
+    <Box sx={{ position: 'relative', width: 300}}>
+      <img
+        src={require("../slider-figma.png")}
+        alt="Slider Background"
+        style={{
+          width: '100%',
+          position: 'absolute',
+          top: '50%',
+          left: '0',
+          boxShadow:'none',
+          
+          transform: 'translateY(-50%)',
+          zIndex: 1,
+          
+          
+          pointerEvents: 'none', // Ensure it doesn't interfere with slider interaction
+        }}
+      />
+      <Slider
+        aria-label="Restricted values"
+        defaultValue={50}
+        getAriaValueText={valuetext}
+        step={null}
+        marks={marks}
+        onChange={handleChange}
+        sx={{
+          color: "transparent",
+          position: 'relative',
+          zIndex: 2, // Ensure the slider components are above the background image
+          marginBottom: 0, 
+          "& .MuiSlider-thumb": {
+            width: 35,
+            height: 35,
+            backgroundColor: "transparent",
+            backgroundImage: `url(${require("../spicy2.jpeg")})`, // Set the background image for the thumb
+            backgroundPosition: "center",
+            "&:focus, &:hover, &$active": {
+              boxShadow: "none",
+              
             },
-            "& .MuiSlider-track": {
-              height: 8,
-              borderRadius: 4,
-            },
-            "& .MuiSlider-rail": {
-              height: 8,
-              borderRadius: 4,
-            },
-          }}
-          ThumbComponent={CustomThumbIcon}
-        />
-      </Box>
+          },
+          "& .MuiSlider-track": {
+            height: 0, // Hide the track
+            borderRadius: 4,
+          },
+          "& .MuiSlider-rail": {
+            height: 0, // Hide the rail
+            borderRadius: 4,
+          },
+          "& .MuiSlider-mark": {
+            backgroundColor: "transparent",
+           
+          },
+         
+          "& .MuiSlider-markLabel": {
+            color: "black", // Adjust the label color if needed
+          },
+        }}
+        ThumbComponent={CustomThumbIcon}
+      />
     </Box>
   );
 };
