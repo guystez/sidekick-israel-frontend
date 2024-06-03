@@ -1,98 +1,151 @@
-.title-container {
-  display: flex;
-  justify-content: space-between;
-  /* width: 45%; */
-  max-width: 250px;
-  margin: 0 auto 5px auto;
-  padding: 0 5px;
-}
+  /* .overlay {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    z-index: 2;
+  }
 
-.side-title {
-  font-weight: bold;
-  color: black;
-  font-size: x-large;
-}
+  .left-selected {
+    left: 0;
+    width: 50%;
+    background-color: rgba(0, 255, 0, 0.3); 
+  }
 
-.chat-container {
-  display: flex;
-  flex-direction: column;
-  padding: 5px;
-  border: 1px solid #ccc;
-  /* width: 40%; */
-  max-width: 250px;
-  margin: 0 auto;
-  background-color: #f5f5f5;
-  border-radius: 10px;
-}
+  .right-selected {
+    right: 0;
+    width: 50%;
+    background-color: rgba(0, 255, 0, 0.3); 
+  }
 
-.chat-side {
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  margin: 3px 0;
-  position: relative;
-}
+  .left-blurred {
+    left: 0;
+    width: 50%;
+    backdrop-filter: blur(5px);
+  }
 
-.left-side {
-  align-items: flex-start;
-}
+  .right-blurred {
+    right: 0;
+    width: 50%;
+    backdrop-filter: blur(5px);
+  }
 
-.right-side {
-  align-items: flex-end;
-}
+  .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+  }
 
-.chat-bubble {
-  border-radius: 10px;
-  padding: 5px;
-  margin: 2px 0;
-  max-width: 80%;
-  word-wrap: break-word;
-  font-size: small;
-}
+  .arrow-left {
+    left: -40px; 
+    border-width: 20px 25px 20px 0;
+    border-color: transparent green transparent transparent;
+  }
 
-.left {
-  background-color: #e5e5ea;
-}
+  .arrow-right {
+    right: -40px; 
+    border-width: 20px 0 20px 25px; 
+    border-color: transparent transparent transparent green;
+  }
 
-.right {
-  background-color: #e5e5ea;
-}
 
-.selected {
-  border-radius: 10px;
-  z-index: 1;
-}
+  .arrow-label {
+    position: absolute;
+    top: calc(50% - 40px); 
+    transform: translateY(-50%);
+    color: green;
+    font-weight: bold;
+  }
 
-.not-selected {
-  filter: blur(3px);
-}
+  .arrow-label-left {
+    left: -80px; 
+    text-align: right;
+  }
 
-.right-side.selected .chat-bubble {
-  background-color: #daf1da; /* Green for selected */
-}
+  .arrow-label-right {
+    right: -80px; 
+    text-align: left;
+  }
 
-.left-side.selected .chat-bubble {
-  background-color: #daf1da; /* Green for selected */
-}
 
-.title {
-  font-weight: bold;
-  color: black;
-  margin-bottom: 5px;
-  font-size: large;
-}
-
-@media screen and (max-width: 600px) {
-  .chat-bubble {
+  canvas {
+    border: 3px solid black; 
+    cursor: pointer;
     max-width: 100%;
-    font-size: xx-small;
-  }
+    height: auto;
+  } */
 
-  .title {
-    font-size: large;
-  }
 
-  .side-title {
-    font-size: x-large;
+
+
+  .overlay {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    z-index: 2;
   }
-}
+  
+  .left-selected {
+    left: 0;
+    background-color: rgba(0, 255, 0, 0.3); /* Light green overlay */
+  }
+  
+  .right-selected {
+    right: 0;
+    background-color: rgba(0, 255, 0, 0.3); /* Light green overlay */
+  }
+  
+  .left-blurred {
+    left: 0;
+    backdrop-filter: blur(5px);
+  }
+  
+  .right-blurred {
+    right: 0;
+    backdrop-filter: blur(5px);
+  }
+  
+  .touch-container {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    z-index: 3; /* Ensure touch icon is on top */
+  }
+  
+  .touch-left {
+    left: 10px; /* Adjust to position icon inside the canvas */
+  }
+  
+  .touch-right {
+    right: 10px; /* Adjust to position icon inside the canvas */
+  }
+  
+  .touch-icon {
+    width: 70px; /* Adjust size as needed */
+    height: 70px; /* Adjust size as needed */
+  }
+  
+  .touch-label {
+    margin-left: 10px;
+    color: rgb(12, 12, 12);
+    font-weight: bold;
+    font-size: 36px; /* Adjust font size as needed */
+    margin-right: 20px;
+  }
+  
+  canvas {
+    /* border: 3px solid black; */
+    cursor: pointer;
+    max-width: 100%;
+    height: auto;
+    position: relative;
+    z-index: 1;
+  }
+  

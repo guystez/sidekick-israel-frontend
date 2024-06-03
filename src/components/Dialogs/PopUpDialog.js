@@ -69,7 +69,7 @@ export default function PopUpDialog({ handleConfirm, handleCancel }) {
                 </DialogContent>
                 <DialogActions>
                     {/* <Button onClick={handleConfirm}>Terms</Button> */}
-                    <Button onClick={handleClose}>סגור</Button>
+                    {/* <Button onClick={handleClose}>סגור</Button> */}
                 </DialogActions>
             </Dialog>
         </>

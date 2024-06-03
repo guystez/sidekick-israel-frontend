@@ -36,7 +36,8 @@ function FirstTimePage() {
 
         const userEmail = user.email; // Access the user's email from the user object
         console.log(user);
-        axios.post('https://web-production-dd6e3.up.railway.app/date/check-hebrew', { termsAccepted, selectedSide, email: userEmail })
+        // axios.post('https://web-production-dd6e3.up.railway.app/date/check-hebrew', { termsAccepted, selectedSide, email: userEmail })
+        axios.post('https://web-production-dd6e3.up.railway.app/date/check-hebrew', { termsAccepted,  email: userEmail })
             .then(response => {
                 console.log(response.data, 'success');
                 navigate("/Main");
@@ -57,8 +58,8 @@ function FirstTimePage() {
 
 
                     {/* <SwitchMui handleSwitchChange={handleSwitchChange}></SwitchMui> */}
-                    אנא בחר את הצד שבו ההודעות שלך בדרך כלל מופיעות, לחץ על ההודעות בצד המתאים בתמונה:
-          <ChatSelector selectedSide={selectedSide} onSelectSide={handleChatSelection} />
+                    {/* <b style={{fontSize:'x-large'}}>אנא בחר את הצד שבו ההודעות שלך בדרך כלל מופיעות, לחץ על ההודעות בצד המתאים בתמונה:</b>
+          <ChatSelector selectedSide={selectedSide} onSelectSide={handleChatSelection} /> */}
                     <div style={{direction:'rtl'}}>
                         <Radio
                             checked={selectedValue === 'a'}

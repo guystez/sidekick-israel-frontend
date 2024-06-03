@@ -15,7 +15,7 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-export default function UploadFile({ onChange }) {
+export default function UploadFile({ onChange,fileInputRef}) {
   const handleFileChange = (e) => {
     if (onChange) {
       onChange(e); // Call the onChange prop with the event object
@@ -31,7 +31,8 @@ export default function UploadFile({ onChange }) {
       startIcon={<CloudUploadIcon />}
     >
       העלה תצלום מסך
-      <VisuallyHiddenInput type="file" accept="image/*" onChange={handleFileChange} /> {/* Pass handleFileChange to the onChange event */}
+      <VisuallyHiddenInput type="file" accept="image/*" onChange={handleFileChange} ref={fileInputRef} />
+       {/* Pass handleFileChange to the onChange event */}
     </Button>
   );
 }

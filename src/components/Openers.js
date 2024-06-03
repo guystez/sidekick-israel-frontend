@@ -124,7 +124,7 @@ function Openers() {
                   <LikeButton isLiked={mockLike} handleLike={() => setMockLike(!mockLike)} />
                 </div>
               </div>
-              <button onClick={handleNextOpener}>פתח הבא</button>
+              <button onClick={handleNextOpener}>הבא</button>
             </div>
             
           )}

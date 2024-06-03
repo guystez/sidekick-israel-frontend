@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef  } from 'react';
 import axios from 'axios';
 import { useAuth0 } from "@auth0/auth0-react";
 import UploadFile from './UploadFile';
@@ -16,6 +16,8 @@ import DialogFeedBack from './Dialogs/DialogFeedBack';
 import { Button } from '@mui/material';
 import ButtonSizes from './Button';
 import coin from '../coin.png';
+import ChatSelector from './ChatSelector';
+import AddToHomeScreenPrompt from './Shortcut';
 
 
 function HomePage() {
@@ -33,8 +35,6 @@ function HomePage() {
   const [sliderValue, setSliderValue] = useState(50); // State to store slider value
   const [countGenerateResponse, setCountGenerateResponse] = useState(3); // State to store slider value
   const [requestLeft, setRequestLeft] = useState('')
-  const [isEnglishPhone, setIsEnglishPhone] = useState(false); // State variable to track phone language preference
-  const [userAnswer, setUserAnswer] = useState(null); // State variable to track user's answer
   const [termsAccepted, setTermsAccepted] = useState(false); // State variable to track whether the terms have been accepted
   const navigate = useNavigate();
   const [mockLike, setMockLike] = useState(false);
@@ -42,77 +42,11 @@ function HomePage() {
   const [feedBackPopup, setFeedBackPopup] = useState(false); // State variable to control popup dialog visibility
   const [noRequestsAlertShown, setNoRequestsAlertShown] = useState(false);
   const [loadingLocalStorage, setLoadingLocalStorage] = useState(true); // State to track local storage loading
-
-
-
-  // const uploadImageToImgBB = async (file) => {
-  //   const formData = new FormData();
-  //   formData.append('image', file);
-
-  //   try {
-  //     const response = await axios.post('https://api.imgbb.com/1/upload', formData, {
-  //       params: {
-  //         key: '9786959664c9a1cc31ee44550cc27850', // Replace with your ImgBB API key
-  //       },
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     });
-
-  //     if (response.status === 200) {
-  //       console.log('Uploaded image:', response.data.data.image); // Log the image object
-
-  //       return response.data.data.url; // Return the temporary image URL
-  //     } else {
-  //       throw new Error('Error uploading image to ImgBB');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error uploading image to ImgBB:', error);
-  //     throw error;
-  //   }
-  // };
-
-
-
-
-
-
-  // const handleSendImage = async () => {
-  //   if (!isAuthenticated) {
-  //     console.log('User is not authenticated. Opening auth dialog...');
-  //     setShowAuthDialog(true);
-  //     return;
-  //   }
-
-  //   if (!imageFile) {
-  //     console.log('No image file selected, showing upload alert...');
-  //     setShowUploadAlert(true);
-  //     setTimeout(() => {
-  //       setShowUploadAlert(false);
-  //     }, 3000);
-  //     return;
-  //   }
-
-  //   setLoading(true);
-
-  //   try {
-  //     const imageUrl = await uploadImageToImgBB(imageFile);
-  //     const formData = new FormData();
-  //     formData.append('image_url', imageUrl);
-  //     formData.append('email', user.email);
-
-  //     makeRequest(formData);
-  //   } catch (error) {
-  //     console.error('Error uploading image:', error);
-  //     setLoading(false);
-  //   }
-  // };
-
-
-
-
-
-
+  const [checkLanguage, setCheckLanguage] = useState(false); // State to track local storage loading
+// const [isEnglishPhone, setIsEnglishPhone] = useState(false); // State variable to track phone language preference
+  // const [userAnswer, setUserAnswer] = useState(null); // State variable to track user's answer
+  const [showImageSelector, setShowImageSelector] = useState(false);
+  const fileInputRef = useRef(null);
 
 
   const handleImageChange = (e) => {
@@ -130,13 +64,30 @@ function HomePage() {
       setResponseReceived(false);
       setGeneratedResponse(''); // Reset generatedResponse
       setResponseFromServer(''); // Reset responseFromServer
-
+      setShowImageSelector(false);
       console.log('Image changed');
 
 
     }
   };
 
+
+  // const handleImageChange = (e) => {
+  //   if (e && e.target && e.target.files && e.target.files[0]) {
+  //     const file = e.target.files[0];
+  //     setSelectedImage(URL.createObjectURL(file));
+  //     setShowImageSelector(false);
+  //   }
+  // };
+
+  const triggerImageChange = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    } else {
+      console.error("fileInputRef is not initialized.");
+    }
+  };
+  
 
   const copyToClipboard = () => {
     const textToCopy = generatedResponse || responseFromServer; // Use generatedResponse first, then fallback to responseFromServer
@@ -147,39 +98,6 @@ function HomePage() {
     });
   };
 
-  // const sendTextLiked = () => {
-  //   const textToLike = generatedResponse || responseFromServer; // Use generatedResponse first, then fallback to responseFromServer
-  //   if (isAuthenticated) {
-  //     const userEmail = user.email;
-  //     axios.post("https://web-production-dd6e3.up.railway.app/date/text-liked", { email: userEmail, text: textToLike })
-  //       .then(response => {
-  //         if (response.status === 200) {
-  //           console.log("Email sent successfully:", response.data);
-  //           // alert("Text Liked!"); // Show alert when text is liked
-  //         } else {
-  //           if (response.status === 409) {
-  //             console.log("Text already liked by the user:", response.data);
-  //             alert("כבר אהבת את זה"); // Show alert if text is already liked by the user
-  //           } else {
-  //             console.log("Unexpected response status:", response.status);
-  //             alert("Unexpected response status: " + response.status); // Show alert for unexpected response status
-  //           }
-  //         }
-  //       })
-  //       .catch(error => {
-  //         if (error.response && error.response.status === 303) {
-  //           console.error("Request failed with status code 303");
-  //           alert("כבר אהבת את זה"); // Show alert for error with status code 303
-  //         } else {
-  //           console.error("Error sending email:", error);
-  //           alert("בעיה בשליחת אימייל"); // Show alert if there's an error
-  //         }
-  //       });
-  //   } else {
-  //     console.error("User is not authenticated");
-  //     alert("לא מחובר!"); // Show alert if user is not authenticated
-  //   }
-  // };
 
 
   const sendTextLiked = () => {
@@ -317,15 +235,15 @@ function HomePage() {
   };
 
 
-  const handleFeedbackClick = () => {
-    setFeedBackPopup(true); // Set state to show the feedback dialog
-  };
+  // const handleFeedbackClick = () => {
+  //   setFeedBackPopup(true); // Set state to show the feedback dialog
+  // };
 
 
   const handleSendImage = async () => {
     if (!isAuthenticated) {
       console.log('User is not authenticated. Opening auth dialog...');
-      setShowAuthDialog(true); // Always open the auth dialog if the user is not authenticated
+      setShowAuthDialog(true);
       return;
     }
     if (!imageFile) {
@@ -336,12 +254,13 @@ function HomePage() {
       }, 3000);
       return;
     } else {
-      // Check image width
       const image = new Image();
       image.src = URL.createObjectURL(imageFile);
       image.onload = () => {
         if (image.width < 500) {
           alert('נא לעלות תמונה בגודל רגיל');
+        } else if (checkLanguage) {
+          alert('בחר צד בתמונה');
         } else {
           setLoading(true);
           const formData = new FormData();
@@ -349,9 +268,9 @@ function HomePage() {
           formData.append('email', user.email);
 
           makeRequest(formData);
-
         }
       };
+
     }
   };
 
@@ -405,36 +324,42 @@ function HomePage() {
               email: user.email, // Access user.email only if user is not undefined
             },
           });
-          console.log(response.data);
-          setRequestLeft(response.data.request_left)
-          if (response.data.is_hebrew !== null) {
-            // If user has answered the question and accepted the terms, update state and hide the button
-            setIsEnglishPhone(response.data.is_hebrew);
-            setUserAnswer(true);
-            setTermsAccepted(true);
+
+          console.log('API response:', response.data);
+
+          setRequestLeft(response.data.request_left);
+
+          if (response.data.check_terms == null) {
+            console.log('Navigating to FirstTimePage because check_terms is null');
+            navigate('/FirstTimePage');
           } else {
-            // If the response is None, redirect to FirstTimePage component without using history
-            navigate('/FirstTimePage'); // Use navigate to navigate
+            console.log('Setting termsAccepted to true');
+            setTermsAccepted(true);
           }
-          if (response.data.check_feedback == '') {
-            setFeedBackPopup(true)
-          }
-          if (response.data.check_gifts == false) {
 
+          if (response.data.is_hebrew == null) {
+            console.log('Setting checkLanguage to true because is_hebrew is null');
+            setCheckLanguage(true);
+          } else {
+            console.log('is_hebrew is not null');
+          }
+
+          // if (response.data.check_feedback === '') {
+          //   console.log('Setting feedBackPopup to true because check_feedback is empty');
+          //   setFeedBackPopup(true);
+          // }
+
+          if (response.data.check_gifts === false) {
+            console.log('Setting showPopup to true because check_gifts is false and setting requestLeft to 5');
             setShowPopup(true);
-            setRequestLeft(5)
-
+            setRequestLeft(5);
           }
         } catch (error) {
           if (error.response && error.response.status === 404 && error.response.data.error === 'User does not mark the question') {
-            // Handle the case where the server returns a 404 error with the specified message
-
             console.error('User does not mark the question');
-            // Optionally, display an alert or take other actions to notify the user
           } else {
             console.error('Error checking user answer:', error);
             navigate('/FirstTimePage');
-
           }
         }
       }
@@ -442,6 +367,8 @@ function HomePage() {
 
     checkUserAnswer();
   }, [isAuthenticated, user]); // Include isAuthenticated and user in the dependency array
+
+
 
 
   useEffect(() => {
@@ -499,12 +426,6 @@ function HomePage() {
 
   console.log('responseFromServer:', responseFromServer, 'Request left : ', requestLeft);
 
-  const handleClose = () => {
-    setShowAuthDialog(false);
-  };
-
-
-
   const handleOpenDialog = () => {
     setShowAuthDialog(true);
   };
@@ -517,45 +438,25 @@ function HomePage() {
     setFeedBackPopup(true);
   };
 
-  const handleCloseFeedback = () => {
-    setFeedBackPopup(false);
+  const handleLanguageCheck = () => {
+    setCheckLanguage(false);
+    console.log('checkLanguage: ',checkLanguage);
+
   };
 
+ 
 
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
 
-  useEffect(() => {
-    const handler = (e) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-    };
-    window.addEventListener('beforeinstallprompt', handler);
 
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handler);
-    };
-  }, []);
 
-  const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        console.log('User accepted the install prompt');
-      } else {
-        console.log('User dismissed the install prompt');
-      }
-      setDeferredPrompt(null);
-    }
-  };
-
+  
   return (
     <div className="custom-home-page">
       <div className="hero">
         <div className="circle"></div>
         <div className="cool-move">
           {loadingLocalStorage && <p>Loading...</p>}
-
+          
           {!loadingLocalStorage && !isLoading && !isAuthenticated && (
             <div className="journey-message">
               <button style={{ padding: '10px' }} onClick={handleOpenDialog}>בוא נתחיל</button>
@@ -564,9 +465,7 @@ function HomePage() {
 
           {isAuthenticated && termsAccepted && requestLeft !== 0 && (
             <>
-              {/* {feedBackPopup && <DialogFeedBack open={feedBackPopup} onClose={handleCloseFeedback} handleCancel={handleCloseFeedback} />} */}
-
-              <p style={{ direction: "rtl" }}>{requestLeft} <img src={coin} style={{ width: '20px' }} /> נשארו</p>
+            <p style={{ direction: "rtl" }}>{requestLeft} <img src={coin} style={{ width: '20px' }} /> נשארו</p>
               <div>
                 {showPopup && <PopUpDialog handleCancel={() => setShowAuthDialog(false)} />} {/* Render the popup dialog if showPopup is true */}
               </div>
@@ -580,10 +479,9 @@ function HomePage() {
               נגמרו כל הבקשות אנא קנו עוד
             </Button>
           )}
-
           {isAuthenticated && termsAccepted && (
             <>
-              <UploadFile onChange={handleImageChange} />
+              <UploadFile onChange={handleImageChange} fileInputRef={fileInputRef}/>
               {selectedImage ? (
                 <div style={{ border: "2px dashed #ccc", padding: "10px", borderRadius: "10px" }}>
                   <img
@@ -591,6 +489,15 @@ function HomePage() {
                     alt="Uploaded"
                     style={{ maxWidth: "300px", maxHeight: "350px" }}
                   />
+                    {checkLanguage && (
+          <ChatSelector 
+          selectedImage={selectedImage} 
+          onSend={() => {}} 
+          onChangeImage={triggerImageChange}
+          onLanguageCheck={handleLanguageCheck} // Pass isOpen prop indicating whether the ChatSelector is open
+        />
+        )}
+
                 </div>
               ) : (
                 <div style={{ border: "2px dashed #ccc", padding: "10px", borderRadius: "10px" }}>
@@ -598,8 +505,9 @@ function HomePage() {
                 </div>
               )}
             </>
-          )}
-
+                    )}
+                   
+          
           {buttonVisible && selectedImage && (
             <LoadingButtonsTransition
               onClick={handleSendImage}
@@ -607,7 +515,6 @@ function HomePage() {
               buttonLabel='שלח'
             />
           )}
-
           <ActionAlerts showAlert={showUploadAlert} />
           {(generatedResponse || responseFromServer) && (
             <div className="response-container">
@@ -659,20 +566,18 @@ function HomePage() {
             />
           )}
         </div>
+        
         {isAuthenticated && (
           <div style={{ bottom: '0px', marginTop: 'auto' }}>
             <Link to="/privacy-policy" style={{ marginRight: '10px' }}>פרטיות</Link> | <Link to="/terms" style={{ marginLeft: '10px' }}>תנאים</Link>
-            <ButtonSizes handleClick={handleOpenFeedback} />  {deferredPrompt && (
-              <button id="install-button" style={{ height: '30%' }} onClick={handleInstallClick}>
-                Install App
-              </button>
-            )}
-
+            <ButtonSizes handleClick={handleOpenFeedback} />  
+            <AddToHomeScreenPrompt/>
           </div>
-
+          
         )}
+        
       </div>
-
+      
     </div>
   );
 }

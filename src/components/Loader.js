@@ -14,7 +14,7 @@ export default function LoadingButtonsTransition({ onClick, loading,buttonLabel 
   return (
     <Button 
       variant="contained"
-      style={{marginTop:'20px',marginBottom:'5vh'}}
+      style={{marginTop:'20px',marginBottom:'0.5vh'}}
       disabled={loading} // Disable the button while loading
       onClick={handleClick} // Call handleClick when the button is clicked
       startIcon={loading ? <CircularProgress size={20} /> : <SendIcon />}
