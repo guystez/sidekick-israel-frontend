@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 function SwitchMui({ handleSwitchChange }) {
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(false);
 
   const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 28,

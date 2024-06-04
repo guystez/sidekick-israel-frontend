@@ -15,7 +15,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const ChatSelector = ({ selectedImage, onSend, onChangeImage, onLanguageCheck }) => {
+const ChatSelector = ({ selectedImage, onSend, onChangeImage, onLanguageCheck ,onLanguageSelection}) => {
   const { user } = useAuth0();
   const [selectedSide, setSelectedSide] = useState(null);
   const [autoSide, setAutoSide] = useState('left');
@@ -43,6 +43,8 @@ const ChatSelector = ({ selectedImage, onSend, onChangeImage, onLanguageCheck })
         setOpen(false);
         onSend();
         onLanguageCheck(false);
+        onLanguageSelection(selectedSide);
+
       })
       .catch(error => {
         console.error('Error sending side:', error);

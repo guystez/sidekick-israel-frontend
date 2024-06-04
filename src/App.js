@@ -17,7 +17,7 @@ import { Helmet } from 'react-helmet';
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const themeColor = '#FFFF00';
+  const themeColor = '#0A76F0';
   return (
 
 
@@ -40,7 +40,7 @@ function App() {
           <Route path='/textliked' element={<TextLiked />} />
           <Route path='/terms' element={<Terms />} />
           <Route path='/settings' element={<Settings />} />
-          <Route path='/FirstTimePage' element={<FirstTimePage />} />
+          <Route path='/FirstTime' element={<FirstTimePage />} />
           <Route path='/Main' element={<HomePage />} />
           <Route path="/auth0_callback" element={<Auth0Callback />} />
 

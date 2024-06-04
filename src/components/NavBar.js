@@ -11,7 +11,7 @@ const NavBar = ({ menuOpen, setMenuOpen }) => {
   const { isAuthenticated } = useAuth0(); // Get isAuthenticated from useAuth0 hook
 
   const handleNavigate = () => {
-    navigate("/"); // Navigate to the home page
+    navigate("/Main"); // Navigate to the home page
   };
 
   const handleLinkClick = (event) => {
@@ -43,9 +43,7 @@ const NavBar = ({ menuOpen, setMenuOpen }) => {
                 מועדפים
               </Link>
 
-              {/* <Link to="/textliked" onClick={handleLinkClick}>
-                Text Liked
-              </Link> */}
+              
               <Link to="/forum" onClick={handleLinkClick}>
                 פורום
               </Link>

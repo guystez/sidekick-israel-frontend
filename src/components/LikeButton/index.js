@@ -3,7 +3,7 @@ import "./LikeButton.css"
 
 export const LikeButton = ({ isLiked, handleLike }) => {
   return (
-    <div style={{border:'none',borderRadius:'none',boxShadow:'none'}} className={`like-btn-container ${isLiked ? "liked" : ""}`}>
+    <div style={{border:'none',borderRadius:'none',boxShadow:'none',marginLeft:'10px'}} className={`like-btn-container ${isLiked ? "liked" : ""}`}>
       <AnimatePresence>
         <motion.button
           whileTap="tap"

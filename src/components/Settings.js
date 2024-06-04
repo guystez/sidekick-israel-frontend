@@ -44,7 +44,7 @@ function Settings() {
         <div className="custom-home-page">
             <div className="hero">
                 <div className="cool-move">
-                   <h1>Settings</h1> 
+                   {/* <h1>Settings</h1>  */}
                    <SwitchMui handleSwitchChange={handleSwitchChange}></SwitchMui>
 
                    {termsAccepted && (

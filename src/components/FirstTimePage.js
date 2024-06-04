@@ -3,13 +3,12 @@ import Radio from '@mui/material/Radio';
 import axios from 'axios'; // Import Axios
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
-import ChatSelector from "./ChatSelector";
 
 function FirstTimePage() {
     const [selectedValue, setSelectedValue] = useState('null');
     const { isAuthenticated, user } = useAuth0();
     const [termsAccepted, setTermsAccepted] = useState(false);
-    const [selectedSide, setSelectedSide] = useState('left'); // Manage selectedSide here
+    // const [selectedSide, setSelectedSide] = useState('left'); // Manage selectedSide here
 
     const navigate = useNavigate();
 
@@ -21,10 +20,10 @@ function FirstTimePage() {
         }
     };
 
-    const handleChatSelection = (side) => {
-        setSelectedSide(side);
-        console.log(`Selected side from ChatSelector: ${side}`);
-      };
+    // const handleChatSelection = (side) => {
+    //     setSelectedSide(side);
+    //     console.log(`Selected side from ChatSelector: ${side}`);
+    //   };
 
 
 

@@ -160,14 +160,16 @@ function OpenersLiked() {
               handleCancel={() => setShowAuthDialog(false)}
             />
           )}
-          <button onClick={toggleLikedType}>{isText ? 'Show Openers Liked' : 'Show Text Liked'}</button>
+          <button style={{marginBottom:'10px'}} onClick={toggleLikedType}>{isText ? 'עבור למשפטי פתיחה שאהבת' : 'עבור לטקסט שאהבת'}</button>
           <ul>
             {Array.isArray(likedItems) && likedItems.length > 0 ? (
               likedItems.map((item, index) => (
-                <li key={index} style={{padding:'10px'}}>
+                <li key={index} className="liked-item">
                   {item}
                   <button style={{marginRight:'10px'}} onClick={() => deleteLikedItem(item)}>מחק</button>
+                  
                 </li>
+
               ))
             ) : (
               <>
@@ -175,10 +177,11 @@ function OpenersLiked() {
                 <br></br>
                 <div>
                   {isText ? 
-                    'אין לך עדיין משפטי פתיחה' :
-                    'No texts liked. Please add a text.'
+                    'אין לך עדיין טקסט שאהבת'
+                     :
+                    'אין לך עדיין משפטי פתיחה'
                   }
-                  <Link to={isText ? "/openers" : "/"}>{isText ? 'תוסיף' : 'Add'}</Link> {isText ? 'משפטי פתיחה' : 'a text'}
+                  <Link to={isText ? "/Main" : "/openers"}>{isText ? 'תוסיף' : 'הוסף כאן'}</Link> {isText ? 'טקסט' : ''}
                 </div>
               </>
             )}

@@ -3,17 +3,17 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from 'react';
 import DialogModal from './Dialogs/DialogLogin'; // Import the DialogModal component
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { LikeButton } from './LikeButton';
 import SimpleAlert from './AlertMui';
+import { Link } from 'react-router-dom';
 
 function Openers() {
   const [openers, setOpeners] = useState([]);
-  const [openerType, setOpenerType] = useState('');
+  // const [openerType, setOpenerType] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const { isAuthenticated, user } = useAuth0();
   const [categories, setCategories] = useState([]); // State to store category names
-  const [liked, setLiked] = useState(false); // State variable to track if the opener is liked
+  // const [liked, setLiked] = useState(false); // State variable to track if the opener is liked
   const [showAuthDialog, setShowAuthDialog] = useState(false); // State variable to manage whether the auth dialog is open
   const [mockLike, setMockLike] = useState(false);
   const [showContainer, setShowContainer] = useState(false); // State to track if any category is opened
@@ -24,6 +24,7 @@ function Openers() {
       try {
         const response = await axios.post("https://web-production-dd6e3.up.railway.app/date/get-categories"); // Fetch category names
         setCategories(response.data);
+
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -38,26 +39,33 @@ function Openers() {
       setShowAuthDialog(true); // Open the auth dialog if user is not authenticated
       return;
     }
-  
+
     try {
       const response = await axios.post("https://web-production-dd6e3.up.railway.app/date/get-categories-by-name", { category_name: categoryName });
       setOpeners(response.data);
-      
+
       if (response.data.length > 0) {
-        setOpenerType(response.data[0].text);
+        // setOpenerType(response.data[0].text);
         setMockLike(false);
         setAlertMessage(null);
+        setShowContainer(true)
       }
     } catch (error) {
       console.error("Error fetching openers by category:", error);
     }
   };
-  
+
   const handleNextOpener = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % openers.length || 0);
     setMockLike(false);
     setAlertMessage(null);
-  };              
+  };
+
+  const handlePreviousOpener = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + openers.length) % openers.length || 0);
+    setMockLike(false);
+    setAlertMessage(null);
+  };
 
 
   const handleCopyOpener = () => {
@@ -67,14 +75,14 @@ function Openers() {
   };
 
   const sendTextLiked = () => {
-    if (!liked && isAuthenticated) {
+    if (isAuthenticated) {
       const userEmail = user.email;
 
       axios.post("https://web-production-dd6e3.up.railway.app/date/openers-liked", { email: userEmail, opener: openers[currentIndex] })
         .then(response => {
           console.log("Email sent successfully:");
           setAlertMessage("Like Successful");
-         
+
         })
         .catch(error => {
           if (error.response && error.response.status === 303) {
@@ -90,7 +98,7 @@ function Openers() {
       // Handle case where user is not authenticated
     }
   };
-  
+
   return (
     <div className="custom-home-page">
       <div className="hero">
@@ -102,34 +110,42 @@ function Openers() {
             {categories.map((category) => (
               <button key={category} onClick={() => {
                 fetchOpenersByCategory(category);
-                setShowContainer(true); // Set showContainer to true when a category is opened
+                // setShowContainer(true); // Set showContainer to true when a category is opened
               }}>
-                {category}
+                <b style={{fontStyle: 'oblique'}}>{category}</b>
               </button>
             ))}
           </div>
-          {alertMessage && <SimpleAlert message={alertMessage}  />}
+          {alertMessage && <SimpleAlert message={alertMessage} />}
 
           {/* Conditionally render response container based on showContainer state */}
-          {showContainer && (
+          {showContainer && categories.length > 0 && (
             <div className="response-container">
               <div style={{ marginTop: "30px" }}>
-                <p style={{ color: 'black', fontStyle: 'oblique',direction:"rtl" }}>{openers[currentIndex]}</p>
-
+                <b>
+                <p style={{ color: 'black', fontStyle: 'oblique', direction: "rtl" }}>{openers[currentIndex]}</p>
+                </b>
                 <button className="copy-button" onClick={handleCopyOpener}>
                   <ContentCopyIcon />
                 </button>
 
-                <div style={{border:'none',borderRadius:'none'}} onClick={sendTextLiked}>
+                <div style={{ border: 'none', borderRadius: 'none' }} onClick={sendTextLiked}>
                   <LikeButton isLiked={mockLike} handleLike={() => setMockLike(!mockLike)} />
                 </div>
               </div>
+              <button onClick={handlePreviousOpener}>קודם</button>
               <button onClick={handleNextOpener}>הבא</button>
-            </div>
-            
-          )}
 
-          
+            </div>
+
+          )}
+          {showContainer &&
+          <div style={{marginTop:'40px'}}>
+            <button>
+            <Link to='/openersliked'>חזור למועדפים</Link>
+            </button>
+          </div>}
+
         </div>
       </div>
 

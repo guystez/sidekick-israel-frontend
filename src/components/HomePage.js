@@ -1,23 +1,22 @@
-import React, { useState, useEffect,useRef  } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useAuth0 } from "@auth0/auth0-react";
 import UploadFile from './UploadFile';
 import LoadingButtonsTransition from './Loader';
 import ActionAlerts from './Alert';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DialogModal from './Dialogs/DialogLogin'; // Import the DialogModal component
 import DiscreteSliderValues from './Slider';
-import Profile from './Auth0/Profile';
 import { Link, useNavigate } from "react-router-dom";
 import { LikeButton } from "./LikeButton";
 import PopUpDialog from './Dialogs/PopUpDialog';
-import DialogFeedBack from './Dialogs/DialogFeedBack';
 import { Button } from '@mui/material';
 import ButtonSizes from './Button';
 import coin from '../coin.png';
 import ChatSelector from './ChatSelector';
 import AddToHomeScreenPrompt from './Shortcut';
+import ChooseLanguage from './ChooseLanguage';
+import Tips from './Tips';
 
 
 function HomePage() {
@@ -27,6 +26,7 @@ function HomePage() {
   const [responseFromGPT, setResponseFromGPT] = useState('');
   const [generatedResponse, setGeneratedResponse] = useState('');
   const [responseReceived, setResponseReceived] = useState(false);
+  const [responses, setResponses] = useState([]);
   const { isAuthenticated, user, isLoading } = useAuth0();
   const [loading, setLoading] = useState(false);
   const [showUploadAlert, setShowUploadAlert] = useState(false); // State variable to control the visibility of the upload alert
@@ -43,9 +43,12 @@ function HomePage() {
   const [noRequestsAlertShown, setNoRequestsAlertShown] = useState(false);
   const [loadingLocalStorage, setLoadingLocalStorage] = useState(true); // State to track local storage loading
   const [checkLanguage, setCheckLanguage] = useState(false); // State to track local storage loading
-// const [isEnglishPhone, setIsEnglishPhone] = useState(false); // State variable to track phone language preference
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [userSideMessages, setUserSideMessages] = useState(false); // State to track local storage loading
+
+  // const [isEnglishPhone, setIsEnglishPhone] = useState(false); // State variable to track phone language preference
   // const [userAnswer, setUserAnswer] = useState(null); // State variable to track user's answer
-  const [showImageSelector, setShowImageSelector] = useState(false);
+  // const [showImageSelector, setShowImageSelector] = useState(false);
   const fileInputRef = useRef(null);
 
 
@@ -64,7 +67,7 @@ function HomePage() {
       setResponseReceived(false);
       setGeneratedResponse(''); // Reset generatedResponse
       setResponseFromServer(''); // Reset responseFromServer
-      setShowImageSelector(false);
+      // setShowImageSelector(false);
       console.log('Image changed');
 
 
@@ -87,7 +90,7 @@ function HomePage() {
       console.error("fileInputRef is not initialized.");
     }
   };
-  
+
 
   const copyToClipboard = () => {
     const textToCopy = generatedResponse || responseFromServer; // Use generatedResponse first, then fallback to responseFromServer
@@ -187,6 +190,8 @@ function HomePage() {
         } else {
           // Set state with the received response data
           setResponseFromServer(response.data.final_answer);
+          setResponses(prevResponses => [...prevResponses, { type: 'server', value: response.data.final_answer }]);
+          setCurrentIndex(responses.length);
           console.log(response.data.final_answer, '@@@@@@@@@');
           setRequestLeft(response.data.request_left);
           setResponseFromGPT(JSON.stringify(response.data.answer1));
@@ -288,6 +293,8 @@ function HomePage() {
           .then(response => {
 
             setGeneratedResponse(response.data);
+            setResponses(prevResponses => [...prevResponses, { type: 'generated', value: response.data }]);
+            setCurrentIndex(responses.length);
             if (response.status === 200) {
               setLoading(false);
               setMockLike(false);
@@ -331,7 +338,7 @@ function HomePage() {
 
           if (response.data.check_terms == null) {
             console.log('Navigating to FirstTimePage because check_terms is null');
-            navigate('/FirstTimePage');
+            navigate('/FirstTime');
           } else {
             console.log('Setting termsAccepted to true');
             setTermsAccepted(true);
@@ -341,6 +348,12 @@ function HomePage() {
             console.log('Setting checkLanguage to true because is_hebrew is null');
             setCheckLanguage(true);
           } else {
+            if (response.data.is_hebrew == 'right') {
+              setUserSideMessages(true)
+            }
+            else {
+              setUserSideMessages(false)
+            }
             console.log('is_hebrew is not null');
           }
 
@@ -359,7 +372,7 @@ function HomePage() {
             console.error('User does not mark the question');
           } else {
             console.error('Error checking user answer:', error);
-            navigate('/FirstTimePage');
+            navigate('/FirstTime');
           }
         }
       }
@@ -440,23 +453,32 @@ function HomePage() {
 
   const handleLanguageCheck = () => {
     setCheckLanguage(false);
-    console.log('checkLanguage: ',checkLanguage);
+    console.log('checkLanguage: ', checkLanguage);
 
   };
 
- 
-
-
-
-
+  const handleLanguageSelection = (selectedSide) => {
+    const updatedUserSideMessages = selectedSide === 'right';
+    setUserSideMessages(updatedUserSideMessages);
+  };
   
+  useEffect(() => {
+    console.log('userSideMessages:', userSideMessages);
+    
+  }, [userSideMessages]);
+  
+
+
+
+
+
   return (
     <div className="custom-home-page">
       <div className="hero">
         <div className="circle"></div>
         <div className="cool-move">
           {loadingLocalStorage && <p>Loading...</p>}
-          
+
           {!loadingLocalStorage && !isLoading && !isAuthenticated && (
             <div className="journey-message">
               <button style={{ padding: '10px' }} onClick={handleOpenDialog}>בוא נתחיל</button>
@@ -465,7 +487,8 @@ function HomePage() {
 
           {isAuthenticated && termsAccepted && requestLeft !== 0 && (
             <>
-            <p style={{ direction: "rtl" }}>{requestLeft} <img src={coin} style={{ width: '20px' }} /> נשארו</p>
+              <p style={{ direction: "rtl" }}>{requestLeft} <img src={coin} style={{ width: '20px' }} /> נשארו</p>
+              <Tips/>
               <div>
                 {showPopup && <PopUpDialog handleCancel={() => setShowAuthDialog(false)} />} {/* Render the popup dialog if showPopup is true */}
               </div>
@@ -481,22 +504,26 @@ function HomePage() {
           )}
           {isAuthenticated && termsAccepted && (
             <>
-              <UploadFile onChange={handleImageChange} fileInputRef={fileInputRef}/>
+              <UploadFile onChange={handleImageChange} fileInputRef={fileInputRef} />
               {selectedImage ? (
                 <div style={{ border: "2px dashed #ccc", padding: "10px", borderRadius: "10px" }}>
                   <img
                     src={selectedImage}
                     alt="Uploaded"
                     style={{ maxWidth: "300px", maxHeight: "350px" }}
+
                   />
-                    {checkLanguage && (
-          <ChatSelector 
-          selectedImage={selectedImage} 
-          onSend={() => {}} 
-          onChangeImage={triggerImageChange}
-          onLanguageCheck={handleLanguageCheck} // Pass isOpen prop indicating whether the ChatSelector is open
-        />
-        )}
+                  <ChooseLanguage userSideMessages={userSideMessages} />
+                  {checkLanguage && (
+                    <ChatSelector
+                      selectedImage={selectedImage}
+                      onSend={() => {}}
+                      onChangeImage={triggerImageChange}
+                      onLanguageCheck={handleLanguageCheck} // Pass isOpen prop indicating whether the ChatSelector is open
+                      onLanguageSelection={handleLanguageSelection} // Pass the callback function
+
+                    />
+                  )}
 
                 </div>
               ) : (
@@ -505,9 +532,9 @@ function HomePage() {
                 </div>
               )}
             </>
-                    )}
-                   
-          
+          )}
+
+
           {buttonVisible && selectedImage && (
             <LoadingButtonsTransition
               onClick={handleSendImage}
@@ -516,22 +543,28 @@ function HomePage() {
             />
           )}
           <ActionAlerts showAlert={showUploadAlert} />
-          {(generatedResponse || responseFromServer) && (
+          {responses.length > 0 && (
             <div className="response-container">
+              {responses.length > 1 && (
+                <div>
+                  <button disabled={currentIndex === 0} onClick={() => setCurrentIndex(currentIndex - 1)}>
+                    חזור
+                  </button>
+                  <button disabled={currentIndex === responses.length - 1} onClick={() => setCurrentIndex(currentIndex + 1)}>
+                    הבא
+                  </button>
+                </div>
+              )}
               <div style={{ marginTop: "30px" }}>
-                <button className='copy-button' onClick={copyToClipboard}>
+                <button className="copy-button" onClick={() => copyToClipboard(responses[currentIndex].value)}>
                   <ContentCopyIcon />
                 </button>
               </div>
-
-              {/* <div onClick={sendTextLiked}>
-                <LikeButton isLiked={mockLike} handleLike={() => setMockLike(!mockLike)} />
-              </div> */}
-              <div onClick={() => { sendTextLiked(); setMockLike(!mockLike); }}>
+              <div onClick={() => sendTextLiked(responses[currentIndex].value)}>
                 <LikeButton isLiked={mockLike} />
               </div>
               <div style={{ direction: "rtl", fontWeight: 600 }}>
-                {generatedResponse || responseFromServer}{" "}
+                {responses[currentIndex].value}
               </div>
             </div>
           )}
@@ -566,18 +599,18 @@ function HomePage() {
             />
           )}
         </div>
-        
+
         {isAuthenticated && (
           <div style={{ bottom: '0px', marginTop: 'auto' }}>
             <Link to="/privacy-policy" style={{ marginRight: '10px' }}>פרטיות</Link> | <Link to="/terms" style={{ marginLeft: '10px' }}>תנאים</Link>
-            <ButtonSizes handleClick={handleOpenFeedback} />  
-            <AddToHomeScreenPrompt/>
+            <ButtonSizes handleClick={handleOpenFeedback} />
+            <AddToHomeScreenPrompt />
           </div>
-          
+
         )}
-        
+
       </div>
-      
+
     </div>
   );
 }
