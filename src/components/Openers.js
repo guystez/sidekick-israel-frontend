@@ -82,7 +82,7 @@ function Openers() {
 
   const handleCopyOpener = () => {
     navigator.clipboard.writeText(openers[currentIndex] || "")
-      .then(() => alert("הועתק!"))
+      .then(() => setAlertMessage("הועתק"))
       .catch((err) => console.error('לא ניתן להעתיק: ', err));
   };
 
@@ -95,26 +95,26 @@ function Openers() {
         axios.delete(url, { params: { email: userEmail, opener: openers[currentIndex] } })
           .then(response => {
             console.log("Opener unliked successfully:");
-            setAlertMessage("Unlike Successful");
+            setAlertMessage("נמחק");
           })
           .catch(error => {
             console.error("Error unliking opener:", error);
-            setAlertMessage("Error unliking opener!"); // Set general error message
+            setAlertMessage("בעיה בשליחה"); // Set general error message
           });
       } else {
         setMockLike(true)
         axios.post(url, { email: userEmail, opener: openers[currentIndex] })
           .then(response => {
             console.log("Email sent successfully:");
-            setAlertMessage("Like Successful");
+            setAlertMessage("לייק בוצע");
           })
           .catch(error => {
             if (error.response && error.response.status === 303) {
               console.error("Request failed with status code 303");
-              setAlertMessage("You already like that"); // Set message for error with status code 303
+              setAlertMessage("כבר אהבת את זה"); // Set message for error with status code 303
             } else {
               console.error("Error sending email:", error);
-              setAlertMessage("Error sending email!"); // Set general error message
+              setAlertMessage("בעיה בשליחה"); // Set general error message
             }
           });
       }

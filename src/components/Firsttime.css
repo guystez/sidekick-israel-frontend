@@ -92,12 +92,12 @@
   
   .left-selected {
     left: 0;
-    background-color: rgba(0, 255, 0, 0.3); /* Light green overlay */
+    background-color: rgba(72, 74, 72, 0.3); /* Light green overlay */
   }
   
   .right-selected {
     right: 0;
-    background-color: rgba(0, 255, 0, 0.3); /* Light green overlay */
+    background-color: rgba(72, 74, 72, 0.3); /* Light green overlay */
   }
   
   .left-blurred {

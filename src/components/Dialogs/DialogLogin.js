@@ -47,7 +47,7 @@ export default function DialogModal({ handleConfirm, handleCancel }) {
   return (
     <>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Welcome</DialogTitle>
+        <DialogTitle style={{textAlign:'center'}}>ברוך הבא</DialogTitle>
         <DialogContent>
 
 
@@ -56,14 +56,14 @@ export default function DialogModal({ handleConfirm, handleCancel }) {
               <div className="btn-login">
                 <button
                   className='log-button button0 button2'
-                  onClick={handleLogin}>Log In
+                  onClick={handleLogin}>התחבר
                 </button>
               </div>
               <div className="btn-signup">
                 <button
                   className='log-button button0 button2'
                   onClick={handleLogin}>
-                  Signup
+                  הירשם
                 </button>
               </div>
             </div>
@@ -71,7 +71,7 @@ export default function DialogModal({ handleConfirm, handleCancel }) {
         </DialogContent>
         <DialogActions>
           {/* <Button onClick={handleConfirm}>Terms</Button> */}
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>סגור</Button>
         </DialogActions>
       </Dialog>
     </>

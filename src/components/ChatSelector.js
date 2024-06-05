@@ -89,19 +89,17 @@ const ChatSelector = ({ selectedImage, onSend, onChangeImage, onLanguageCheck ,o
     >
       <AppBar sx={{ position: 'relative' }}>
         <Toolbar>
-          <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-            בחר צד בתמונה
+          <Typography sx={{ ml: 2, flex: 1 }} style={{fontSize:'x-large'}} variant="h6" component="div">
+          <b onClick={handlesave}>שמור</b>
           </Typography>
           
-          <Button autoFocus color="inherit" onClick={handlesave}>
-            <b>שמור</b>
-          </Button>
+          
           <Button color="inherit" onClick={onChangeImage}>
-           <b>שינוי תמונה</b> 
+           <b style={{fontSize:'x-large'}}>שינוי תמונה</b> 
           </Button>
         </Toolbar>
       </AppBar>
-      <b style={{direction:'rtl'}}>
+      <b style={{direction:'rtl',marginBottom:'20px'}}>
        <h1 style={{fontFamily:'system-ui'}}> חשוב: לפני שמתחילים!! </h1>
         
 באיזה צד בשיחה נמצאות ההודעות שלך ? ימין או שמאל? 

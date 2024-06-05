@@ -18,6 +18,7 @@ import AddToHomeScreenPrompt from './Shortcut';
 import ChooseLanguage from './ChooseLanguage';
 import Tips from './Tips';
 import HeartSpinner from './SpinnerHeart/HeartSpinner';
+import SimpleAlert from './AlertMui';
 
 
 function HomePage() {
@@ -49,6 +50,7 @@ function HomePage() {
   const fileInputRef = useRef(null);
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [isFlashing, setIsFlashing] = useState(false);
+  const [alertMessage, setAlertMessage] = useState(null);
 
 
   useEffect(() => {
@@ -114,7 +116,7 @@ function HomePage() {
   const copyToClipboard = () => {
     const textToCopy = generatedResponse || responseFromServer; // Use generatedResponse first, then fallback to responseFromServer
     navigator.clipboard.writeText(textToCopy).then(() => {
-      alert('הועתק!');
+      setAlertMessage('הועתק');
     }, (err) => {
       console.error('Could not copy text: ', err);
     });
@@ -134,7 +136,8 @@ function HomePage() {
           .then(response => {
             if (response.status === 200) {
               console.log("Text unliked successfully:", response.data);
-              alert('נמחק')
+              // alert('נמחק')
+
               setMockLike(false)
             } else {
               console.error("Unexpected response status:", response.status);
@@ -152,12 +155,12 @@ function HomePage() {
           .then(response => {
             if (response.status === 200) {
               console.log("Text liked successfully:", response.data);
-              alert('נשמר במועדפים')
+              // alert('נשמר במועדפים')
 
             } else {
               if (response.status === 409) {
                 console.log("Text already liked by the user:", response.data);
-                alert("כבר אהבת את זה"); // Show alert if text is already liked by the user
+                // alert("כבר אהבת את זה"); // Show alert if text is already liked by the user
               } else {
                 console.error("Unexpected response status:", response.status);
                 alert("Unexpected response status: " + response.status); // Show alert for unexpected response status
@@ -167,7 +170,7 @@ function HomePage() {
           .catch(error => {
             if (error.response && error.response.status === 303) {
               console.error("Request failed with status code 303");
-              alert("כבר אהבת את זה"); // Show alert for error with status code 303
+
             } else {
               console.error("Error liking text:", error);
               alert("בעיה בשליחת אימייל"); // Show alert if there's an error
@@ -311,7 +314,7 @@ function HomePage() {
     if (isAuthenticated) {
       setLoading(true);
       const makeRequest = () => {
-        axios.post("https://web-production-dd6e3.up.railway.app/date/generate", { request: responseFromGPT, mode: { sliderValue }, email: user.email })
+        axios.post("https://web-production-dd6e3.up.railway.app/date/generate", { request: responseFromGPT, chatgpt: generatedResponse || responseFromServer, mode: { sliderValue }, email: user.email })
           .then(response => {
 
             setGeneratedResponse(response.data);
@@ -514,6 +517,8 @@ function HomePage() {
                   <div className={isFlashing ? 'flashing' : ''}>
                     <Tips />
                     <div>
+
+
                     </div>
                     {showPopup && <PopUpDialog handleCancel={() => setShowAuthDialog(false)} />} {/* Render the popup dialog if showPopup is true */}
                   </div>
@@ -566,7 +571,9 @@ function HomePage() {
                   loading={loading}
                   buttonLabel='שלח'
                 />
+
               )}
+              {alertMessage && <SimpleAlert message={alertMessage} />}
               <ActionAlerts showAlert={showUploadAlert} />
               {responses.length > 0 && (
                 <div className="response-container">
@@ -631,7 +638,7 @@ function HomePage() {
           <div style={{ bottom: '0px', marginTop: 'auto' }}>
             <Link to="/privacy-policy" style={{ marginRight: '10px' }}>פרטיות</Link> | <Link to="/terms" style={{ marginLeft: '10px' }}>תנאים</Link>
             <ButtonSizes handleClick={handleOpenFeedback} />
-            <AddToHomeScreenPrompt />
+            {/* <AddToHomeScreenPrompt /> */}
           </div>
 
         )}
