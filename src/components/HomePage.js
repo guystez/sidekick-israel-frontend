@@ -58,7 +58,7 @@ function HomePage() {
 
     return () => clearTimeout(timer);
   }, []);
-  
+
   useEffect(() => {
     if (isFlashing) {
       const timer = setTimeout(() => {
@@ -67,7 +67,7 @@ function HomePage() {
       return () => clearTimeout(timer);
     }
   }, [isFlashing]);
-  
+
 
   const handleImageChange = (e) => {
     if (!isAuthenticated) {
@@ -153,7 +153,7 @@ function HomePage() {
             if (response.status === 200) {
               console.log("Text liked successfully:", response.data);
               alert('נשמר במועדפים')
-              
+
             } else {
               if (response.status === 409) {
                 console.log("Text already liked by the user:", response.data);
@@ -483,11 +483,11 @@ function HomePage() {
     const updatedUserSideMessages = selectedSide === 'right';
     setUserSideMessages(updatedUserSideMessages);
   };
-  
+
   useEffect(() => {
     console.log('userSideMessages:', userSideMessages);
   }, [userSideMessages]);
-  
+
 
 
 
@@ -498,133 +498,133 @@ function HomePage() {
       <div className="hero">
         <div className="circle"></div>
         <div className="cool-move">
-        {isPageLoading ? (
-          <HeartSpinner/>
-        ) : (
-          <>
-          {!loadingLocalStorage && !isLoading && !isAuthenticated && (
-            <div className="journey-message">
-              <button style={{ padding: '10px' }} onClick={handleOpenDialog}>בוא נתחיל</button>
-            </div>
-          )}
-
-          {isAuthenticated && termsAccepted && requestLeft !== 0 && (
+          {isPageLoading ? (
+            <HeartSpinner />
+          ) : (
             <>
-              <p style={{ direction: "rtl" }}>{requestLeft} <img src={coin} style={{ width: '20px' }} /> נשארו</p>
-              <div className={isFlashing ? 'flashing' : ''}>
-              <Tips />
-              <div>
-              </div>
-                {showPopup && <PopUpDialog handleCancel={() => setShowAuthDialog(false)} />} {/* Render the popup dialog if showPopup is true */}
-              </div>
+              {!loadingLocalStorage && !isLoading && !isAuthenticated && (
+                <div className="journey-message">
+                  <button style={{ padding: '10px' }} onClick={handleOpenDialog}>בוא נתחיל</button>
+                </div>
+              )}
 
-            </>
+              {isAuthenticated && termsAccepted && requestLeft !== 0 && (
+                <>
+                  <p style={{ direction: "rtl" }}>{requestLeft} <img src={coin} style={{ width: '20px' }} /> נשארו</p>
+                  <div className={isFlashing ? 'flashing' : ''}>
+                    <Tips />
+                    <div>
+                    </div>
+                    {showPopup && <PopUpDialog handleCancel={() => setShowAuthDialog(false)} />} {/* Render the popup dialog if showPopup is true */}
+                  </div>
 
-          )}
+                </>
 
-          {(requestLeft === 0 || noRequestsAlertShown) && (
-            <Button variant="contained" color="primary" onClick={() => alert('Please buy more requests')}>
-              נגמרו כל הבקשות אנא קנו עוד
-            </Button>
-          )}
-          {isAuthenticated && termsAccepted && (
-            <>
-              <UploadFile onChange={handleImageChange} fileInputRef={fileInputRef} />
-              {selectedImage ? (
-                <div style={{ border: "2px dashed #ccc", padding: "10px", borderRadius: "10px" }}>
-                  <img
-                    src={selectedImage}
-                    alt="Uploaded"
-                    style={{ maxWidth: "300px", maxHeight: "350px" }}
+              )}
 
-                  />
-                  <ChooseLanguage userSideMessages={userSideMessages} />
-                  {checkLanguage && (
-                    <ChatSelector
-                      selectedImage={selectedImage}
-                      onSend={() => {}}
-                      onChangeImage={triggerImageChange}
-                      onLanguageCheck={handleLanguageCheck} // Pass isOpen prop indicating whether the ChatSelector is open
-                      onLanguageSelection={handleLanguageSelection} // Pass the callback function
+              {(requestLeft === 0 || noRequestsAlertShown) && (
+                <Button variant="contained" color="primary" onClick={() => alert('Please buy more requests')}>
+                  נגמרו כל הבקשות אנא קנו עוד
+                </Button>
+              )}
+              {isAuthenticated && termsAccepted && (
+                <>
+                  <UploadFile onChange={handleImageChange} fileInputRef={fileInputRef} />
+                  {selectedImage ? (
+                    <div style={{ border: "2px dashed #ccc", padding: "10px", borderRadius: "10px" }}>
+                      <img
+                        src={selectedImage}
+                        alt="Uploaded"
+                        style={{ maxWidth: "300px", maxHeight: "350px" }}
 
-                    />
+                      />
+                      <ChooseLanguage userSideMessages={userSideMessages} />
+                      {checkLanguage && (
+                        <ChatSelector
+                          selectedImage={selectedImage}
+                          onSend={() => { }}
+                          onChangeImage={triggerImageChange}
+                          onLanguageCheck={handleLanguageCheck} // Pass isOpen prop indicating whether the ChatSelector is open
+                          onLanguageSelection={handleLanguageSelection} // Pass the callback function
+
+                        />
+                      )}
+
+                    </div>
+                  ) : (
+                    <div style={{ border: "2px dashed #ccc", padding: "10px", borderRadius: "10px" }}>
+                      אין עדיין תמונה
+                    </div>
                   )}
+                </>
+              )}
 
+
+              {buttonVisible && selectedImage && (
+                <LoadingButtonsTransition
+                  onClick={handleSendImage}
+                  loading={loading}
+                  buttonLabel='שלח'
+                />
+              )}
+              <ActionAlerts showAlert={showUploadAlert} />
+              {responses.length > 0 && (
+                <div className="response-container">
+                  {responses.length > 1 && (
+                    <div>
+                      <button disabled={currentIndex === 0} onClick={() => setCurrentIndex(currentIndex - 1)}>
+                        חזור
+                      </button>
+                      <button disabled={currentIndex === responses.length - 1} onClick={() => setCurrentIndex(currentIndex + 1)}>
+                        הבא
+                      </button>
+                    </div>
+                  )}
+                  <div style={{ marginTop: "30px" }}>
+                    <button className="copy-button" onClick={() => copyToClipboard(responses[currentIndex].value)}>
+                      <ContentCopyIcon />
+                    </button>
+                  </div>
+                  <div onClick={() => sendTextLiked(responses[currentIndex].value)}>
+                    <LikeButton isLiked={mockLike} />
+                  </div>
+                  <div style={{ direction: "rtl", fontWeight: 600 }}>
+                    {responses[currentIndex].value}
+                  </div>
                 </div>
-              ) : (
-                <div style={{ border: "2px dashed #ccc", padding: "10px", borderRadius: "10px" }}>
-                  אין עדיין תמונה
+              )}
+
+              {responseReceived && countGenerateResponse !== 0 && (
+                <div>
+                  <DiscreteSliderValues onChange={handleSliderChange} />
+                  <LoadingButtonsTransition
+                    onClick={handleGenerateResponse}
+                    loading={loading}
+                    buttonLabel='תגובה חדשה'
+                  />
+                  <p>נשארו {countGenerateResponse} החלפות</p>
                 </div>
+              )}
+
+              {responseReceived && countGenerateResponse === 0 && (
+                <div>
+                  <p>נגמרו הבקשות אנא שלח שוב</p>
+                  <LoadingButtonsTransition
+                    onClick={handleSendImage}
+                    loading={loading}
+                    buttonLabel='שלח'
+                  />
+                </div>
+              )}
+
+              {showAuthDialog && (
+                <DialogModal
+                  handleConfirm={handleCloseDialog}
+                  handleCancel={handleCloseDialog}
+                />
               )}
             </>
           )}
-
-
-          {buttonVisible && selectedImage && (
-            <LoadingButtonsTransition
-              onClick={handleSendImage}
-              loading={loading}
-              buttonLabel='שלח'
-            />
-          )}
-          <ActionAlerts showAlert={showUploadAlert} />
-          {responses.length > 0 && (
-            <div className="response-container">
-              {responses.length > 1 && (
-                <div>
-                  <button disabled={currentIndex === 0} onClick={() => setCurrentIndex(currentIndex - 1)}>
-                    חזור
-                  </button>
-                  <button disabled={currentIndex === responses.length - 1} onClick={() => setCurrentIndex(currentIndex + 1)}>
-                    הבא
-                  </button>
-                </div>
-              )}
-              <div style={{ marginTop: "30px" }}>
-                <button className="copy-button" onClick={() => copyToClipboard(responses[currentIndex].value)}>
-                  <ContentCopyIcon />
-                </button>
-              </div>
-              <div onClick={() => sendTextLiked(responses[currentIndex].value)}>
-                <LikeButton isLiked={mockLike} />
-              </div>
-              <div style={{ direction: "rtl", fontWeight: 600 }}>
-                {responses[currentIndex].value}
-              </div>
-            </div>
-          )}
-
-          {responseReceived && countGenerateResponse !== 0 && (
-            <div>
-              <DiscreteSliderValues onChange={handleSliderChange} />
-              <LoadingButtonsTransition
-                onClick={handleGenerateResponse}
-                loading={loading}
-                buttonLabel='תגובה חדשה'
-              />
-              <p>נשארו {countGenerateResponse} החלפות</p>
-            </div>
-          )}
-
-          {responseReceived && countGenerateResponse === 0 && (
-            <div>
-              <p>נגמרו הבקשות אנא שלח שוב</p>
-              <LoadingButtonsTransition
-                onClick={handleSendImage}
-                loading={loading}
-                buttonLabel='שלח'
-              />
-            </div>
-          )}
-
-          {showAuthDialog && (
-            <DialogModal
-              handleConfirm={handleCloseDialog}
-              handleCancel={handleCloseDialog}
-            />
-          )}
-          </>
-        )}
         </div>
 
         {isAuthenticated && (
