@@ -17,6 +17,7 @@ import ChatSelector from './ChatSelector';
 import AddToHomeScreenPrompt from './Shortcut';
 import ChooseLanguage from './ChooseLanguage';
 import Tips from './Tips';
+import HeartSpinner from './SpinnerHeart/HeartSpinner';
 
 
 function HomePage() {
@@ -45,11 +46,22 @@ function HomePage() {
   const [checkLanguage, setCheckLanguage] = useState(false); // State to track local storage loading
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userSideMessages, setUserSideMessages] = useState(false); // State to track local storage loading
-
-  // const [isEnglishPhone, setIsEnglishPhone] = useState(false); // State variable to track phone language preference
-  // const [userAnswer, setUserAnswer] = useState(null); // State variable to track user's answer
-  // const [showImageSelector, setShowImageSelector] = useState(false);
   const fileInputRef = useRef(null);
+  const [isPageLoading, setIsPageLoading] = useState(true);
+
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsPageLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+  
+
+
+
+
 
 
   const handleImageChange = (e) => {
@@ -335,7 +347,7 @@ function HomePage() {
           console.log('API response:', response.data);
 
           setRequestLeft(response.data.request_left);
-
+          setIsPageLoading(false)
           if (response.data.check_terms == null) {
             console.log('Navigating to FirstTimePage because check_terms is null');
             navigate('/FirstTime');
@@ -464,7 +476,6 @@ function HomePage() {
   
   useEffect(() => {
     console.log('userSideMessages:', userSideMessages);
-    
   }, [userSideMessages]);
   
 
@@ -477,8 +488,10 @@ function HomePage() {
       <div className="hero">
         <div className="circle"></div>
         <div className="cool-move">
-          {loadingLocalStorage && <p>Loading...</p>}
-
+        {isPageLoading ? (
+          <HeartSpinner/>
+        ) : (
+          <>
           {!loadingLocalStorage && !isLoading && !isAuthenticated && (
             <div className="journey-message">
               <button style={{ padding: '10px' }} onClick={handleOpenDialog}>בוא נתחיל</button>
@@ -598,6 +611,8 @@ function HomePage() {
               handleCancel={handleCloseDialog}
             />
           )}
+          </>
+        )}
         </div>
 
         {isAuthenticated && (

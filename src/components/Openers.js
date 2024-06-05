@@ -6,6 +6,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { LikeButton } from './LikeButton';
 import SimpleAlert from './AlertMui';
 import { Link } from 'react-router-dom';
+import HeartSpinner from './SpinnerHeart/HeartSpinner';
 
 function Openers() {
   const [openers, setOpeners] = useState([]);
@@ -18,13 +19,24 @@ function Openers() {
   const [mockLike, setMockLike] = useState(false);
   const [showContainer, setShowContainer] = useState(false); // State to track if any category is opened
   const [alertMessage, setAlertMessage] = useState(null);
+  const [isPageLoading, setIsPageLoading] = useState(true);
+
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsPageLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await axios.post("https://web-production-dd6e3.up.railway.app/date/get-categories"); // Fetch category names
         setCategories(response.data);
-
+        setIsPageLoading(false);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -105,47 +117,53 @@ function Openers() {
         <div className="cool-move">
 
           <h1>משפטי פתיחה</h1>
-          <div className="opener-filter">
-            {/* Display category buttons */}
-            {categories.map((category) => (
-              <button key={category} onClick={() => {
-                fetchOpenersByCategory(category);
-                // setShowContainer(true); // Set showContainer to true when a category is opened
-              }}>
-                <b style={{fontStyle: 'oblique'}}>{category}</b>
-              </button>
-            ))}
-          </div>
-          {alertMessage && <SimpleAlert message={alertMessage} />}
-
-          {/* Conditionally render response container based on showContainer state */}
-          {showContainer && categories.length > 0 && (
-            <div className="response-container">
-              <div style={{ marginTop: "30px" }}>
-                <b>
-                <p style={{ color: 'black', fontStyle: 'oblique', direction: "rtl" }}>{openers[currentIndex]}</p>
-                </b>
-                <button className="copy-button" onClick={handleCopyOpener}>
-                  <ContentCopyIcon />
-                </button>
-
-                <div style={{ border: 'none', borderRadius: 'none' }} onClick={sendTextLiked}>
-                  <LikeButton isLiked={mockLike} handleLike={() => setMockLike(!mockLike)} />
-                </div>
+          {isPageLoading ? (
+            <HeartSpinner />
+          ) : (
+            <>
+              <div className="opener-filter">
+                {/* Display category buttons */}
+                {categories.map((category) => (
+                  <button key={category} onClick={() => {
+                    fetchOpenersByCategory(category);
+                    // setShowContainer(true); // Set showContainer to true when a category is opened
+                  }}>
+                    <b style={{ fontStyle: 'oblique' }}>{category}</b>
+                  </button>
+                ))}
               </div>
-              <button onClick={handlePreviousOpener}>קודם</button>
-              <button onClick={handleNextOpener}>הבא</button>
+              {alertMessage && <SimpleAlert message={alertMessage} />}
 
-            </div>
+              {/* Conditionally render response container based on showContainer state */}
+              {showContainer && categories.length > 0 && (
+                <div className="response-container">
+                  <div style={{ marginTop: "30px" }}>
+                    <b>
+                      <p style={{ color: 'black', fontStyle: 'oblique', direction: "rtl" }}>{openers[currentIndex]}</p>
+                    </b>
+                    <button className="copy-button" onClick={handleCopyOpener}>
+                      <ContentCopyIcon />
+                    </button>
 
+                    <div style={{ border: 'none', borderRadius: 'none' }} onClick={sendTextLiked}>
+                      <LikeButton isLiked={mockLike} handleLike={() => setMockLike(!mockLike)} />
+                    </div>
+                  </div>
+                  <button onClick={handlePreviousOpener}>קודם</button>
+                  <button onClick={handleNextOpener}>הבא</button>
+
+                </div>
+
+              )}
+              {showContainer &&
+                <div style={{ marginTop: '40px' }}>
+                  <button>
+                    <Link to='/openersliked'>חזור למועדפים</Link>
+                  </button>
+                </div>}
+
+            </>
           )}
-          {showContainer &&
-          <div style={{marginTop:'40px'}}>
-            <button>
-            <Link to='/openersliked'>חזור למועדפים</Link>
-            </button>
-          </div>}
-
         </div>
       </div>
 

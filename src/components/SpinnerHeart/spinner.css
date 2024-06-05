@@ -1,0 +1,50 @@
+.spinner-heart {
+    position: absolute;
+    height: 24px;
+    width: 24px;
+    top: calc(50% - 12px);
+    left: calc(50% - 12px);
+    transform: rotate(45deg);
+    background-color: pink;
+    animation-name: spinner-heart;
+    animation-duration: 1.2s;
+    animation-iteration-count: infinite;
+  
+    &::before,
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      box-sizing: border-box;
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+      background-color: pink;
+    }
+    
+    &::before {
+      left: -10px;
+    }
+  
+    &::after {
+      top: -10px;
+    }
+  }
+  
+  @keyframes spinner-heart {
+    0% {
+      transform: rotate(45deg) scale(1);
+    }
+    35% {
+      transform: rotate(50deg) scale(1.1);
+    }
+    50% {
+      transform: rotate(45deg) scale(1);
+    }
+    60% {
+      transform: rotate(38deg) scale(1.25);
+    }
+    100% {
+      transform: rotate(45deg) scale(1);
+    }
+  }
