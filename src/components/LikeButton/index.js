@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import "./LikeButton.css"
 
 export const LikeButton = ({ isLiked, handleLike }) => {
+  console.log('isLiked: ',isLiked);
   return (
     <div style={{border:'none',borderRadius:'none',boxShadow:'none',marginLeft:'10px'}} className={`like-btn-container ${isLiked ? "liked" : ""}`}>
       <AnimatePresence>

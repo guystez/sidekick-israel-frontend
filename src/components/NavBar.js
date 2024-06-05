@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import LogoutButton from './Auth0/Logout';
 import { useAuth0 } from "@auth0/auth0-react"; // Import useAuth0 hook
 
-
 const NavBar = ({ menuOpen, setMenuOpen }) => {
-
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth0(); // Get isAuthenticated from useAuth0 hook
 
@@ -21,6 +19,23 @@ const NavBar = ({ menuOpen, setMenuOpen }) => {
     // event.preventDefault();
   };
 
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      // Check if the click occurred outside the menu
+      if (menuOpen && !event.target.closest('.menu') && !event.target.closest('.menu-icon')) {
+        setMenuOpen(false);
+      }
+    };
+
+    // Add event listener for clicks outside the menu
+    document.addEventListener('click', handleOutsideClick);
+
+    // Cleanup function to remove event listener when component unmounts
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, [menuOpen, setMenuOpen]);
+
   return (
     <div className="title-logo-container">
       <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
@@ -28,13 +43,10 @@ const NavBar = ({ menuOpen, setMenuOpen }) => {
       </div>
       {menuOpen && (
         <div className="menu">
-          {/* <Link to="/" onClick={handleLinkClick}>
-            דף הבית
-          </Link> */}
           <Link to="/Main" onClick={handleLinkClick}>
             אפליקציה
           </Link>
-          {isAuthenticated && ( // Render navigation links only if user is authenticated
+          {isAuthenticated && (
             <>
               <Link to="/openers" onClick={handleLinkClick}>
                 משפטי פתיחה
@@ -42,25 +54,20 @@ const NavBar = ({ menuOpen, setMenuOpen }) => {
               <Link to="/openersliked" onClick={handleLinkClick}>
                 מועדפים
               </Link>
-
-              
               <Link to="/forum" onClick={handleLinkClick}>
                 פורום
               </Link>
               <Link to="/settings" onClick={handleLinkClick}>
                 הגדרות
               </Link>
-
               <LogoutButton />
             </>
           )}
         </div>
       )}
       <h1 onClick={() => { handleNavigate(); handleLinkClick(); }} style={{ cursor: 'pointer' }}>ChatMates.AI</h1>
-
     </div>
   );
 };
-
 
 export default NavBar;

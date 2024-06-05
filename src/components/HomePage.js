@@ -48,6 +48,7 @@ function HomePage() {
   const [userSideMessages, setUserSideMessages] = useState(false); // State to track local storage loading
   const fileInputRef = useRef(null);
   const [isPageLoading, setIsPageLoading] = useState(true);
+  const [isFlashing, setIsFlashing] = useState(false);
 
 
   useEffect(() => {
@@ -58,11 +59,15 @@ function HomePage() {
     return () => clearTimeout(timer);
   }, []);
   
-
-
-
-
-
+  useEffect(() => {
+    if (isFlashing) {
+      const timer = setTimeout(() => {
+        setIsFlashing(false); // Stop flashing after 5 seconds
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [isFlashing]);
+  
 
   const handleImageChange = (e) => {
     if (!isAuthenticated) {
@@ -80,6 +85,8 @@ function HomePage() {
       setGeneratedResponse(''); // Reset generatedResponse
       setResponseFromServer(''); // Reset responseFromServer
       // setShowImageSelector(false);
+      setIsFlashing(true); // Start flashing the button
+
       console.log('Image changed');
 
 
@@ -127,7 +134,8 @@ function HomePage() {
           .then(response => {
             if (response.status === 200) {
               console.log("Text unliked successfully:", response.data);
-              alert('deleted')
+              alert('נמחק')
+              setMockLike(false)
             } else {
               console.error("Unexpected response status:", response.status);
               alert("Unexpected response status: " + response.status); // Show alert for unexpected response status
@@ -138,12 +146,14 @@ function HomePage() {
             alert("בעיה בשליחת אימייל"); // Show alert if there's an error
           });
       } else {
+        setMockLike(true)
         // If the text is not liked, send a POST request to like it
         axios.post(url, { email: userEmail, text: textToLike })
           .then(response => {
             if (response.status === 200) {
               console.log("Text liked successfully:", response.data);
-              alert('liked')
+              alert('נשמר במועדפים')
+              
             } else {
               if (response.status === 409) {
                 console.log("Text already liked by the user:", response.data);
@@ -417,7 +427,7 @@ function HomePage() {
   useEffect(() => {
     if (window.location.href.includes("verify")) {
       // Show alert for verification required
-      alert("Please verify/check your email address and login again.");
+      alert("אנא בדוק את האימייל שוב");
       setShowAuthDialog(true);
     }
     if (isAuthenticated) {
@@ -501,8 +511,10 @@ function HomePage() {
           {isAuthenticated && termsAccepted && requestLeft !== 0 && (
             <>
               <p style={{ direction: "rtl" }}>{requestLeft} <img src={coin} style={{ width: '20px' }} /> נשארו</p>
-              <Tips/>
+              <div className={isFlashing ? 'flashing' : ''}>
+              <Tips />
               <div>
+              </div>
                 {showPopup && <PopUpDialog handleCancel={() => setShowAuthDialog(false)} />} {/* Render the popup dialog if showPopup is true */}
               </div>
 

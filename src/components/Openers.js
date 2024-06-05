@@ -89,28 +89,42 @@ function Openers() {
   const sendTextLiked = () => {
     if (isAuthenticated) {
       const userEmail = user.email;
-
-      axios.post("https://web-production-dd6e3.up.railway.app/date/openers-liked", { email: userEmail, opener: openers[currentIndex] })
-        .then(response => {
-          console.log("Email sent successfully:");
-          setAlertMessage("Like Successful");
-
-        })
-        .catch(error => {
-          if (error.response && error.response.status === 303) {
-            console.error("Request failed with status code 303");
-            setAlertMessage("You already like that"); // Set message for error with status code 303
-          } else {
-            console.error("Error sending email:", error);
-            setAlertMessage("Error sending email!"); // Set general error message
-          }
-        });
-    } else if (!isAuthenticated) {
+      const url = "https://web-production-dd6e3.up.railway.app/date/openers-liked";
+      if (mockLike) {
+        setMockLike(false)
+        axios.delete(url, { params: { email: userEmail, opener: openers[currentIndex] } })
+          .then(response => {
+            console.log("Opener unliked successfully:");
+            setAlertMessage("Unlike Successful");
+          })
+          .catch(error => {
+            console.error("Error unliking opener:", error);
+            setAlertMessage("Error unliking opener!"); // Set general error message
+          });
+      } else {
+        setMockLike(true)
+        axios.post(url, { email: userEmail, opener: openers[currentIndex] })
+          .then(response => {
+            console.log("Email sent successfully:");
+            setAlertMessage("Like Successful");
+          })
+          .catch(error => {
+            if (error.response && error.response.status === 303) {
+              console.error("Request failed with status code 303");
+              setAlertMessage("You already like that"); // Set message for error with status code 303
+            } else {
+              console.error("Error sending email:", error);
+              setAlertMessage("Error sending email!"); // Set general error message
+            }
+          });
+      }
+    } else {
       console.error("User is not authenticated");
       // Handle case where user is not authenticated
     }
   };
-
+  
+  
   return (
     <div className="custom-home-page">
       <div className="hero">

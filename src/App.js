@@ -2,7 +2,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import Openers from './components/Openers';
-import OpenersLiked from './components/OpenersLiked';
+import OpenersLiked from './components/Favorites';
 import TextLiked from './components/TextedLiked';
 import Navbar from './components/NavBar';
 import React, { useState } from 'react';
