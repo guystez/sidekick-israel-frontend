@@ -427,12 +427,12 @@ color: #fff;
   width: 100%;
 }
 .sub-login .btn-login{
-  animation: buttonLeft 2s 0.1s forwards,buttonBelow .5s 2.1s forwards;
+  animation: buttonLeft 0.5s 0.1s forwards,buttonBelow .5s 1.1s forwards;
   opacity:0;
   display: block;
 }
 .sub-login .btn-signup{
-  animation: buttonRight 2s 0.1s forwards,buttonUp .5s 2.1s forwards;
+  animation: buttonRight 0.5s 0.1s forwards,buttonUp .5s 1.1s forwards;
   opacity:0;
   display: block;
 }

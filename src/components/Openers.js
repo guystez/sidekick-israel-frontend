@@ -1,26 +1,23 @@
-import axios from 'axios';
+import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useState, useEffect } from 'react';
-import DialogModal from './Dialogs/DialogLogin'; // Import the DialogModal component
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { LikeButton } from './LikeButton';
-import SimpleAlert from './AlertMui';
-import { Link } from 'react-router-dom';
-import HeartSpinner from './SpinnerHeart/HeartSpinner';
+import { useState, useEffect } from "react";
+import DialogModal from "./Dialogs/DialogLogin"; // Import the DialogModal component
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { LikeButton } from "./LikeButton";
+import SimpleAlert from "./AlertMui";
+import { Link } from "react-router-dom";
+import HeartSpinner from "./SpinnerHeart/HeartSpinner";
 
 function Openers() {
   const [openers, setOpeners] = useState([]);
-  // const [openerType, setOpenerType] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const { isAuthenticated, user } = useAuth0();
   const [categories, setCategories] = useState([]); // State to store category names
-  // const [liked, setLiked] = useState(false); // State variable to track if the opener is liked
   const [showAuthDialog, setShowAuthDialog] = useState(false); // State variable to manage whether the auth dialog is open
   const [mockLike, setMockLike] = useState(false);
   const [showContainer, setShowContainer] = useState(false); // State to track if any category is opened
   const [alertMessage, setAlertMessage] = useState(null);
   const [isPageLoading, setIsPageLoading] = useState(true);
-
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -30,11 +27,12 @@ function Openers() {
     return () => clearTimeout(timer);
   }, []);
 
-
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.post("https://web-production-dd6e3.up.railway.app/date/get-categories"); // Fetch category names
+        const response = await axios.post(
+          "https://web-production-dd6e3.up.railway.app/date/get-categories"
+        ); // Fetch category names
         setCategories(response.data);
         setIsPageLoading(false);
       } catch (error) {
@@ -53,14 +51,17 @@ function Openers() {
     }
 
     try {
-      const response = await axios.post("https://web-production-dd6e3.up.railway.app/date/get-categories-by-name", { category_name: categoryName });
+      const response = await axios.post(
+        "https://web-production-dd6e3.up.railway.app/date/get-categories-by-name",
+        { category_name: categoryName }
+      );
       setOpeners(response.data);
 
       if (response.data.length > 0) {
         // setOpenerType(response.data[0].text);
         setMockLike(false);
         setAlertMessage(null);
-        setShowContainer(true)
+        setShowContainer(true);
       }
     } catch (error) {
       console.error("Error fetching openers by category:", error);
@@ -74,16 +75,18 @@ function Openers() {
   };
 
   const handlePreviousOpener = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + openers.length) % openers.length || 0);
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + openers.length) % openers.length || 0
+    );
     setMockLike(false);
     setAlertMessage(null);
   };
 
-
   const handleCopyOpener = () => {
-    navigator.clipboard.writeText(openers[currentIndex] || "")
+    navigator.clipboard
+      .writeText(openers[currentIndex] || "")
       .then(() => setAlertMessage("הועתק"))
-      .catch((err) => console.error('לא ניתן להעתיק: ', err));
+      .catch((err) => console.error("לא ניתן להעתיק: ", err));
   };
 
   const sendTextLiked = () => {
@@ -91,24 +94,28 @@ function Openers() {
       const userEmail = user.email;
       const url = "https://web-production-dd6e3.up.railway.app/date/openers-liked";
       if (mockLike) {
-        setMockLike(false)
-        axios.delete(url, { params: { email: userEmail, opener: openers[currentIndex] } })
-          .then(response => {
+        setMockLike(false);
+        axios
+          .delete(url, {
+            params: { email: userEmail, opener: openers[currentIndex] },
+          })
+          .then((response) => {
             console.log("Opener unliked successfully:");
             setAlertMessage("נמחק");
           })
-          .catch(error => {
+          .catch((error) => {
             console.error("Error unliking opener:", error);
             setAlertMessage("בעיה בשליחה"); // Set general error message
           });
       } else {
-        setMockLike(true)
-        axios.post(url, { email: userEmail, opener: openers[currentIndex] })
-          .then(response => {
+        setMockLike(true);
+        axios
+          .post(url, { email: userEmail, opener: openers[currentIndex] })
+          .then((response) => {
             console.log("Email sent successfully:");
             setAlertMessage("לייק בוצע");
           })
-          .catch(error => {
+          .catch((error) => {
             if (error.response && error.response.status === 303) {
               console.error("Request failed with status code 303");
               setAlertMessage("כבר אהבת את זה"); // Set message for error with status code 303
@@ -123,13 +130,11 @@ function Openers() {
       // Handle case where user is not authenticated
     }
   };
-  
-  
+
   return (
     <div className="custom-home-page">
       <div className="hero">
         <div className="cool-move">
-
           <h1>משפטי פתיחה</h1>
           {isPageLoading ? (
             <HeartSpinner />
@@ -138,11 +143,14 @@ function Openers() {
               <div className="opener-filter">
                 {/* Display category buttons */}
                 {categories.map((category) => (
-                  <button key={category} onClick={() => {
-                    fetchOpenersByCategory(category);
-                    // setShowContainer(true); // Set showContainer to true when a category is opened
-                  }}>
-                    <b style={{ fontStyle: 'oblique' }}>{category}</b>
+                  <button
+                    key={category}
+                    onClick={() => {
+                      fetchOpenersByCategory(category);
+                      // setShowContainer(true); // Set showContainer to true when a category is opened
+                    }}
+                  >
+                    <b style={{ fontStyle: "oblique" }}>{category}</b>
                   </button>
                 ))}
               </div>
@@ -153,29 +161,41 @@ function Openers() {
                 <div className="response-container">
                   <div style={{ marginTop: "30px" }}>
                     <b>
-                      <p style={{ color: 'black', fontStyle: 'oblique', direction: "rtl" }}>{openers[currentIndex]}</p>
+                      <p
+                        style={{
+                          color: "black",
+                          fontStyle: "oblique",
+                          direction: "rtl",
+                        }}
+                      >
+                        {openers[currentIndex]}
+                      </p>
                     </b>
                     <button className="copy-button" onClick={handleCopyOpener}>
                       <ContentCopyIcon />
                     </button>
 
-                    <div style={{ border: 'none', borderRadius: 'none' }} onClick={sendTextLiked}>
-                      <LikeButton isLiked={mockLike} handleLike={() => setMockLike(!mockLike)} />
+                    <div
+                      style={{ border: "none", borderRadius: "none" }}
+                      onClick={sendTextLiked}
+                    >
+                      <LikeButton
+                        isLiked={mockLike}
+                        handleLike={() => setMockLike(!mockLike)}
+                      />
                     </div>
                   </div>
                   <button onClick={handlePreviousOpener}>קודם</button>
                   <button onClick={handleNextOpener}>הבא</button>
-
                 </div>
-
               )}
-              {showContainer &&
-                <div style={{ marginTop: '40px' }}>
+              {showContainer && (
+                <div style={{ marginTop: "40px" }}>
                   <button>
-                    <Link to='/openersliked'>חזור למועדפים</Link>
+                    <Link to="/openersliked">חזור למועדפים</Link>
                   </button>
-                </div>}
-
+                </div>
+              )}
             </>
           )}
         </div>
@@ -190,6 +210,6 @@ function Openers() {
       )}
     </div>
   );
-};
+}
 
 export default Openers;
