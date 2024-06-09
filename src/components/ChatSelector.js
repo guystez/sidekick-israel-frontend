@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Slide from "@mui/material/Slide";
 import Button from "@mui/material/Button";
-import TouchIcon from "./touch.png";
+import TouchIcon from "./touch2.png";
 import "./Firsttime.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";

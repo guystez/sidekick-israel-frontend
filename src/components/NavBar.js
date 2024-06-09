@@ -65,7 +65,7 @@ const NavBar = ({ menuOpen, setMenuOpen }) => {
           )}
         </div>
       )}
-      <h1 onClick={() => { handleNavigate(); handleLinkClick(); }} style={{ cursor: 'pointer' }}>ChatMates.AI</h1>
+      <h1 onClick={() => { handleNavigate(); handleLinkClick(); }} style={{ fontFamily: '"Secular One", sans-serif',cursor: 'pointer' }}>ChatMates.AI</h1>
     </div>
   );
 };

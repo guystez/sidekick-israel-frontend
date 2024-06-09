@@ -1,3 +1,13 @@
+.my_p{
+  position: absolute;
+  height: 24px;
+  width: 24px;
+  top: calc(55% - 12px);
+  left: calc(45% - 12px);
+}
+
+
+
 .spinner-heart {
     position: absolute;
     height: 24px;

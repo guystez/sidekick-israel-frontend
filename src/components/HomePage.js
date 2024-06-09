@@ -55,7 +55,7 @@ function HomePage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsPageLoading(false);
-    }, 2000);
+    }, 2300);
 
     return () => clearTimeout(timer);
   }, []);
@@ -88,7 +88,7 @@ function HomePage() {
       setResponseFromServer(""); // Reset responseFromServer
       // setShowImageSelector(false);
       setIsFlashing(true); // Start flashing the button
-
+      setResponses([])
       console.log("Image changed");
     }
   };
@@ -359,7 +359,7 @@ function HomePage() {
     const checkUserAnswer = async () => {
       
       if (isAuthenticated && user) {
-        setIsPageLoading(false)
+        // setIsPageLoading(false)
         // Check if user is authenticated and user object is not undefined
         try {
           const response = await axios.get(
@@ -605,7 +605,9 @@ function HomePage() {
                         borderRadius: "10px",
                       }}
                     >
+                      <b>
                       אין עדיין תמונה
+                      </b>
                     </div>
                   )}
                 </>
@@ -618,8 +620,10 @@ function HomePage() {
                   buttonLabel="שלח"
                 />
               )}
+
               {alertMessage && <SimpleAlert message={alertMessage} />}
               <ActionAlerts showAlert={showUploadAlert} />
+
               {responses.length > 0 && (
                 <div className="response-container">
                   {responses.length > 1 && (

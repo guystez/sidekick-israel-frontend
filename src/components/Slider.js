@@ -66,7 +66,7 @@ const CustomizedSlider = ({ onChange }) => {
           color: "transparent",
           position: 'relative',
           zIndex: 2, // Ensure the slider components are above the background image
-          marginBottom: 0, 
+          marginBottom: 0,
           marginTop:'10px',
           "& .MuiSlider-thumb": {
             width: 35,
@@ -76,6 +76,7 @@ const CustomizedSlider = ({ onChange }) => {
             backgroundPosition: "center",
             "&:focus, &:hover, &$active": {
               boxShadow: "none",
+              
               
             },
           },
@@ -94,6 +95,7 @@ const CustomizedSlider = ({ onChange }) => {
          
           "& .MuiSlider-markLabel": {
             color: "black", // Adjust the label color if needed
+            fontFamily: '"Secular One", sans-serif',
           },
         }}
         ThumbComponent={CustomThumbIcon}

@@ -23,7 +23,7 @@ export default function UploadFile({ onChange,fileInputRef}) {
   };
 
   return (
-    <Button style={{marginTop:'10px',marginBottom:'10px'}}
+    <Button style={{marginTop:'10px',marginBottom:'10px',fontSize:'23px',fontFamily: '"Secular One", sans-serif'}}
       component="label"
       role={undefined}
       variant="contained"

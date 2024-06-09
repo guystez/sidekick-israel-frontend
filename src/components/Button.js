@@ -17,8 +17,8 @@ export default function ButtonSizes() {
 
     return (
         <Box sx={{ '& button': { m: 1 }, bottom: 0, left: 0 }}>
-            <div>
-                <Button variant="contained" size="small" onClick={handleButtonClick}>
+            <div >
+                <Button style={{fontFamily: '"Secular One", sans-serif'}} variant="contained" size="small" onClick={handleButtonClick}>
                     FeedBack
                 </Button>
                 <DialogFeedBack open={showAuthDialog} onClose={() => setShowAuthDialog(false)} handleCancel={handleClose} />
