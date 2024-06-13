@@ -19,6 +19,7 @@
     animation-name: spinner-heart;
     animation-duration: 1.2s;
     animation-iteration-count: infinite;
+    font-style: normal !important;
   
     &::before,
     &::after {
