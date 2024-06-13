@@ -69,7 +69,6 @@ html, body {
   align-items: flex-end;
   margin: 0;
   border-radius: 0;
-  
   overflow: hidden;
   margin-top: 10px;
 }
@@ -164,6 +163,7 @@ html, body {
   /* font-family: "Secular One", sans-serif; */
   font-family: "Secular One", sans-serif;
   font-style: normal;
+  
 }
 
 .cool-move input[type="file"] {

@@ -525,7 +525,7 @@ function HomePage() {
         <div className="circle"></div>
         <div className="cool-move">
           {isPageLoading ? (
-            <div style={{fontStyle:'normal'}}>
+            <div style={{fontStyle:'normal',fontFamily:'inherit'}}>
             <HeartSpinner />
             </div>
           ) : (
