@@ -525,7 +525,9 @@ function HomePage() {
         <div className="circle"></div>
         <div className="cool-move">
           {isPageLoading ? (
+            <div style={{fontStyle:'normal'}}>
             <HeartSpinner />
+            </div>
           ) : (
             <>
               {!loadingLocalStorage && !isLoading && !isAuthenticated && (
@@ -697,12 +699,12 @@ function HomePage() {
         </div>
 
         {isAuthenticated && (
-          <div style={{ bottom: "0px", marginTop: "auto" }}>
-            <Link to="/privacy-policy" style={{ marginRight: "10px" }}>
+          <div style={{ bottom: "0px", marginTop: "auto", fontSize:'large'}}>
+            <Link to="/privacy-policy" style={{ marginRight: "10px",color:'black' }}>
               פרטיות
             </Link>{" "}
             |{" "}
-            <Link to="/terms" style={{ marginLeft: "10px" }}>
+            <Link to="/terms" style={{ marginLeft: "10px",color:'black' }}>
               תנאים
             </Link>
             <ButtonSizes handleClick={handleOpenFeedback} />

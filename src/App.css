@@ -74,7 +74,12 @@ html, body {
   margin-top: 10px;
 }
 
-
+@media (min-width: 768px) { /* Adjust this breakpoint based on your design needs */
+  .hero {
+    align-items: stretch; /* Change align-items to stretch on larger screens */
+    flex-direction: column;
+  }
+}
 .hero::after {
   content: '';
   position: absolute;
