@@ -4,7 +4,7 @@ function HeartSpinner() {
   return (
     <div>
     <p className='my_p'>Loading...</p>
-    <div class="spinner-heart" style={{fontStyle:'normal',fontFamily:'inherit'}}>
+    <div class="spinner-heart" style={{fontStyle:'normal',fontFamily:'initial'}}>
 
     </div>
     </div> 

@@ -47,7 +47,8 @@ html, body {
 
   color: #333;
   /* background-color: #7c69e6; */
-  background-color: #d6b2b2;
+  /* background-color: #d6b2b2; */
+  background-color: #58aaed;
   padding: 20px; /* Add padding for content spacing */
   box-sizing: border-box; /* Ensures padding and border are included in width/height */
   width: 100%;

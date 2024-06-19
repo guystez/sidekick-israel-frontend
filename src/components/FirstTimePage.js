@@ -51,7 +51,7 @@ function FirstTimePage() {
     return (
 
         <div className="custom-home-page">
-            <div className="hero">
+            <div className="hero" style={{alignItems:'center'}}>
                 <div className="cool-move" >
                     <h1> 😍ברוכים הבאים</h1>
 
