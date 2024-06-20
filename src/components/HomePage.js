@@ -54,7 +54,7 @@ function HomePage() {
  
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsPageLoading(false);
+      setIsPageLoading(true);
     }, 2300);
 
     return () => clearTimeout(timer);
@@ -531,9 +531,9 @@ function HomePage() {
           ) : (
             <>
               {!loadingLocalStorage && !isLoading && !isAuthenticated && (
-                <div className="journey-message">
+                <div>
                   <button
-                    style={{ padding: "10px" }}
+                    style={{ padding: "10px"}}
                     onClick={handleOpenDialog}
                   >
                     בוא נתחיל

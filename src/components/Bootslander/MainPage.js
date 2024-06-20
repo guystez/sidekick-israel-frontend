@@ -271,44 +271,48 @@ function MainPage() {
             <div className="faq-list">
               <ul>
                 <li data-aos="fade-up">
-                  <i className="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" className="collapse" data-bs-target="#faq-list-1">מדובר על מנוי המתחדש אוטומטית או מנוי חודשי? <i className="bx bx-chevron-down icon-show"></i><i className="bx bx-chevron-up icon-close"></i></a>
+                  {/* <i className="bx bx-help-circle icon-help"></i>  */}
+                  <a data-bs-toggle="collapse" className="collapse" data-bs-target="#faq-list-1">מדובר על מנוי המתחדש אוטומטית או מנוי חודשי? <i className="bx bx-chevron-down icon-show"></i><i className="bx bx-chevron-up icon-close"></i></a>
                   <div id="faq-list-1" className="collapse show" data-bs-parent=".faq-list">
                     <p>
                       ממש לא. התשלום הינו עבור כמות השימושים שאותם תוכל לנצל בזמנך וכרצונך. אתה תחוייב רק על כמות השימושים שרכשת. אותם ניתן לרכוש באופן חד פעמי. הכמות אינה מתחדשת אוטומטית ויש לחדש אותה בעצמך. וככלל - אין תשלומים אוטומטיים או חודשיים בשירות שלנו :).
                     </p>
                   </div>
                 </li>
-                <li data-aos="fade-up" data-aos-delay="100">
-                  <i className="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-2" className="collapsed">למה הכוונה שימוש בAI ללא הגבלה? <i className="bx bx-chevron-down icon-show"></i><i className="bx bx-chevron-up icon-close"></i></a>
-                  <div id="faq-list-2" className="collapse" data-bs-parent=".faq-list">
+                 <li data-aos="fade-up" data-aos-delay="100">
+                  {/* <i className="bx bx-help-circle icon-help"></i> */}
+                   <a data-bs-toggle="collapse" data-bs-target="#faq-list-2" className="collapsed">למה הכוונה שימוש בAI ללא הגבלה? <i className="bx bx-chevron-down icon-show"></i><i className="bx bx-chevron-up icon-close"></i></a>
+                  <div id="faq-list-2" className="collapse show" data-bs-parent=".faq-list">
                     <p>
                       העלאת תצלום מסך חדש ושליחתו למערכת, נחשבת בתור שימוש. אבל אם תלחץ על תגובה חדשה לאותה תמונה, תוכל לקבל תגובות חדשות מהמערכת AI שלנו ללא הגבלה.
                     </p>
                   </div>
                 </li>
                 <li data-aos="fade-up" data-aos-delay="200">
-                  <i className="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-3" className="collapsed">האם ניתן לבטל כמות שימושים שרכשתי? <i className="bx bx-chevron-down icon-show"></i><i className="bx bx-chevron-up icon-close"></i></a>
-                  <div id="faq-list-3" className="collapse" data-bs-parent=".faq-list">
+                  {/* <i className="bx bx-help-circle icon-help"></i> */}
+                   <a data-bs-toggle="collapse" data-bs-target="#faq-list-3" className="collapsed">האם ניתן לבטל כמות שימושים שרכשתי? <i className="bx bx-chevron-down icon-show"></i><i className="bx bx-chevron-up icon-close"></i></a>
+                  <div id="faq-list-3" className="collapse show" data-bs-parent=".faq-list">
                     <p>
-                      אנחנו מבטיחים לעשות כל שביכולתינו כדי לשמור על שביעות רצונך. ואנחנו כן נעשה החזר כספי במידת הצורך . ניתן לפנות אלינו בכתובת ״chat mates isaer"
+                      אנחנו מבטיחים לעשות כל שביכולתינו כדי לשמור על שביעות רצונך. ואנחנו כן נעשה החזר כספי במידת הצורך . ניתן לפנות אלינו בכתובת ״aichatmates@gmail.com"
                     </p>
                   </div>
                 </li>
                 <li data-aos="fade-up" data-aos-delay="300">
-                  <i className="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-4" className="collapsed">איך ניתן לדבר עם נציג? <i className="bx bx-chevron-down icon-show"></i><i className="bx bx-chevron-up icon-close"></i></a>
-                  <div id="faq-list-4" className="collapse" data-bs-parent=".faq-list">
+                  {/* <i className="bx bx-help-circle icon-help"></i> */}
+                   <a data-bs-toggle="collapse" data-bs-target="#faq-list-4" className="collapsed">איך ניתן לדבר עם נציג? <i className="bx bx-chevron-down icon-show"></i><i className="bx bx-chevron-up icon-close"></i></a>
+                  <div id="faq-list-4" className="collapse show" data-bs-parent=".faq-list">
                     <p>
-                      ניתן לפנות אלינו בכל יום לכתובת המייל  : 345345345345
+                      ניתן לפנות אלינו בכל יום לכתובת המייל  : aichatmates@gmail.com
                     </p>
                   </div>
                 </li>
-                <li data-aos="fade-up" data-aos-delay="400">
+                {/* <li data-aos="fade-up" data-aos-delay="400">
                   <i className="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-5" className="collapsed"> <i className="bx bx-chevron-down icon-show"></i><i className="bx bx-chevron-up icon-close"></i></a>
                   <div id="faq-list-5" className="collapse" data-bs-parent=".faq-list">
                     <p>
                     </p>
                   </div>
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>
@@ -325,21 +329,21 @@ function MainPage() {
                   <div className="address">
                     <i className="bi bi-geo-alt"></i>
                     <h4>Location:</h4>
-                    <p>A108 Adam Street, New York, NY 535022</p>
+                    <p>Tel Aviv Israel</p>
                   </div>
                   <div className="email">
                     <i className="bi bi-envelope"></i>
                     <h4>Email:</h4>
-                    <p>info@example.com</p>
+                    <p>aichatmates@gmail.com</p>
                   </div>
-                  <div className="phone">
+                  {/* <div className="phone">
                     <i className="bi bi-phone"></i>
                     <h4>Call:</h4>
                     <p>+1 5589 55488 55s</p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
-              <div className="col-lg-8 mt-5 mt-lg-0" data-aos="fade-left" data-aos-delay="200">
+              {/* <div className="col-lg-8 mt-5 mt-lg-0" data-aos="fade-left" data-aos-delay="200">
                 <form action="forms/contact.php" method="post" role="form" className="php-email-form">
                   <div className="row">
                     <div className="col-md-6 form-group">
@@ -362,7 +366,7 @@ function MainPage() {
                   </div>
                   <div className="text-center"><button type="submit">Send Message</button></div>
                 </form>
-              </div>
+              </div> */}
             </div>
           </div>
         </section>
@@ -378,29 +382,29 @@ function MainPage() {
                   
                   
                   <p>
-                    <strong>Phone:</strong> +1 5589 55488 55<br />
-                    <strong>Email:</strong> info@example.com<br />
+                    {/* <strong>Phone:</strong> +1 5589 55488 55<br /> */}
+                    <strong>Email:</strong> aichatmates@gmail.com<br />
                   </p>
-                  <div className="social-links mt-3">
+                  {/* <div className="social-links mt-3">
                     <a href="#" className="twitter"><i className="bx bxl-twitter"></i></a>
                     <a href="#" className="facebook"><i className="bx bxl-facebook"></i></a>
                     <a href="#" className="instagram"><i className="bx bxl-instagram"></i></a>
                     <a href="#" className="google-plus"><i className="bx bxl-skype"></i></a>
                     <a href="#" className="linkedin"><i className="bx bxl-linkedin"></i></a>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="col-lg-2 col-md-6 footer-links">
                 <h4>Useful Links</h4>
                 <ul>
                   <li><i className="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-                  <li><i className="bx bx-chevron-right"></i> <a href="#">About us</a></li>
-                  <li><i className="bx bx-chevron-right"></i> <a href="#">Services</a></li>
+                  {/* <li><i className="bx bx-chevron-right"></i> <a href="#">About us</a></li> */}
+                  {/* <li><i className="bx bx-chevron-right"></i> <a href="#">Services</a></li> */}
                   <li><i className="bx bx-chevron-right"></i> <Link to="/terms">Terms of service</Link></li>
-                  <li><i className="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+                  <li><i className="bx bx-chevron-right"></i> <Link to="/privacy-policy">Privacy policy</Link></li>
                 </ul>
               </div>
-              <div className="col-lg-2 col-md-6 footer-links">
+              {/* <div className="col-lg-2 col-md-6 footer-links">
                 <h4>Our Services</h4>
                 <ul>
                   <li><i className="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
@@ -409,7 +413,7 @@ function MainPage() {
                   <li><i className="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
                   <li><i className="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
                 </ul>
-              </div>
+              </div> */}
               
             </div>
           </div>
