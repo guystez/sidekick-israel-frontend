@@ -228,7 +228,7 @@ function HomePage() {
           setResponseReceived(true);
           setLoading(false);
           setButtonVisible(false);
-          setCountGenerateResponse(2);
+          setCountGenerateResponse(5);
         }
       } else {
         // If the response status is not 200, retry the request
