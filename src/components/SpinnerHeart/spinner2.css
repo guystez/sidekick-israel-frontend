@@ -1,4 +1,4 @@
-.container{
+.container_heart{
     position: absolute;
     /* top: 50%;
     left: 50%; */
@@ -6,7 +6,7 @@
     left: calc(50% - 12px);
     transform: translate(-50%, -50%);
   }
-  .container .preloader{
+  .container_heart .preloader{
     /* animation: rotate 2.3s cubic-bezier(0.75, 0, 0.5, 1) infinite; */
     position: absolute;
     /* top: 50%;

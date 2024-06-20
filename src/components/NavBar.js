@@ -1,12 +1,39 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import LogoutButton from './Auth0/Logout';
 import { useAuth0 } from "@auth0/auth0-react"; // Import useAuth0 hook
+import Icon from "../logo_white_text.png";
+import coin from "../coin.png";
 
 const NavBar = ({ menuOpen, setMenuOpen }) => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth0(); // Get isAuthenticated from useAuth0 hook
+  const [savedRequestLeft, setSavedRequestLeft] = useState(localStorage.getItem('request_left'));
+
+  useEffect(() => {
+    const fetchRequestLeft = () => {
+      const requestLeft = localStorage.getItem('request_left');
+      console.log('useEffect: savedRequestLeft:', requestLeft);
+      if (requestLeft !== null) {
+        setSavedRequestLeft(requestLeft);
+      }
+    };
+
+    // Initial fetch
+    fetchRequestLeft();
+
+    // Set up event listener for custom event
+    const handleRequestLeftUpdated = () => {
+      fetchRequestLeft();
+    };
+    window.addEventListener('requestLeftUpdated', handleRequestLeftUpdated);
+
+    // Clean up on component unmount
+    return () => {
+      window.removeEventListener('requestLeftUpdated', handleRequestLeftUpdated);
+    };
+  }, []);
 
   const handleNavigate = () => {
     navigate("/Main"); // Navigate to the home page
@@ -65,7 +92,15 @@ const NavBar = ({ menuOpen, setMenuOpen }) => {
           )}
         </div>
       )}
-      <h1 onClick={() => { handleNavigate(); handleLinkClick(); }} style={{ fontFamily: '"Secular One", sans-serif',cursor: 'pointer' }}>ChatMates.AI</h1>
+      {/* <h1 onClick={() => { handleNavigate(); handleLinkClick(); }} style={{ fontFamily: '"Secular One", sans-serif',cursor: 'pointer', fontSize:'larger',marginTop:'5px' }}>ChatMates.AI</h1> */}
+      <div>
+      <img src={Icon} style={{width:'70px',height:'60px'}} onClick={() => { handleNavigate(); handleLinkClick(); }}></img>
+      </div>
+      <div style={{fontFamily:'"Secular One", sans-serif',fontSize:'x-large',position:'absolute',left:'0',marginLeft:'10px'}}>
+        <img src={coin}style={{ width: "30px", boxShadow: 'none',marginRight:'10px',marginBottom:'5px' }}></img>
+        {savedRequestLeft}
+        
+        </div>      
     </div>
   );
 };

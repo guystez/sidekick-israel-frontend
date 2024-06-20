@@ -5,7 +5,7 @@ function HeartSpinner() {
     <div>
     <p className='my_p'>Loading...</p>
     {/* <div class="spinner-heart" style={{fontStyle:'normal',fontFamily:'initial'}}> */}
-    <div class="container">
+    <div class="container_heart">
       <div class="preloader">
         <span></span>
         <span></span>

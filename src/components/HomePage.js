@@ -28,7 +28,7 @@ function HomePage() {
   const [generatedResponse, setGeneratedResponse] = useState("");
   const [responseReceived, setResponseReceived] = useState(false);
   const [responses, setResponses] = useState([]);
-  const { isAuthenticated, user, isLoading ,loginWithRedirect} = useAuth0();
+  const { isAuthenticated, user, isLoading, loginWithRedirect } = useAuth0();
   const [loading, setLoading] = useState(false);
   const [showUploadAlert, setShowUploadAlert] = useState(false); // State variable to control the visibility of the upload alert
   const [buttonVisible, setButtonVisible] = useState(true); // New state variable to track button visibility
@@ -51,7 +51,7 @@ function HomePage() {
   const [isFlashing, setIsFlashing] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
 
- 
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsPageLoading(false);
@@ -73,7 +73,7 @@ function HomePage() {
 
   const handleImageChange = (e) => {
     if (!isAuthenticated) {
-      console.log("User is not authenticated. Opening auth dialog...");
+      // console.log("User is not authenticated. Opening auth dialog...");
       setShowAuthDialog(true); // Open the auth dialog if user is not authenticated
       return;
     }
@@ -89,7 +89,7 @@ function HomePage() {
       // setShowImageSelector(false);
       setIsFlashing(true); // Start flashing the button
       setResponses([])
-      console.log("Image changed");
+      // console.log("Image changed");
     }
   };
 
@@ -133,7 +133,7 @@ function HomePage() {
           .delete(url, { params: { email: userEmail, text: textToLike } })
           .then((response) => {
             if (response.status === 200) {
-              console.log("Text unliked successfully:", response.data);
+              // console.log("Text unliked successfully:", response.data);
               // alert('נמחק')
 
               setMockLike(false);
@@ -153,11 +153,11 @@ function HomePage() {
           .post(url, { email: userEmail, text: textToLike })
           .then((response) => {
             if (response.status === 200) {
-              console.log("Text liked successfully:", response.data);
+              // console.log("Text liked successfully:", response.data);
               // alert('נשמר במועדפים')
             } else {
               if (response.status === 409) {
-                console.log("Text already liked by the user:", response.data);
+                // console.log("Text already liked by the user:", response.data);
                 // alert("כבר אהבת את זה"); // Show alert if text is already liked by the user
               } else {
                 console.error("Unexpected response status:", response.status);
@@ -217,14 +217,18 @@ function HomePage() {
             { type: "server", value: response.data.final_answer },
           ]);
           setCurrentIndex(responses.length);
-          console.log(response.data.final_answer, "@@@@@@@@@");
+          // console.log(response.data.final_answer, "@@@@@@@@@");
           setRequestLeft(response.data.request_left);
+          localStorage.setItem('request_left', response.data.request_left);
+          // Dispatch custom event to notify NavBar
+          const event = new Event('requestLeftUpdated');
+          window.dispatchEvent(event);
           setResponseFromGPT(JSON.stringify(response.data.answer1));
-          console.log(response.data.answer1, "!!!!!");
+          // console.log(response.data.answer1, "!!!!!");
           setResponseReceived(true);
           setLoading(false);
           setButtonVisible(false);
-          setCountGenerateResponse(100);
+          setCountGenerateResponse(2);
         }
       } else {
         // If the response status is not 200, retry the request
@@ -275,12 +279,12 @@ function HomePage() {
 
   const handleSendImage = async () => {
     if (!isAuthenticated) {
-      console.log("User is not authenticated. Opening auth dialog...");
+      // console.log("User is not authenticated. Opening auth dialog...");
       setShowAuthDialog(true);
       return;
     }
     if (!imageFile) {
-      console.log("No image file selected, showing upload alert...");
+      // console.log("No image file selected, showing upload alert...");
       setShowUploadAlert(true);
       setTimeout(() => {
         setShowUploadAlert(false);
@@ -307,7 +311,7 @@ function HomePage() {
   };
 
   useEffect(() => {
-    console.log("Selected image changed:", selectedImage);
+    // console.log("Selected image changed:", selectedImage);
 
     setShowUploadAlert(false); // Hide the upload alert when the component re-renders
   }, [selectedImage]); // Triggered whenever selectedImage changes
@@ -335,7 +339,7 @@ function HomePage() {
               setMockLike(false);
               setCountGenerateResponse((prevCount) => prevCount - 1); // Decrease countGenerateResponse by 1
 
-              console.log(countGenerateResponse, "@@@@@@@@@@@@@@@@@@@@@@@@");
+              // console.log(countGenerateResponse, "@@@@@@@@@@@@@@@@@@@@@@@@");
             } else {
               console.log("Retrying request...");
               makeRequest();
@@ -357,7 +361,7 @@ function HomePage() {
   // Inside the useEffect hook where userAnswer is set
   useEffect(() => {
     const checkUserAnswer = async () => {
-      
+
       if (isAuthenticated && user) {
         // setIsPageLoading(false)
         // Check if user is authenticated and user object is not undefined
@@ -371,24 +375,27 @@ function HomePage() {
             }
           );
 
-          console.log("API response:", response.data);
+          // console.log("API response:", response.data);
 
           setRequestLeft(response.data.request_left);
+
+          localStorage.setItem('request_left', response.data.request_left);
+
           setIsPageLoading(false);
           if (response.data.check_terms == null) {
-            console.log(
-              "Navigating to FirstTimePage because check_terms is null"
-            );
+            // console.log(
+            //   "Navigating to FirstTimePage because check_terms is null"
+            // );
             navigate("/FirstTime");
           } else {
-            console.log("Setting termsAccepted to true");
+            // console.log("Setting termsAccepted to true");
             setTermsAccepted(true);
           }
 
           if (response.data.is_hebrew == null) {
-            console.log(
-              "Setting checkLanguage to true because is_hebrew is null"
-            );
+            // console.log(
+            //   "Setting checkLanguage to true because is_hebrew is null"
+            // );
             setCheckLanguage(true);
           } else {
             if (response.data.is_hebrew == "right") {
@@ -396,7 +403,7 @@ function HomePage() {
             } else {
               setUserSideMessages(false);
             }
-            console.log("is_hebrew is not null");
+            // console.log("is_hebrew is not null");
           }
 
           // if (response.data.check_feedback === '') {
@@ -405,9 +412,9 @@ function HomePage() {
           // }
 
           if (response.data.check_gifts === false) {
-            console.log(
-              "Setting showPopup to true because check_gifts is false and setting requestLeft to 5"
-            );
+            // console.log(
+            //   "Setting showPopup to true because check_gifts is false and setting requestLeft to 5"
+            // );
             setShowPopup(true);
             setRequestLeft(5);
           }
@@ -441,13 +448,13 @@ function HomePage() {
   useEffect(() => {
     // Check if user object is available and not loading
     if (user && !isLoading) {
-      console.log("User:"); // Log the user object
+      // console.log("User:"); // Log the user object
     } else {
       // Set a timeout to change setShowAuthDialog to true after 0.5 seconds
       const timeoutId = setTimeout(() => {
         setShowAuthDialog(true);
       }, 100);
-  
+
       // Cleanup function to clear the timeout if dependencies change
       return () => clearTimeout(timeoutId);
     }
@@ -486,12 +493,12 @@ function HomePage() {
     checkLoginStatus(); // Check login status when component mounts
   }, []);
 
-  console.log(
-    "responseFromServer:",
-    responseFromServer,
-    "Request left : ",
-    requestLeft
-  );
+  // console.log(
+  //   "responseFromServer:",
+  //   responseFromServer,
+  //   "Request left : ",
+  //   requestLeft
+  // );
 
   const handleOpenDialog = () => {
     setShowAuthDialog(true);
@@ -507,7 +514,7 @@ function HomePage() {
 
   const handleLanguageCheck = () => {
     setCheckLanguage(false);
-    console.log("checkLanguage: ", checkLanguage);
+    // console.log("checkLanguage: ", checkLanguage);
   };
 
   const handleLanguageSelection = (selectedSide) => {
@@ -516,7 +523,7 @@ function HomePage() {
   };
 
   useEffect(() => {
-    console.log("userSideMessages:", userSideMessages);
+    // console.log("userSideMessages:", userSideMessages);
   }, [userSideMessages]);
 
   return (
@@ -525,15 +532,15 @@ function HomePage() {
         <div className="circle"></div>
         <div className="cool-move">
           {isPageLoading ? (
-            <div style={{fontStyle:'normal',fontFamily:'inherit'}}>
-            <HeartSpinner />
+            <div style={{ fontStyle: 'normal', fontFamily: 'inherit' }}>
+              <HeartSpinner />
             </div>
           ) : (
             <>
               {!loadingLocalStorage && !isLoading && !isAuthenticated && (
                 <div>
                   <button
-                    style={{ padding: "10px"}}
+                    style={{ padding: "10px" }}
                     onClick={handleOpenDialog}
                   >
                     בוא נתחיל
@@ -544,7 +551,7 @@ function HomePage() {
               {isAuthenticated && termsAccepted && requestLeft !== 0 && (
                 <>
                   {/* <p style={{ direction: "rtl" }}>
-                    {requestLeft} <img src={coin} style={{ width: "20px" }} />{" "}
+                    {requestLeft} <img src={coin} style={{ width: "20px", boxShadow: 'none' }} />{" "}
                     נשארו
                   </p> */}
                   <div className={isFlashing ? "flashing" : ""}>
@@ -586,13 +593,13 @@ function HomePage() {
                       <img
                         src={selectedImage}
                         alt="Uploaded"
-                        style={{ maxWidth: "300px", maxHeight: "350px" }}
+                        style={{ maxWidth: "350px", maxHeight: "350px" }}
                       />
                       <ChooseLanguage userSideMessages={userSideMessages} />
                       {checkLanguage && (
                         <ChatSelector
                           selectedImage={selectedImage}
-                          onSend={() => {}}
+                          onSend={() => { }}
                           onChangeImage={triggerImageChange}
                           onLanguageCheck={handleLanguageCheck} // Pass isOpen prop indicating whether the ChatSelector is open
                           onLanguageSelection={handleLanguageSelection} // Pass the callback function
@@ -608,7 +615,7 @@ function HomePage() {
                       }}
                     >
                       <b>
-                      אין עדיין תמונה
+                        אין עדיין תמונה
                       </b>
                     </div>
                   )}
@@ -642,6 +649,7 @@ function HomePage() {
                       >
                         הבא
                       </button>
+
                     </div>
                   )}
                   <div style={{ marginTop: "30px" }}>
@@ -662,6 +670,9 @@ function HomePage() {
                   <div style={{ direction: "rtl", fontWeight: 600 }}>
                     {responses[currentIndex].value}
                   </div>
+                  <div style={{ fontSize: 'small', marginTop: '20px', color: 'gray' }}>
+                    זוהי רק הצעה
+                  </div>
                 </div>
               )}
 
@@ -673,13 +684,17 @@ function HomePage() {
                     loading={loading}
                     buttonLabel="תגובה חדשה"
                   />
-                  {/* <p>נשארו {countGenerateResponse} החלפות</p> */}
+                  <p>נשארו {countGenerateResponse} החלפות</p>
                 </div>
               )}
 
               {responseReceived && countGenerateResponse === 0 && (
                 <div>
-                  <p>נגמרו הבקשות אנא שלח שוב</p>
+                  <p>
+                    השתמש ב <img src={coin} style={{ width: "20px", boxShadow: 'none' }} /> חדש על מנת להמשיך לקבל הצעות
+
+
+                  </p>
                   <LoadingButtonsTransition
                     onClick={handleSendImage}
                     loading={loading}
@@ -699,12 +714,12 @@ function HomePage() {
         </div>
 
         {isAuthenticated && (
-          <div style={{ bottom: "0px", marginTop: "auto", fontSize:'large'}}>
-            <Link to="/privacy-policy" style={{ marginRight: "10px",color:'black' }}>
+          <div style={{ bottom: "0px", marginTop: "auto", fontSize: 'large' }}>
+            <Link to="/privacy-policy" style={{ marginRight: "10px", color: 'black' }}>
               פרטיות
             </Link>{" "}
             |{" "}
-            <Link to="/terms" style={{ marginLeft: "10px",color:'black' }}>
+            <Link to="/terms" style={{ marginLeft: "10px", color: 'black' }}>
               תנאים
             </Link>
             <ButtonSizes handleClick={handleOpenFeedback} />
