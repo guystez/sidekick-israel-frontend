@@ -54,7 +54,7 @@ function HomePage() {
  
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsPageLoading(true);
+      setIsPageLoading(false);
     }, 2300);
 
     return () => clearTimeout(timer);

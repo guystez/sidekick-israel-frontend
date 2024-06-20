@@ -19,8 +19,8 @@
     animation-name: spinner-heart;
     animation-duration: 1.2s;
     animation-iteration-count: infinite;
-    font-style: normal !important;
-    font-family: initial !important;
+    /* font-style: normal !important; */
+    font-family: none !important;
   
     &::before,
     &::after {
@@ -32,6 +32,8 @@
       width: 24px;
       border-radius: 50%;
       background-color: pink;
+      font-family: none !important;
+
     }
     
     &::before {
