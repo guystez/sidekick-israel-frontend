@@ -6,6 +6,8 @@ import DialogModal from './Dialogs/DialogLogin'; // Import the DialogModal compo
 import { Link } from 'react-router-dom';
 import brokenHeart from '../brokenheart.png';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { HiMiniArrowLongLeft } from "react-icons/hi2";
+import HeartSpinner from './SpinnerHeart/HeartSpinner';
 
 function OpenersLiked() {
   const [likedItems, setLikedItems] = useState([]);
@@ -13,6 +15,15 @@ function OpenersLiked() {
   const { isAuthenticated, user } = useAuth0();
   const [showAuthDialog, setShowAuthDialog] = useState(false); // State variable to manage whether the auth dialog is open
   const [newItem, setNewItem] = useState('');
+  const [isPageLoading, setIsPageLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsPageLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
 
   useEffect(() => {
@@ -27,6 +38,8 @@ function OpenersLiked() {
             }
           });
           setLikedItems(response.data);
+          setIsPageLoading(false);
+
         } catch (error) {
           console.error(`Error fetching liked ${isText ? 'texts' : 'openers'}:`, error);
         }
@@ -85,54 +98,61 @@ function OpenersLiked() {
       <div className="hero">
         <div className="circle"></div>
         <div className="cool-move" style={{ direction: 'rtl' }}>
-          <h1>{isText ? 'טקסט שאהבת' : 'משפטי פתיחה'}</h1>
-          {showAuthDialog && (
-            <DialogModal
-              handleConfirm={() => setShowAuthDialog(false)}
-              handleCancel={() => setShowAuthDialog(false)}
-            />
-          )}
-          <button style={{ marginBottom: '10px', padding:'15px' ,fontSize:'large'}} onClick={toggleLikedType}>
-            {isText ? 'עבור למשפטי פתיחה שאהבת' : 'עבור לטקסט שאהבת'}
-          </button>
-          <ul>
-            {Array.isArray(likedItems) && likedItems.length > 0 ? (
-              likedItems.map((item, index) => (
-                <li key={index} className="liked-item">
-                  {item}
-                  <button style={{ marginRight: '10px' }} onClick={() => deleteLikedItem(item)}>
-                    מחק
-                    <DeleteIcon />
-                  </button>
-                </li>
-              ))
-            ) : (
-              <>
-                <img src={brokenHeart} style={{ boxShadow: 'none' }} alt="brokenHeart" />
-                <br />
-                <div style={{ fontSize: 'larger' }}>
-                  {isText ? ' אין לך עדיין טקסט שאהבת' : 'אין לך עדיין משפטי פתיחה'}
-                  <button>
-                    <Link style={{ fontSize: 'larger' }} to={isText ? "/Main" : "/openers"}>{isText ? ' הוסף כאן  ' : ' הוסף כאן '} </Link> {isText ? '' : ''}
-                  </button>
-                </div>
-              </>
-            )}
-
-            {!isText && (
-              <li>
-                <input
-                style={{marginTop:'30px'}}
-                  type="text"
-                  value={newItem}
-                  onChange={(e) => setNewItem(e.target.value)}
-                  placeholder="הוסף משפט חדש משלך"
+          {isPageLoading ? (
+            <HeartSpinner />
+          ) : (
+            <>
+              <h1>{isText ? 'טקסט שאהבת' : 'משפטי פתיחה'}</h1>
+              {showAuthDialog && (
+                <DialogModal
+                  handleConfirm={() => setShowAuthDialog(false)}
+                  handleCancel={() => setShowAuthDialog(false)}
                 />
-                <button onClick={handleAddNewItem}>הוסף</button>
-              </li>
-            )}
-
-          </ul>
+              )}
+              <button style={{ marginBottom: '10px', padding: '15px', fontSize: 'large' }} onClick={toggleLikedType}>
+                {isText ? 'עבור למשפטי פתיחה שאהבת' : 'עבור לטקסט שאהבת'}
+                <HiMiniArrowLongLeft />
+              </button>
+              <ul>
+                {Array.isArray(likedItems) && likedItems.length > 0 ? (
+                  likedItems.map((item, index) => (
+                    <li key={index} className="liked-item">
+                      {item}
+                      <button style={{ marginRight: '10px' }} onClick={() => deleteLikedItem(item)}>
+                        מחק
+                        <DeleteIcon />
+                      </button>
+                    </li>
+                  ))
+                ) : (
+                  <>
+                    <img src={brokenHeart} style={{ boxShadow: 'none' }} alt="brokenHeart" />
+                    <br />
+                    <div style={{ fontSize: 'larger' }}>
+                      {isText ? ' אין לך עדיין טקסט שאהבת' : 'אין לך עדיין משפטי פתיחה'}
+                      <button>
+                        <Link style={{ fontSize: 'larger' }} to={isText ? "/Main" : "/openers"}>
+                          {isText ? ' הוסף כאן  ' : ' הוסף כאן '}
+                        </Link>
+                      </button>
+                    </div>
+                  </>
+                )}
+                {!isText && (
+                  <li>
+                    <input
+                      style={{ marginTop: '30px' }}
+                      type="text"
+                      value={newItem}
+                      onChange={(e) => setNewItem(e.target.value)}
+                      placeholder="הוסף משפט חדש משלך"
+                    />
+                    <button onClick={handleAddNewItem}>הוסף</button>
+                  </li>
+                )}
+              </ul>
+            </>
+          )}
         </div>
       </div>
     </div>

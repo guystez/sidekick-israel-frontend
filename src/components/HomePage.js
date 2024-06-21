@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import UploadFile from "./UploadFile";
@@ -19,6 +19,7 @@ import ChooseLanguage from "./ChooseLanguage";
 import Tips from "./Tips";
 import HeartSpinner from "./SpinnerHeart/HeartSpinner";
 import SimpleAlert from "./AlertMui";
+import { RequestContext } from './RequestContext';
 
 function HomePage() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -50,6 +51,7 @@ function HomePage() {
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [isFlashing, setIsFlashing] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
+  const { updateRequestLeft } = useContext(RequestContext);
 
 
   useEffect(() => {
@@ -153,8 +155,8 @@ function HomePage() {
           .post(url, { email: userEmail, text: textToLike })
           .then((response) => {
             if (response.status === 200) {
-              // console.log("Text liked successfully:", response.data);
-              // alert('נשמר במועדפים')
+              console.log("Text liked successfully:", response.data);
+              setAlertMessage("נשמר במועדפים");
             } else {
               if (response.status === 409) {
                 // console.log("Text already liked by the user:", response.data);
@@ -193,7 +195,16 @@ function HomePage() {
           },
         }
       );
-
+      if (
+        response &&
+        response.data.error === "No requests left"
+      ) {
+        ;
+        setLoading(false);
+        setNoRequestsAlertShown(true);
+        setButtonVisible(false);
+        return alert("לא נשארו עוד טוקנים");
+      }
       // Resetting the generated response
       setGeneratedResponse("");
 
@@ -204,12 +215,16 @@ function HomePage() {
           if (retryCount < 5) {
             console.log("final_answer is undefined, retrying request...");
             makeRequest(formData, retryCount + 1);
-          } else {
+          }
+
+          else {
             console.log("Request failed after 5 retries");
             alert("משהו השתשבש אנא נסה שוב");
             setLoading(false);
           }
-        } else {
+        }
+
+        else {
           // Set state with the received response data
           setResponseFromServer(response.data.final_answer);
           setResponses((prevResponses) => [
@@ -219,10 +234,12 @@ function HomePage() {
           setCurrentIndex(responses.length);
           // console.log(response.data.final_answer, "@@@@@@@@@");
           setRequestLeft(response.data.request_left);
-          localStorage.setItem('request_left', response.data.request_left);
-          // Dispatch custom event to notify NavBar
-          const event = new Event('requestLeftUpdated');
-          window.dispatchEvent(event);
+          updateRequestLeft(response.data.request_left);
+
+          // localStorage.setItem('request_left', response.data.request_left);
+          // // Dispatch custom event to notify NavBar
+          // const event = new Event('requestLeftUpdated');
+          // window.dispatchEvent(event);
           setResponseFromGPT(JSON.stringify(response.data.answer1));
           // console.log(response.data.answer1, "!!!!!");
           setResponseReceived(true);
@@ -246,14 +263,6 @@ function HomePage() {
 
       // Handling different error cases
       if (
-        error.response &&
-        error.response.status === 404 &&
-        error.response.data.error === "No requests left"
-      ) {
-        alert("לא נשארו עוד טוקנים");
-        setLoading(false);
-        setNoRequestsAlertShown(true);
-      } else if (
         error.response &&
         error.response.status === 404 &&
         error.response.data.error === "Upload screenshot without KeyBoard"
@@ -378,8 +387,9 @@ function HomePage() {
           // console.log("API response:", response.data);
 
           setRequestLeft(response.data.request_left);
+          updateRequestLeft(response.data.request_left);
 
-          localStorage.setItem('request_left', response.data.request_left);
+          // localStorage.setItem('request_left', response.data.request_left);
 
           setIsPageLoading(false);
           if (response.data.check_terms == null) {
@@ -528,6 +538,19 @@ function HomePage() {
 
   return (
     <div className="custom-home-page">
+      {isAuthenticated && (
+          <div style={{ bottom: "0px", marginTop: "auto", fontSize: 'large',position:'absolute' }}>
+            <Link to="/privacy-policy" style={{ marginRight: "10px", color: 'black' }}>
+              פרטיות
+            </Link>{" "}
+            |{" "}
+            <Link to="/terms" style={{ marginLeft: "10px", color: 'black' }}>
+              תנאים
+            </Link>
+            <ButtonSizes handleClick={handleOpenFeedback} />
+            {/* <AddToHomeScreenPrompt /> */}
+          </div>
+        )}
       <div className="hero">
         <div className="circle"></div>
         <div className="cool-move">
@@ -567,15 +590,7 @@ function HomePage() {
                 </>
               )}
 
-              {(requestLeft === 0 || noRequestsAlertShown) && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => alert("Please buy more requests")}
-                >
-                  נגמרו כל הבקשות אנא קנו עוד
-                </Button>
-              )}
+
               {isAuthenticated && termsAccepted && (
                 <>
                   <UploadFile
@@ -629,7 +644,15 @@ function HomePage() {
                   buttonLabel="שלח"
                 />
               )}
-
+              {(requestLeft === 0 || noRequestsAlertShown) && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => alert("Please buy more requests")}
+                >
+                  נגמרו כל הבקשות אנא קנו עוד
+                </Button>
+              )}
               {alertMessage && <SimpleAlert message={alertMessage} />}
               <ActionAlerts showAlert={showUploadAlert} />
 
@@ -670,6 +693,7 @@ function HomePage() {
                   <div style={{ direction: "rtl", fontWeight: 600 }}>
                     {responses[currentIndex].value}
                   </div>
+
                   <div style={{ fontSize: 'small', marginTop: '20px', color: 'gray' }}>
                     זוהי רק הצעה
                   </div>
@@ -713,19 +737,7 @@ function HomePage() {
           )}
         </div>
 
-        {isAuthenticated && (
-          <div style={{ bottom: "0px", marginTop: "auto", fontSize: 'large' }}>
-            <Link to="/privacy-policy" style={{ marginRight: "10px", color: 'black' }}>
-              פרטיות
-            </Link>{" "}
-            |{" "}
-            <Link to="/terms" style={{ marginLeft: "10px", color: 'black' }}>
-              תנאים
-            </Link>
-            <ButtonSizes handleClick={handleOpenFeedback} />
-            {/* <AddToHomeScreenPrompt /> */}
-          </div>
-        )}
+        
       </div>
     </div>
   );

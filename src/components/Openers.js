@@ -133,27 +133,34 @@ function Openers() {
 
   return (
     <div className="custom-home-page">
-      <div className="hero">
+      <div className="hero" >
         <div className="cool-move">
-          <h1>משפטי פתיחה</h1>
+          
           {isPageLoading ? (
             <HeartSpinner />
           ) : (
             <>
-              <div className="opener-filter">
-                {/* Display category buttons */}
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => {
-                      fetchOpenersByCategory(category);
-                      // setShowContainer(true); // Set showContainer to true when a category is opened
-                    }}
-                  >
-                    <b style={{ fontStyle: "oblique" }}>{category}</b>
-                  </button>
-                ))}
-              </div>
+            
+              {!isPageLoading && (
+                
+                <div className="opener-filter">
+                  <h1>משפטי פתיחה</h1>
+                  <p>בחר משפט פתיחה לפי קטגוריה</p>
+                  {/* Display category buttons */}
+                  {categories.map((category) => (
+                    <button
+                      key={category}
+                      onClick={() => {
+                        fetchOpenersByCategory(category);
+                        // setShowContainer(true); // Set showContainer to true when a category is opened
+                      }}
+                    >
+                      <b style={{ fontStyle: "oblique" }}>{category}</b>
+                    </button>
+                  ))}
+                </div>
+              )}
+
               {alertMessage && <SimpleAlert message={alertMessage} />}
 
               {/* Conditionally render response container based on showContainer state */}

@@ -1,39 +1,25 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect,useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import LogoutButton from './Auth0/Logout';
 import { useAuth0 } from "@auth0/auth0-react"; // Import useAuth0 hook
 import Icon from "../logo_white_text.png";
 import coin from "../coin.png";
+import { RequestContext } from './RequestContext';
+import { IoIosSettings } from "react-icons/io";
+import { PiListHeartFill } from "react-icons/pi";
+import { BsSearchHeartFill } from "react-icons/bs";
+import { BsHearts } from "react-icons/bs";
+import { MdForum } from "react-icons/md";
 
 const NavBar = ({ menuOpen, setMenuOpen }) => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth0(); // Get isAuthenticated from useAuth0 hook
-  const [savedRequestLeft, setSavedRequestLeft] = useState(localStorage.getItem('request_left'));
+  const { requestLeft } = useContext(RequestContext);
 
   useEffect(() => {
-    const fetchRequestLeft = () => {
-      const requestLeft = localStorage.getItem('request_left');
-      console.log('useEffect: savedRequestLeft:', requestLeft);
-      if (requestLeft !== null) {
-        setSavedRequestLeft(requestLeft);
-      }
-    };
-
-    // Initial fetch
-    fetchRequestLeft();
-
-    // Set up event listener for custom event
-    const handleRequestLeftUpdated = () => {
-      fetchRequestLeft();
-    };
-    window.addEventListener('requestLeftUpdated', handleRequestLeftUpdated);
-
-    // Clean up on component unmount
-    return () => {
-      window.removeEventListener('requestLeftUpdated', handleRequestLeftUpdated);
-    };
-  }, []);
+    console.log('useEffect: requestLeft:', requestLeft);
+  }, [requestLeft]);
 
   const handleNavigate = () => {
     navigate("/Main"); // Navigate to the home page
@@ -70,22 +56,27 @@ const NavBar = ({ menuOpen, setMenuOpen }) => {
       </div>
       {menuOpen && (
         <div className="menu">
-          <Link to="/Main" onClick={handleLinkClick}>
+          <Link style={{border:'0.1px solid #ccc'}} to="/Main" onClick={handleLinkClick}>
+          <BsHearts />
             אפליקציה
           </Link>
           {isAuthenticated && (
             <>
               <Link to="/openers" onClick={handleLinkClick}>
+              <BsSearchHeartFill />
                 משפטי פתיחה
               </Link>
               <Link to="/openersliked" onClick={handleLinkClick}>
+              <PiListHeartFill />
                 מועדפים
               </Link>
               <Link to="/forum" onClick={handleLinkClick}>
+              <MdForum />
                 פורום
               </Link>
               <Link to="/settings" onClick={handleLinkClick}>
-                הגדרות
+              <IoIosSettings />
+              הגדרות
               </Link>
               <LogoutButton />
             </>
@@ -96,11 +87,33 @@ const NavBar = ({ menuOpen, setMenuOpen }) => {
       <div>
       <img src={Icon} style={{width:'70px',height:'60px'}} onClick={() => { handleNavigate(); handleLinkClick(); }}></img>
       </div>
-      <div style={{fontFamily:'"Secular One", sans-serif',fontSize:'x-large',position:'absolute',left:'0',marginLeft:'10px'}}>
-        <img src={coin}style={{ width: "30px", boxShadow: 'none',marginRight:'10px',marginBottom:'5px' }}></img>
-        {savedRequestLeft}
-        
-        </div>      
+      <div
+  style={{
+    fontFamily: '"Secular One", sans-serif',
+    fontSize: 'x-large',
+    position: 'absolute',
+    left: '0',
+    marginLeft: '10px'
+  }}
+>
+  <img
+    src={coin}
+    style={{
+      width: '30px',
+      boxShadow: 'none',
+      marginRight: '10px',
+      marginBottom: '5px'
+    }}
+    alt="Coin Icon"
+  />
+  {requestLeft !== undefined ? ( // Check if requestLeft is defined
+    <>
+      {requestLeft > 0 ? requestLeft : 0} {/* Display requestLeft or 0 */}
+    </>
+  ) : (
+    0 // Display 0 if requestLeft is undefined
+  )}
+</div>
     </div>
   );
 };
