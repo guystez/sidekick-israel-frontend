@@ -538,22 +538,11 @@ function HomePage() {
 
   return (
     <div className="custom-home-page">
-      {isAuthenticated && (
-          <div style={{ bottom: "0px", marginTop: "auto", fontSize: 'large',position:'absolute' }}>
-            <Link to="/privacy-policy" style={{ marginRight: "10px", color: 'black' }}>
-              פרטיות
-            </Link>{" "}
-            |{" "}
-            <Link to="/terms" style={{ marginLeft: "10px", color: 'black' }}>
-              תנאים
-            </Link>
-            <ButtonSizes handleClick={handleOpenFeedback} />
-            {/* <AddToHomeScreenPrompt /> */}
-          </div>
-        )}
+     
       <div className="hero">
         <div className="circle"></div>
         <div className="cool-move">
+          
           {isPageLoading ? (
             <div style={{ fontStyle: 'normal', fontFamily: 'inherit' }}>
               <HeartSpinner />
@@ -608,7 +597,7 @@ function HomePage() {
                       <img
                         src={selectedImage}
                         alt="Uploaded"
-                        style={{ maxWidth: "350px", maxHeight: "350px" }}
+                        style={{ maxWidth: "300px", maxHeight: "350px" }}
                       />
                       <ChooseLanguage userSideMessages={userSideMessages} />
                       {checkLanguage && (
@@ -699,7 +688,7 @@ function HomePage() {
                   </div>
                 </div>
               )}
-
+              
               {responseReceived && countGenerateResponse !== 0 && (
                 <div>
                   <DiscreteSliderValues onChange={handleSliderChange} />
@@ -714,6 +703,7 @@ function HomePage() {
 
               {responseReceived && countGenerateResponse === 0 && (
                 <div>
+                
                   <p>
                     השתמש ב <img src={coin} style={{ width: "20px", boxShadow: 'none' }} /> חדש על מנת להמשיך לקבל הצעות
 
@@ -725,6 +715,7 @@ function HomePage() {
                     buttonLabel="שלח"
                   />
                 </div>
+                
               )}
 
               {showAuthDialog && (
@@ -735,9 +726,22 @@ function HomePage() {
               )}
             </>
           )}
-        </div>
-
+          
         
+        </div>
+        {isAuthenticated && (
+          <div style={{ bottom: "0px", marginTop: "auto", fontSize: 'large' }}>
+            <Link to="/privacy-policy" style={{ marginRight: "10px", color: 'black' }}>
+              פרטיות
+            </Link>{" "}
+            |{" "}
+            <Link to="/terms" style={{ marginLeft: "10px", color: 'black' }}>
+              תנאים
+            </Link>
+            <ButtonSizes handleClick={handleOpenFeedback} />
+            {/* <AddToHomeScreenPrompt /> */}
+          </div>
+        )}
       </div>
     </div>
   );

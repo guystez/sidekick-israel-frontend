@@ -55,7 +55,7 @@ function Settings() {
                                     sendToServer();
                                 }}
                             >
-                                Send
+                                שלח
                             </button>
                         </div>
                     )}

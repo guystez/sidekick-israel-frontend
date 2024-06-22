@@ -18,7 +18,7 @@ export default function ButtonSizes() {
 
     return (
         <Box sx={{ '& button': { m: 1 }, bottom: 0, left: 0 }}>
-            <div>
+            <div style={{marginLeft:'9px'}}>
       <Button 
         style={{ 
           fontFamily: '"Secular One", sans-serif', 
