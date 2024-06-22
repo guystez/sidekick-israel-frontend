@@ -47,7 +47,7 @@ const ChatSelector = ({
 
   const handlesave = () => {
     axios
-      .post("http://127.0.0.1:8000/date/check-hebrew", {
+      .post("https://web-production-dd6e3.up.railway.app/date/check-hebrew", {
         termsAccepted: true,
         selectedSide,
         email: user.email,

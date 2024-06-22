@@ -127,7 +127,7 @@ function HomePage() {
     const textToLike = generatedResponse || responseFromServer; // Use generatedResponse first, then fallback to responseFromServer
     if (isAuthenticated) {
       const userEmail = user.email;
-      const url = "http://127.0.0.1:8000/date/text-liked";
+      const url = "https://web-production-dd6e3.up.railway.app/date/text-liked";
 
       if (mockLike) {
         // If the text is already liked, send a DELETE request to unlike it
@@ -187,7 +187,7 @@ function HomePage() {
     try {
       // Send the main request with the IP address in the headers
       const response = await axios.post(
-        "http://127.0.0.1:8000/date/",
+        "https://web-production-dd6e3.up.railway.app/date/",
         formData,
         {
           headers: {
@@ -330,7 +330,7 @@ function HomePage() {
       setLoading(true);
       const makeRequest = () => {
         axios
-          .post("http://127.0.0.1:8000/date/generate", {
+          .post("https://web-production-dd6e3.up.railway.app/date/generate", {
             request: responseFromGPT,
             chatgpt: generatedResponse || responseFromServer,
             mode: { sliderValue },
@@ -376,7 +376,7 @@ function HomePage() {
         // Check if user is authenticated and user object is not undefined
         try {
           const response = await axios.get(
-            "http://127.0.0.1:8000/date/check-hebrew",
+            "https://web-production-dd6e3.up.railway.app/date/check-hebrew",
             {
               params: {
                 email: user.email, // Access user.email only if user is not undefined

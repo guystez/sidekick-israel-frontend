@@ -31,7 +31,7 @@ function Openers() {
     const fetchCategories = async () => {
       try {
         const response = await axios.post(
-          "http://127.0.0.1:8000/date/get-categories"
+          "https://web-production-dd6e3.up.railway.app/date/get-categories"
         ); // Fetch category names
         setCategories(response.data);
         setIsPageLoading(false);
@@ -52,7 +52,7 @@ function Openers() {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/date/get-categories-by-name",
+        "https://web-production-dd6e3.up.railway.app/date/get-categories-by-name",
         { category_name: categoryName }
       );
       setOpeners(response.data);
@@ -92,7 +92,7 @@ function Openers() {
   const sendTextLiked = () => {
     if (isAuthenticated) {
       const userEmail = user.email;
-      const url = "http://127.0.0.1:8000/date/openers-liked";
+      const url = "https://web-production-dd6e3.up.railway.app/date/openers-liked";
       if (mockLike) {
         setMockLike(false);
         axios

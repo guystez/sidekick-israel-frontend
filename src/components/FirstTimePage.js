@@ -35,8 +35,8 @@ function FirstTimePage() {
 
         const userEmail = user.email; // Access the user's email from the user object
         console.log(user);
-        // axios.post('http://127.0.0.1:8000/date/check-hebrew', { termsAccepted, selectedSide, email: userEmail })
-        axios.post('http://127.0.0.1:8000/date/check-hebrew', { termsAccepted,  email: userEmail })
+        // axios.post('https://web-production-dd6e3.up.railway.app/date/check-hebrew', { termsAccepted, selectedSide, email: userEmail })
+        axios.post('https://web-production-dd6e3.up.railway.app/date/check-hebrew', { termsAccepted,  email: userEmail })
             .then(response => {
                 console.log(response.data, 'success');
                 navigate("/Main");
