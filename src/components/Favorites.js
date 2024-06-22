@@ -32,7 +32,7 @@ function OpenersLiked() {
         try {
           const userEmail = user.email;
           const endpoint = isText ? 'text-liked' : 'openers-liked'; // Determine endpoint based on isText state
-          const response = await axios.get(`https://web-production-dd6e3.up.railway.app/date/${endpoint}`, {
+          const response = await axios.get(`http://127.0.0.1:8000/date/${endpoint}`, {
             params: {
               email: userEmail
             }
@@ -56,7 +56,7 @@ function OpenersLiked() {
       const userEmail = user.email;
       const endpoint = isText ? 'text-liked' : 'openers-liked'; // Determine endpoint based on isText state
       // Send DELETE request to the server to delete the item
-      await axios.delete(`https://web-production-dd6e3.up.railway.app/date/${endpoint}`, {
+      await axios.delete(`http://127.0.0.1:8000/date/${endpoint}`, {
         params: {
           email: userEmail,
           [isText ? 'text' : 'opener']: itemToDelete
@@ -79,7 +79,7 @@ function OpenersLiked() {
       try {
         const userEmail = user.email;
         const endpoint = isText ? 'text-liked' : 'openers-liked'; // Determine endpoint based on isText state
-        const response = await axios.post(`https://web-production-dd6e3.up.railway.app/date/${endpoint}`, { opener: newItem, email: userEmail });
+        const response = await axios.post(`http://127.0.0.1:8000/date/${endpoint}`, { opener: newItem, email: userEmail });
         if (response.status === 200) {
           setLikedItems([...likedItems, newItem]);
           setNewItem('');

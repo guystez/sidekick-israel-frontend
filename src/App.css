@@ -70,14 +70,21 @@ html, body {
   align-items: center;
   margin: 0;
   border-radius: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
   margin-top: 10px;
+  background-color: #58aaed;
 }
 
 @media (min-width: 768px) { /* Adjust this breakpoint based on your design needs */
   .hero {
-    align-items: stretch; /* Change align-items to stretch on larger screens */
+    align-items: center; /* Change align-items to stretch on larger screens */
+    display: flex;
     flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: stretch;
+    justify-content: center;
+    min-height: 94.5vh;
+
   }
 }
 .hero::after {
@@ -285,7 +292,7 @@ html, body {
 
 .logo,
 .cool-move h1 {
-  margin: 10px 10px;
+  /* margin: 10px 10px; */
 }
 
 .logo {

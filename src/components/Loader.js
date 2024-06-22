@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import CircularProgress from '@mui/material/CircularProgress';
+import HeartSpinner2 from './SpinnerHeart/CircularProgressColor';
 
 export default function LoadingButtonsTransition({ onClick, loading,buttonLabel }) {
   const handleClick = () => {
@@ -17,7 +18,8 @@ export default function LoadingButtonsTransition({ onClick, loading,buttonLabel 
       style={{marginTop:'20px',marginBottom:'3.5vh',fontFamily: '"Secular One", sans-serif'}}
       disabled={loading} // Disable the button while loading
       onClick={handleClick} // Call handleClick when the button is clicked
-      startIcon={loading ? <CircularProgress size={20} /> : <SendIcon />}
+      // startIcon={loading ? <CircularProgress size={20} /> : <SendIcon />}
+      startIcon={loading ? <HeartSpinner2 size={5}  />  : <SendIcon />}
     >
       {loading ? '...עובדים על זה' : buttonLabel}
     </Button>

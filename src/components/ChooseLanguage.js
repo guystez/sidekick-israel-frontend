@@ -35,7 +35,7 @@ function ChooseLanguage({ userSideMessages }) {
         const userEmail = user.email; // Access the user's email from the user object
         const side = selectedSide ? 'left' : 'right'; // Convert boolean to string
 
-        axios.post('https://web-production-dd6e3.up.railway.app/date/check-hebrew', { termsAccepted: true, selectedSide: side, email: userEmail })
+        axios.post('http://127.0.0.1:8000/date/check-hebrew', { termsAccepted: true, selectedSide: side, email: userEmail })
             .then(response => {
                 console.log(response.data, 'success');
                 // Handle successful response if needed

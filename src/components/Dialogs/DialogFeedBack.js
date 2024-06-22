@@ -27,7 +27,7 @@
 //     const handleEmojiClick = async (feedback) => {
 //         try {
 //             // Send feedback description and email to Django website using Axios
-//             await axios.post('https://web-production-dd6e3.up.railway.app/date/user-feedback', { feedback, email: user.email }); // Assuming you're using Auth0 and user.email contains the email address
+//             await axios.post('http://127.0.0.1:8000/date/user-feedback', { feedback, email: user.email }); // Assuming you're using Auth0 and user.email contains the email address
 //             console.log('Feedback description and email sent successfully:', feedback);
 //             setSelectedEmoji(feedback); // Set selected emoji
 //             // setOpen(false); // Close the dialog
@@ -45,7 +45,7 @@
 //         if (feedbackText.trim() !== "") {
 //             try {
 //                 // Send request to Django backend to send email
-//                 await axios.post('https://web-production-dd6e3.up.railway.app/date/email-feedback', {
+//                 await axios.post('http://127.0.0.1:8000/date/email-feedback', {
 //                     feedback: feedbackText,
 //                     email: user.email 
 //                 });
@@ -127,7 +127,7 @@ export default function DialogFeedBack({ open, onClose, handleCancel }) {
 
   const handleEmojiClick = async (feedback) => {
     try {
-      await axios.post('https://web-production-dd6e3.up.railway.app/date/user-feedback', { feedback, email: user.email });
+      await axios.post('http://127.0.0.1:8000/date/user-feedback', { feedback, email: user.email });
       setSelectedEmoji(feedback);
     } catch (error) {
       console.error('Error sending feedback description and email:', error);
@@ -141,7 +141,7 @@ export default function DialogFeedBack({ open, onClose, handleCancel }) {
   const handleSendEmail = async () => {
     if (feedbackText.trim() !== "") {
       try {
-        await axios.post('https://web-production-dd6e3.up.railway.app/date/email-feedback', {
+        await axios.post('http://127.0.0.1:8000/date/email-feedback', {
           feedback: feedbackText,
           email: user.email 
         });

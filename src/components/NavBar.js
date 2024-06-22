@@ -85,7 +85,7 @@ const NavBar = ({ menuOpen, setMenuOpen }) => {
       )}
       {/* <h1 onClick={() => { handleNavigate(); handleLinkClick(); }} style={{ fontFamily: '"Secular One", sans-serif',cursor: 'pointer', fontSize:'larger',marginTop:'5px' }}>ChatMates.AI</h1> */}
       <div>
-      <img src={Icon} style={{width:'70px',height:'60px'}} onClick={() => { handleNavigate(); handleLinkClick(); }}></img>
+      <img src={Icon} style={{width:'70px',height:'60px',cursor: 'pointer'}} onClick={() => { handleNavigate(); handleLinkClick(); }}></img>
       </div>
       <div
   style={{

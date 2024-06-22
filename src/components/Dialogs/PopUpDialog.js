@@ -27,7 +27,7 @@ export default function PopUpDialog({ handleConfirm, handleCancel }) {
     };
 
     const handleClose = () => {
-        axios.post('https://web-production-dd6e3.up.railway.app/date/remove-gift', {
+        axios.post('http://127.0.0.1:8000/date/remove-gift', {
              email: user.email
         })
         .then(response => {
