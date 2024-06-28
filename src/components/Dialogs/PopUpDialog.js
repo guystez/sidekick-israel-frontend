@@ -47,15 +47,15 @@ export default function PopUpDialog({ handleConfirm, handleCancel }) {
 
     return (
         <>
-            <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>ברוך הבא!</DialogTitle>
+            <Dialog open={open} onClose={handleClose} >
+                <DialogTitle style={{direction:'rtl'}}>ברוך הבא!</DialogTitle>
                 <DialogContent>
 
                     
 
                     
                     <DialogContentText>
-                    <h1>קיבלת 5 ניסיונות מתנה מאיתנו</h1>
+                    <h1 style={{direction:'rtl'}}>קיבלת 5 ניסיונות מתנה מאיתנו</h1>
                     <img src={PresentImage} style={{width:'60%',marginLeft:"20%"}} alt="Gift" />
                         <div className="sub-login">
                             <div className="btn-signup">

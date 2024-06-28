@@ -14,12 +14,12 @@ import { Button } from "@mui/material";
 import ButtonSizes from "./Button";
 import coin from "../coin.png";
 import ChatSelector from "./ChatSelector";
-import AddToHomeScreenPrompt from "./Shortcut";
 import ChooseLanguage from "./ChooseLanguage";
 import Tips from "./Tips";
 import HeartSpinner from "./SpinnerHeart/HeartSpinner";
 import SimpleAlert from "./AlertMui";
 import { RequestContext } from './RequestContext';
+import brokenHeart from '../brokenheart.png';
 
 function HomePage() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -51,7 +51,25 @@ function HomePage() {
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [isFlashing, setIsFlashing] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
-  const { updateRequestLeft } = useContext(RequestContext);
+  const [showComponent, setShowComponent] = useState(false);
+  const {
+    updateRequestLeft,
+    updateDaysRemaining,
+    updateHoursRemaining,
+    daysRemaining,
+    hoursRemaining,
+    
+  } = useContext(RequestContext);
+
+
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowComponent(true);
+    }, 3200); // 1000 milliseconds = 1 second
+
+    return () => clearTimeout(timer); // Cleanup the timer on component unmount
+  }, []);
 
 
   useEffect(() => {
@@ -203,8 +221,17 @@ function HomePage() {
         setLoading(false);
         setNoRequestsAlertShown(true);
         setButtonVisible(false);
-        return alert("לא נשארו עוד טוקנים");
+        return alert("החבילה נגמרה אנא קנה שוב");
       }
+      if (
+        response &&
+        response.data.error === "File to big"
+      ){
+        setLoading(false);
+        setButtonVisible(false);
+        return alert("קובץ לא תקין");
+      }
+
       // Resetting the generated response
       setGeneratedResponse("");
 
@@ -235,7 +262,8 @@ function HomePage() {
           // console.log(response.data.final_answer, "@@@@@@@@@");
           setRequestLeft(response.data.request_left);
           updateRequestLeft(response.data.request_left);
-
+          updateDaysRemaining(response.data.remaining_days);
+          updateHoursRemaining(response.data.remaining_hours);
           // localStorage.setItem('request_left', response.data.request_left);
           // // Dispatch custom event to notify NavBar
           // const event = new Event('requestLeftUpdated');
@@ -245,7 +273,7 @@ function HomePage() {
           setResponseReceived(true);
           setLoading(false);
           setButtonVisible(false);
-          setCountGenerateResponse(5);
+          setCountGenerateResponse(100);
         }
       } else {
         // If the response status is not 200, retry the request
@@ -328,7 +356,7 @@ function HomePage() {
   const handleGenerateResponse = () => {
     if (isAuthenticated) {
       setLoading(true);
-      const makeRequest = () => {
+      const makeRequest = (retryCount = 0) => {
         axios
           .post("https://web-production-dd6e3.up.railway.app/date/generate", {
             request: responseFromGPT,
@@ -337,40 +365,63 @@ function HomePage() {
             email: user.email,
           })
           .then((response) => {
-            setGeneratedResponse(response.data);
-            setResponses((prevResponses) => [
-              ...prevResponses,
-              { type: "generated", value: response.data },
-            ]);
-            setCurrentIndex(responses.length);
             if (response.status === 200) {
+              setGeneratedResponse(response.data);
+              setResponses((prevResponses) => [
+                ...prevResponses,
+                { type: "generated", value: response.data },
+              ]);
+              setCurrentIndex(responses.length);
               setLoading(false);
               setMockLike(false);
-              setCountGenerateResponse((prevCount) => prevCount - 1); // Decrease countGenerateResponse by 1
-
-              // console.log(countGenerateResponse, "@@@@@@@@@@@@@@@@@@@@@@@@");
+              setCountGenerateResponse((prevCount) => prevCount - 1);
+            } else if (response.status === 429) {
+              alert('Too many requests, please wait');
+              // Optionally, implement a retry with delay
+              if (retryCount < 3) { // Retry up to 3 times
+                setTimeout(() => {
+                  makeRequest(retryCount + 1);
+                }, 5000); // Wait for 5 seconds before retrying
+              } else {
+                setLoading(false);
+              }
             } else {
               console.log("Retrying request...");
               makeRequest();
             }
           })
           .catch((error) => {
-            console.error("Error sending:", error);
-            console.log("Retrying request...");
-            makeRequest();
+            if (error.response && error.response.status === 429) {
+              alert('Too many requests, please wait');
+              setLoading(false);
+
+              // Optionally, implement a retry with delay
+              if (retryCount < 3) { // Retry up to 3 times
+                setTimeout(() => {
+                  makeRequest(retryCount + 1);
+                }, 5000); // Wait for 5 seconds before retrying
+              } else {
+                setLoading(false);
+              }
+            } else {
+              console.error("Error sending:", error);
+              console.log("Retrying request...");
+              makeRequest();
+            }
           });
       };
-
+  
       makeRequest();
     } else {
       console.error("User is not authenticated");
     }
   };
+  
 
   // Inside the useEffect hook where userAnswer is set
   useEffect(() => {
     const checkUserAnswer = async () => {
-
+      setIsPageLoading(true)
       if (isAuthenticated && user) {
         // setIsPageLoading(false)
         // Check if user is authenticated and user object is not undefined
@@ -384,11 +435,12 @@ function HomePage() {
             }
           );
 
-          // console.log("API response:", response.data);
+          console.log("API response:", response.data);
 
           setRequestLeft(response.data.request_left);
           updateRequestLeft(response.data.request_left);
-
+          updateDaysRemaining(response.data.remaining_days);
+          updateHoursRemaining(response.data.remaining_hours);
           // localStorage.setItem('request_left', response.data.request_left);
 
           setIsPageLoading(false);
@@ -427,6 +479,7 @@ function HomePage() {
             // );
             setShowPopup(true);
             setRequestLeft(5);
+            updateRequestLeft(5)
           }
         } catch (error) {
           if (
@@ -538,18 +591,18 @@ function HomePage() {
 
   return (
     <div className="custom-home-page">
-     
+
       <div className="hero">
         <div className="circle"></div>
         <div className="cool-move">
-          
+
           {isPageLoading ? (
             <div style={{ fontStyle: 'normal', fontFamily: 'inherit' }}>
               <HeartSpinner />
             </div>
           ) : (
             <>
-            
+
               {!loadingLocalStorage && !isLoading && !isAuthenticated && (
                 <div>
                   <button
@@ -634,15 +687,37 @@ function HomePage() {
                   buttonLabel="שלח"
                 />
               )}
-              {(requestLeft === 0 || noRequestsAlertShown) && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => alert("Please buy more requests")}
-                >
-                  נגמרו כל הבקשות אנא קנו עוד
-                </Button>
+              {/* {(requestLeft === 0 || noRequestsAlertShown) && (
+                <Link to='/PurchaseToken'>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => alert("Please buy more requests")}
+                  >
+
+                    נגמרו כל הבקשות אנא קנו עוד
+                  </Button>
+                </Link>
+              )} */}
+
+
+{(daysRemaining === 0 && hoursRemaining===0 && requestLeft <= 0 && showComponent) && (
+                <Link to='/PurchaseToken'>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    style={{marginTop:'30px',fontSize:'large'}}
+                    
+                  >
+                      <img src={brokenHeart} style={{ boxShadow: 'none',marginRight:'10px' }} alt="brokenHeart" />
+          החבילה נגמרה
+          <br></br>
+          לחץ כדי לקנות
+                  </Button>
+                </Link>
               )}
+
+
               {alertMessage && <SimpleAlert message={alertMessage} />}
               <ActionAlerts showAlert={showUploadAlert} />
 
@@ -689,7 +764,7 @@ function HomePage() {
                   </div>
                 </div>
               )}
-              
+
               {responseReceived && countGenerateResponse !== 0 && (
                 <div>
                   <DiscreteSliderValues onChange={handleSliderChange} />
@@ -698,15 +773,16 @@ function HomePage() {
                     loading={loading}
                     buttonLabel="תגובה חדשה"
                   />
-                  <p>נשארו {countGenerateResponse} החלפות</p>
+                  {/* <p>נשארו {countGenerateResponse} החלפות</p> */}
                 </div>
               )}
 
               {responseReceived && countGenerateResponse === 0 && (
                 <div>
-                
+
                   <p>
-                    השתמש ב <img src={coin} style={{ width: "20px", boxShadow: 'none' }} /> חדש על מנת להמשיך לקבל הצעות
+                    {/* השתמש ב <img src={coin} style={{ width: "20px", boxShadow: 'none' }} /> חדש על מנת להמשיך לקבל הצעות */}
+                    
 
 
                   </p>
@@ -716,7 +792,7 @@ function HomePage() {
                     buttonLabel="שלח"
                   />
                 </div>
-                
+
               )}
 
               {showAuthDialog && (
@@ -727,8 +803,8 @@ function HomePage() {
               )}
             </>
           )}
-          
-        
+
+
         </div>
         {isAuthenticated && (
           <div style={{ bottom: "0px", marginTop: "auto", fontSize: 'large' }}>

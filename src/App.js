@@ -14,6 +14,8 @@ import FirstTimePage from './components/FirstTimePage';
 import MainPage from './components/Bootslander/MainPage';
 import Auth0Callback from './components/Auth0Callback'; // Create this component
 import { Helmet } from 'react-helmet';
+import NotFound from './components/Page404';
+import PurchaseToken from './components/PurchaseToken';
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -42,7 +44,9 @@ function App() {
           <Route path='/settings' element={<Settings />} />
           <Route path='/FirstTime' element={<FirstTimePage />} />
           <Route path='/Main' element={<HomePage />} />
+          <Route path='/PurchaseToken' element={<PurchaseToken />} />
           <Route path="/auth0_callback" element={<Auth0Callback />} />
+          <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
 
         </Routes>
       </div>

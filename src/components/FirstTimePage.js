@@ -67,7 +67,7 @@ function FirstTimePage() {
                             name="radio-buttons"
                             inputProps={{ 'aria-label': 'A' }}
                         />
-                        אנא אשר את  <a href='/terms' target='_blank'>התנאים.</a>
+                        אני מאשר את  <a href='/terms' target='_blank'> התנאים.</a>
                     </div>
                     {termsAccepted && (
                         <>

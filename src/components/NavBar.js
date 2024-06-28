@@ -11,6 +11,7 @@ import { PiListHeartFill } from "react-icons/pi";
 import { BsSearchHeartFill } from "react-icons/bs";
 import { BsHearts } from "react-icons/bs";
 import { MdForum } from "react-icons/md";
+import { FaFileInvoiceDollar } from "react-icons/fa6";
 
 const NavBar = ({ menuOpen, setMenuOpen }) => {
   const navigate = useNavigate();
@@ -57,26 +58,31 @@ const NavBar = ({ menuOpen, setMenuOpen }) => {
       {menuOpen && (
         <div className="menu">
           <Link style={{border:'0.1px solid #ccc'}} to="/Main" onClick={handleLinkClick}>
-          <BsHearts />
+          <BsHearts style={{marginRight:'3px'}}/>
             אפליקציה
           </Link>
           {isAuthenticated && (
             <>
               <Link to="/openers" onClick={handleLinkClick}>
-              <BsSearchHeartFill />
+              <BsSearchHeartFill style={{marginRight:'3px'}} />
                 משפטי פתיחה
               </Link>
               <Link to="/openersliked" onClick={handleLinkClick}>
-              <PiListHeartFill />
+              <PiListHeartFill style={{marginRight:'3px'}}/>
                 מועדפים
               </Link>
               <Link to="/forum" onClick={handleLinkClick}>
-              <MdForum />
+              <MdForum style={{marginRight:'3px'}}/>
                 פורום
               </Link>
               <Link to="/settings" onClick={handleLinkClick}>
-              <IoIosSettings />
+              <IoIosSettings style={{marginRight:'3px'}}/>
               הגדרות
+              </Link>
+              <Link to="/PurchaseToken" onClick={handleLinkClick}>
+              <FaFileInvoiceDollar 
+              style={{marginRight:'3px'}}/>
+              מחירים
               </Link>
               <LogoutButton />
             </>

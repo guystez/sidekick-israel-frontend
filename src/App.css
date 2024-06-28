@@ -274,6 +274,19 @@ html, body {
   margin-bottom: 20px;
 }
 
+@media (min-width: 768px) { /* Adjust this breakpoint based on your design needs */
+  .opener-filter {
+    /* align-items: center; */
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: stretch;
+    justify-content: center;
+    min-height: 94.5vh;
+
+  }
+}
+
 .title-logo-container {
   position: fixed;
   top: 0;
@@ -696,4 +709,16 @@ color: #fff;
 
 .flashing {
   animation: flash 1s infinite;
+}
+
+.advanced2{
+  /* top: 18px; */
+  right: px;
+  /* transform: rotate(45deg); */
+  z-index: 1;
+  font-size: 14px;
+  padding: 1px 0 3px 0;
+  background: #ffe940;
+  border-radius: 10px;
+  font-size: larger;
 }
